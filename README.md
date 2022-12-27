@@ -1,6 +1,6 @@
 # modong-backend
 
-[모두의 동아리] backend 레포지토리 (Spring)
+[모두의 동아리] backend 레포지토리 (New)
 
 ---
 
