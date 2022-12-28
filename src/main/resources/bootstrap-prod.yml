@@ -1,0 +1,7 @@
+aws:
+  secretsmanager:
+    name: modong
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
