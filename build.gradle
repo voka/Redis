@@ -1,7 +1,15 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.1.0'
+	//querydsl 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.modong'
@@ -12,6 +20,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	querydsl.extendsFrom compileClasspath
 }
 
 repositories {
@@ -30,8 +39,41 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	// 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//Swagger 문서 쉽게 만들어주는 라이브러리
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	// prometheus
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.7.5'
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.9.5'
+	// querydsl 추가
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+// querydsl 추가 시작
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+// querydsl 추가 끝

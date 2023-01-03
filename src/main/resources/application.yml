@@ -20,5 +20,5 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   # org.hibernate.type: trace
-#allow-cors:
-  #list: http://localhost, chrome-extension
+allow-cors:
+  list: http://localhost
