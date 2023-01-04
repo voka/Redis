@@ -1,11 +1,9 @@
 package com.modong.backend.Question;
 
-import static com.modong.backend.Base.MessageCode.ERROR_REQ_PARAM_ID;
+import static com.modong.backend.Enum.MessageCode.ERROR_REQ_PARAM_ID;
 
 import com.modong.backend.Enum.QuestionType;
 import com.modong.backend.Form.Form;
-import com.modong.backend.QuestionOption.Dto.QuestionOptionRequest;
-import com.modong.backend.QuestionOption.Dto.QuestionOptionResponse;
 import com.modong.backend.QuestionOption.QuestionOption;
 import com.modong.backend.QuestionOption.QuestionOptionService;
 import com.modong.backend.Question.Dto.QuestionRequest;
@@ -31,17 +29,24 @@ public class QuestionService {
     return question;
   }
 
+  @Transactional
   // 일단 중복검사 없이 로직 작성 추후에 추가할 수도 있을듯
   public Question create(QuestionRequest questionRequest, Form form) {
 
     Question question = new Question(questionRequest,form);
     question.getQuestionOptions().clear();
 
-    for(QuestionOptionRequest questionOptionRequest : questionRequest.getQuestionOptionRequests()){
-      QuestionOption questionOption = new QuestionOption(questionOptionRequest,question);
-      question.addOption(questionOption);
-    }
+//    for(QuestionOptionRequest questionOptionRequest : questionRequest.getQuestionOptionRequests()){
+//      QuestionOption questionOption = new QuestionOption(questionOptionRequest,question);
+//      question.addOption(questionOption);
+//    }
+    if(question.getQuestionType() == QuestionType.SINGLE_SELECT_QUESTION ||
+          question.getQuestionType() == QuestionType.MULTI_SELECT_QUESTION) {
+        List<QuestionOption> questionOptions = questionOptionService.createList(
+            questionRequest.getQuestionOptionRequest(), question);
+        question.setOption(questionOptions);
 
+    }
     questionRepository.save(question);
 
     return question;
@@ -49,16 +54,16 @@ public class QuestionService {
 
   public List<QuestionResponse> findAllByForm(Form form) {
 
-    List<Question> questions = questionRepository.findAllByForm(form);
+    List<Question> questions = questionRepository.findAllByFormId(form.getId());
 
     List<QuestionResponse> results = new ArrayList<>();
 
     for(Question question : questions){
-      List<QuestionOptionResponse> options = new ArrayList<>();
-      if(question.getQuestionType() == QuestionType.CHECKBOX_QUESTION ||
-          question.getQuestionType() == QuestionType.RADIO_QUESTION){
-        options = questionOptionService.findAllByQuestion(question);
-      }
+//      List<QuestionOptionResponse> options = new ArrayList<>();
+//      if(question.getQuestionType() == QuestionType.SINGLE_SELECT_QUESTION ||
+//          question.getQuestionType() == QuestionType.MULTI_SELECT_QUESTION){
+//        options = questionOptionService.findAllByQuestion(question);
+//      }
       results.add(new QuestionResponse(question));
     }
 
