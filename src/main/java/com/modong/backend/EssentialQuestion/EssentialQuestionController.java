@@ -1,10 +1,9 @@
 package com.modong.backend.EssentialQuestion;
 
-import com.modong.backend.Base.BaseResponse;
-import com.modong.backend.Base.MessageCode;
+import com.modong.backend.Base.Dto.BaseResponse;
+import com.modong.backend.Enum.MessageCode;
 import com.modong.backend.EssentialQuestion.Dto.EssentialQuestionResponse;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -3,21 +3,16 @@ package com.modong.backend.Application;
 import com.modong.backend.Application.Dto.ApplicationDetailResponse;
 import com.modong.backend.Application.Dto.ApplicationRequest;
 import com.modong.backend.Application.Dto.ApplicationSimpleResponse;
-import com.modong.backend.Base.BaseResponse;
+import com.modong.backend.Base.Dto.BaseResponse;
 import com.modong.backend.Base.Dto.SavedId;
-import com.modong.backend.Base.MessageCode;
+import com.modong.backend.Enum.MessageCode;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +40,7 @@ public class ApplicationController {
       @ApiResponse(responseCode = "200", description = "게시글 조회 성공", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
   })
   @Parameter(name = "id", description = "동아리 ID", required = true, example = "1")
-  public ResponseEntity getApplicationsByClubId(@Validated @PathVariable(name="club_id") Long clubId){
+  public ResponseEntity getApplicationsByClubId(@Valid @PathVariable(name="club_id") Long clubId){
     List<ApplicationSimpleResponse> applications = applicationService.findAllByClubId(clubId);
     return ResponseEntity.ok(new BaseResponse(applications, HttpStatus.OK.value(), MessageCode.SUCCESS_GET_LIST));
   }
@@ -53,14 +48,23 @@ public class ApplicationController {
   @GetMapping("/application/{application_id}")
   @Operation(summary = "지원서 조회", description = "지원서의 ID를 이용해 작성한 지원서를 조회한다.")
   @Parameter(name = "id", description = "지원서 ID", required = true, example = "1")
-  public ResponseEntity getApplicationById(@Validated @PathVariable(name = "application_id") Long applicationId){
+  public ResponseEntity getApplicationById(@Valid @PathVariable(name = "application_id") Long applicationId){
     ApplicationDetailResponse application = applicationService.findDetailById(applicationId);
     return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(),MessageCode.SUCCESS_GET));
   }
+  //지원서 조회(
+  @GetMapping("/view/application/{url_id}")
+  @Operation(summary = "지원서 조회", description = "지원서의 링크 아이디를 이용해 작성한 지원서를 조회한다.")
+  @Parameter(name = "urlId", description = "지원서 url ID ", required = true, example = "uH9wk72MTr")
+  public ResponseEntity getApplicationByUrlId(@Valid @PathVariable(name = "url_id") String urlId){
+    ApplicationDetailResponse application = applicationService.findDetailByUrlId(urlId);
+    return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(),MessageCode.SUCCESS_GET));
+  }
+
   //지원서 생성
   @PostMapping("/application")
   @Operation(summary = "지원서를 생성한다.", description = "지원서를 생성한다.")
-  public ResponseEntity createApplication(@Validated @RequestBody ApplicationRequest applicationRequest){
+  public ResponseEntity createApplication(@Valid @RequestBody ApplicationRequest applicationRequest){
     SavedId savedId = new SavedId(applicationService.createApplication(applicationRequest));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), MessageCode.SUCCESS_CREATE));
   }
@@ -69,7 +73,7 @@ public class ApplicationController {
   @PutMapping("/application/{application_id}")
   @Operation(summary = "지원서 수정", description = "지원서의 ID를 이용해 작성한 지원서를 수정한다.")
   @Parameter(name = "id", description = "지원서 ID", required = true, example = "1")
-  public ResponseEntity updateEssentialQuestion(@Validated @PathVariable(name = "application_id") Long applicationId, @RequestBody ApplicationRequest applicationRequest){
+  public ResponseEntity updateEssentialQuestion(@Valid @PathVariable(name = "application_id") Long applicationId, @RequestBody ApplicationRequest applicationRequest){
     SavedId savedId = new SavedId(applicationService.updateEssentialQuestion(applicationId,
         applicationRequest));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), MessageCode.SUCCESS_UPDATE));
@@ -80,7 +84,7 @@ public class ApplicationController {
   @DeleteMapping("/application/{application_id}")
   @Operation(summary = "지원서 삭제", description = "지원서의 ID를 이용해 작성한 지원서를 삭제한다.")
   @Parameter(name = "id", description = "지원서 ID", required = true, example = "1")
-  public ResponseEntity deleteApplicationById(@Validated @PathVariable(name = "application_id") Long applicationId) {
+  public ResponseEntity deleteApplicationById(@Valid @PathVariable(name = "application_id") Long applicationId) {
     applicationService.deleteApplication(applicationId);
     return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(), MessageCode.SUCCESS_DELETE));
   }

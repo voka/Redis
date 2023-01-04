@@ -1,12 +1,11 @@
 package com.modong.backend.Application;
 
-import static com.modong.backend.Base.MessageCode.ERROR_REQ_PARAM_ID;
+import static com.modong.backend.Enum.MessageCode.ERROR_REQ_PARAM_ID;
 
 import com.modong.backend.Application.Dto.ApplicationRequest;
 import com.modong.backend.Application.Dto.ApplicationDetailResponse;
 import com.modong.backend.Application.Dto.ApplicationSimpleResponse;
 import com.modong.backend.ApplicationEssential.ApplicationEssential;
-import com.modong.backend.ApplicationEssential.ApplicationEssentialService;
 import com.modong.backend.Club.Club;
 import com.modong.backend.Club.ClubService;
 import com.modong.backend.EssentialQuestion.Dto.EssentialQuestionResponse;
@@ -33,18 +32,7 @@ public class ApplicationService {
 
     Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
 
-    ApplicationDetailResponse response = new ApplicationDetailResponse(application);
-
-    for(ApplicationEssential applicationEssential : application.getEssentials()){
-      response.addEssentialQuestion(new EssentialQuestionResponse(applicationEssential.getEssentialQuestion()));
-      System.out.println(applicationEssential.getEssentialQuestion().getContent());
-    }
-
-    for(Form form : application.getForms()){
-      response.addForm(new FormResponse(form));
-    }
-
-    return response;
+    return getDetailResponse(application);
   }
 
   public Application findSimpleById(Long applicationId){
@@ -64,6 +52,11 @@ public class ApplicationService {
     Club club = clubService.findById(applicationRequest.getClubId());
 
     Application application = new Application(applicationRequest,club);
+
+    //지원서 링크 중복 검사
+    if(applicationRepository.findByUrlId(applicationRequest.getUrlId()).isPresent()){
+      throw new IllegalArgumentException("이미 존재하는 링크 ID 입니다.");
+    }
 
     //필수 질문 id로 저장
     for(Long id : applicationRequest.getEssentialQuestionIds()){
@@ -116,5 +109,27 @@ public class ApplicationService {
   public void deleteApplication(Long applicationId) {
     Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
     applicationRepository.delete(application);
+  }
+
+  public ApplicationDetailResponse findDetailByUrlId(String urlId) {
+    Application application = applicationRepository.findByUrlId(urlId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
+
+    return getDetailResponse(application);
+
+  }
+
+  private ApplicationDetailResponse getDetailResponse(Application application) {
+    ApplicationDetailResponse response = new ApplicationDetailResponse(application);
+
+    for(ApplicationEssential applicationEssential : application.getEssentials()){
+      response.addEssentialQuestion(new EssentialQuestionResponse(applicationEssential.getEssentialQuestion()));
+      System.out.println(applicationEssential.getEssentialQuestion().getContent());
+    }
+
+    for(Form form : application.getForms()){
+      response.addForm(new FormResponse(form));
+    }
+
+    return response;
   }
 }
