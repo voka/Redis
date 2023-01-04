@@ -1,10 +1,9 @@
 package com.modong.backend.EssentialQuestion;
 
-import static com.modong.backend.Base.MessageCode.ERROR_REQ_PARAM_ID;
+import static com.modong.backend.Enum.MessageCode.ERROR_REQ_PARAM_ID;
 
 import com.modong.backend.Application.Application;
 import com.modong.backend.ApplicationEssential.ApplicationEssentialService;
-import com.modong.backend.EssentialAnswer.EssentialAnswerRepository;
 import com.modong.backend.EssentialQuestion.Dto.EssentialQuestionRequest;
 import com.modong.backend.EssentialQuestion.Dto.EssentialQuestionResponse;
 import java.util.List;

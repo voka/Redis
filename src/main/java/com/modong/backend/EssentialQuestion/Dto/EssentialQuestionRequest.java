@@ -1,13 +1,15 @@
 package com.modong.backend.EssentialQuestion.Dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class EssentialQuestionRequest {
 
-  private Long id;
   @NotNull
+  private Long id;
+  @NotBlank
   private String content;
   private boolean isRequire;
 
