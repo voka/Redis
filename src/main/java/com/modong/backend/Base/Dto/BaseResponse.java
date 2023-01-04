@@ -1,6 +1,6 @@
-package com.modong.backend.Base;
+package com.modong.backend.Base.Dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import com.modong.backend.Enum.MessageCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 

@@ -1,7 +1,7 @@
 package com.modong.backend.Enum;
 
 public enum ApplicantStatus {
-  Fail(1),Accept(2),Application(3),Interview(4),Success(5);
+  FAIL(1),ACCEPT(2),APPLICATION(3),INTERVIEW(4),SUCCESS(5);
 
   private int code;
 
@@ -13,19 +13,19 @@ public enum ApplicantStatus {
     ApplicantStatus applicantStatus = null;
     switch (code) {
       case 1:
-        applicantStatus = ApplicantStatus.Fail;
+        applicantStatus = ApplicantStatus.FAIL;
         break;
       case 2:
-        applicantStatus = ApplicantStatus.Accept;
+        applicantStatus = ApplicantStatus.ACCEPT;
         break;
       case 3:
-        applicantStatus = ApplicantStatus.Application;
+        applicantStatus = ApplicantStatus.APPLICATION;
         break;
       case 4:
-        applicantStatus = ApplicantStatus.Interview;
+        applicantStatus = ApplicantStatus.INTERVIEW;
         break;
       case 5:
-        applicantStatus = ApplicantStatus.Success;
+        applicantStatus = ApplicantStatus.SUCCESS;
         break;
       default:
         break;

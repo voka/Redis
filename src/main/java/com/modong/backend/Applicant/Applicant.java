@@ -50,7 +50,7 @@ public class Applicant extends BaseTimeEntity {
   public Applicant(ApplicantRequest applicantRequest, Application application) {
     this.name = applicantRequest.getName();
     this.application = application;
-    this.applicantStatus = ApplicantStatus.Accept;
+    this.applicantStatus = ApplicantStatus.ACCEPT;
   }
 
   public void changeStatus(ApplicantStatus applicantStatus) {

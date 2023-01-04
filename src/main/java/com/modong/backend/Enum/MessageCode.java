@@ -1,4 +1,4 @@
-package com.modong.backend.Base;
+package com.modong.backend.Enum;
 
 import lombok.Getter;
 
