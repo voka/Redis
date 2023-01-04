@@ -1,18 +1,16 @@
 package com.modong.backend.Form;
 
-import static com.modong.backend.Base.MessageCode.ERROR_REQ_PARAM_ID;
+import static com.modong.backend.Enum.MessageCode.ERROR_REQ_PARAM_ID;
 
 import com.modong.backend.Application.Application;
 import com.modong.backend.Application.ApplicationService;
 import com.modong.backend.Form.dto.FormRequest;
 import com.modong.backend.Form.dto.FormResponse;
 import com.modong.backend.Question.Dto.QuestionRequest;
-import com.modong.backend.Question.Dto.QuestionResponse;
 import com.modong.backend.Question.Question;
 import com.modong.backend.Question.QuestionService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,9 +52,9 @@ public class FormService {
 
   public List<FormResponse> findAllByApplicationId(Long applicationId) {
 
-    Application application = applicationService.findSimpleById(applicationId);
+//    Application application = applicationService.findSimpleById(applicationId);
 
-    List<Form> forms = formRepository.findAllByApplication(application);
+    List<Form> forms = formRepository.findAllByApplicationId(applicationId);
 
     List<FormResponse> results = new ArrayList<>();
 

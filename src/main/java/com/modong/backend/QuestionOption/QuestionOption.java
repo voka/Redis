@@ -28,8 +28,8 @@ public class QuestionOption extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private Question question;
 
-  public QuestionOption(QuestionOptionRequest questionOptionRequest, Question question) {
-    this.value = questionOptionRequest.getValue();
+  public QuestionOption(String value, Question question) {
+    this.value = value;
     this.question = question;
   }
 }

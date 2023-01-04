@@ -49,4 +49,8 @@ public class Question extends BaseTimeEntity {
   public void addOption(QuestionOption questionOption) {
     this.questionOptions.add(questionOption);
   }
+
+  public void setOption(List<QuestionOption> questionOption) {
+    this.questionOptions = questionOption;
+  }
 }

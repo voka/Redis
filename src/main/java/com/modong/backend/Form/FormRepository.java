@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface FormRepository extends JpaRepository<Form, Long> {
 
-  List<Form> findAllByApplication(Application application);
+  List<Form> findAllByApplicationId(Long applicationId);
 
 }

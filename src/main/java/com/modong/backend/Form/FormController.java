@@ -1,16 +1,14 @@
 package com.modong.backend.Form;
 
-import com.modong.backend.Base.BaseResponse;
+import com.modong.backend.Base.Dto.BaseResponse;
 import com.modong.backend.Base.Dto.SavedId;
-import com.modong.backend.Base.MessageCode;
+import com.modong.backend.Enum.MessageCode;
 import com.modong.backend.Form.dto.FormRequest;
 import com.modong.backend.Form.dto.FormResponse;
-import com.modong.backend.Question.Question;
-import com.modong.backend.Question.QuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +33,14 @@ public class FormController {
   //페이지 생성
   @PostMapping("/form")
   @Operation(summary = "페이지 생성", description = "지원서에 새로운 페이지를 저장한다.")
-  public ResponseEntity createForm(@Parameter @Validated @RequestBody FormRequest formRequest){
+  public ResponseEntity createForm(@Valid @RequestBody FormRequest formRequest){
       SavedId savedId = new SavedId(formService.create(formRequest));
       return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), MessageCode.SUCCESS_CREATE));
   }
   //페이지 수정
   @PutMapping("/form/{form_id}")
   @Operation(summary = "페이지 수정", description = "페이지의 ID를 이용해 수정한다.")
-  public ResponseEntity updateForm(@Parameter @Validated @PathVariable(name = "form_id") Long formId, @RequestBody FormRequest formRequest){
+  public ResponseEntity updateForm(@Valid @PathVariable(name = "form_id") Long formId, @RequestBody FormRequest formRequest){
     SavedId savedId = new SavedId(formService.update(formId,formRequest));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), MessageCode.SUCCESS_UPDATE));
   }
@@ -51,7 +49,7 @@ public class FormController {
   //id로 페이지 조회
   @GetMapping("/form/{form_id}")
   @Operation(summary = "페이지 조회", description = "페이지의 ID를 이용해 조회한다.")
-  public ResponseEntity getFormById(@Parameter @Validated @PathVariable(name = "form_id") Long formId){
+  public ResponseEntity getFormById(@Valid @PathVariable(name = "form_id") Long formId){
 
     FormResponse form = formService.findById(formId);
     return ResponseEntity.ok(new BaseResponse(form,HttpStatus.OK.value(),MessageCode.SUCCESS_GET));
@@ -60,7 +58,7 @@ public class FormController {
   //지원서 id로 해당되는 모든 페이지 조회
   @GetMapping("/forms/{application_id}")
   @Operation(summary = "지원서 ID 로 해당되는 모든 페이지 조회", description = "지원서 ID를 이용해 포함된 모든 페이지를 조회한다.")
-  public ResponseEntity getFormsByApplicationId(@Parameter @Validated @PathVariable(name = "application_id") Long applicationId){
+  public ResponseEntity getFormsByApplicationId(@Valid @PathVariable(name = "application_id") Long applicationId){
     List<FormResponse> forms = formService.findAllByApplicationId(applicationId);
     return ResponseEntity.ok(new BaseResponse(forms, HttpStatus.OK.value(), MessageCode.SUCCESS_GET_LIST));
   }
@@ -68,7 +66,7 @@ public class FormController {
   //지원서의 페이지 삭제
   @DeleteMapping("/form/{form_id}")
   @Operation(summary = "페이지 삭제", description = "페이지의 ID를 이용해 삭제한다.")
-  public ResponseEntity deleteFormById(@Parameter @Validated @PathVariable(name = "form_id") Long formId){
+  public ResponseEntity deleteFormById(@Valid @PathVariable(name = "form_id") Long formId){
     formService.deleteForm(formId);
     return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(),MessageCode.SUCCESS_DELETE));
   }
