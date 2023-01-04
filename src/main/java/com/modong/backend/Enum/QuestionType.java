@@ -1,7 +1,7 @@
 package com.modong.backend.Enum;
 
 public enum QuestionType {
-  QUESTION(1), CHECKBOX_QUESTION(2), RADIO_QUESTION(3);
+  QUESTION(1), SINGLE_SELECT_QUESTION(2), MULTI_SELECT_QUESTION(3);
 
   private int code;
 
@@ -16,10 +16,10 @@ public enum QuestionType {
         questionType = QuestionType.QUESTION;
         break;
       case 2:
-        questionType = QuestionType.CHECKBOX_QUESTION;
+        questionType = QuestionType.SINGLE_SELECT_QUESTION;
         break;
       case 3:
-        questionType = QuestionType.RADIO_QUESTION;
+        questionType = QuestionType.MULTI_SELECT_QUESTION;
         break;
       default:
         break;

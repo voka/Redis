@@ -29,6 +29,8 @@ public class Application extends BaseTimeEntity {
 
   private String title;
 
+  private String urlId;
+
   @ManyToOne(fetch = FetchType.LAZY)
   private Club club;
 
@@ -43,6 +45,7 @@ public class Application extends BaseTimeEntity {
   public Application(ApplicationRequest applicationRequest, Club club) {
     this.title = applicationRequest.getTitle();
     this.club = club;
+    this.urlId = applicationRequest.getUrlId();
   }
 
   public void addEssential(ApplicationEssential applicationEssential){

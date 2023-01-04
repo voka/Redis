@@ -1,6 +1,6 @@
 package com.modong.backend.Club;
 
-import static com.modong.backend.Base.MessageCode.ERROR_REQ_PARAM_ID;
+import static com.modong.backend.Enum.MessageCode.ERROR_REQ_PARAM_ID;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
