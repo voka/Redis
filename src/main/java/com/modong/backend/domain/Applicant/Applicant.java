@@ -5,6 +5,7 @@ import com.modong.backend.domain.Application.Application;
 import com.modong.backend.Base.BaseTimeEntity;
 import com.modong.backend.Enum.ApplicantStatus;
 import com.modong.backend.domain.EssentialAnswer.EssentialAnswer;
+import com.modong.backend.domain.Judge.Judge;
 import com.modong.backend.domain.QuestionAnswer.QuestionAnswer;
 import java.util.ArrayList;
 import javax.persistence.Entity;
@@ -47,6 +48,8 @@ public class Applicant extends BaseTimeEntity {
   @OneToMany(mappedBy = "applicant")
   private List<QuestionAnswer> questionAnswers = new ArrayList<>();
 
+  @OneToMany(mappedBy = "applicant")
+  private List<Judge> judges = new ArrayList<>();
 
   public Applicant(ApplicantRequest applicantRequest, Application application) {
     this.name = applicantRequest.getName();
