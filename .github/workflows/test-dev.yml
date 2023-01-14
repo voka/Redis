@@ -32,7 +32,7 @@ jobs:
         run: chmod +x gradlew
  
       - name: Test with Gradle
-        run: ./gradlew -Pprofile=dev=test --info test
+        run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
  
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
