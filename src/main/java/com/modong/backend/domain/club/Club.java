@@ -13,12 +13,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseTimeEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;
+  private  String introduce;
 
   private String profileImgUrl;
 
+  public Club(String name, String introduce, String profileUrl) {
+    this.name = name;
+    this.introduce = introduce;
+    this.profileImgUrl = profileUrl;
+  }
 }
