@@ -1,7 +1,7 @@
 package com.modong.backend.domain.judge;
 
 import com.modong.backend.domain.applicant.Applicant;
-import com.modong.backend.domain.club.ClubManager.ClubManager;
+import com.modong.backend.auth.member.Member;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,18 +21,15 @@ public class Judge {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private int score;
+  private float score;
 
   @Lob
   private String comment;
-
-  @Lob
-  private String memo;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Applicant applicant;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private ClubManager clubManager;
+  private Member member;
 
 }
