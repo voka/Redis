@@ -1,0 +1,16 @@
+spring:
+  database-platform: org.hibernate.dialect.H2Dialect
+  mvc: # Swagger
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+jwt:
+  token:
+    secret-key: TXlTdWJQcm9qZWN0IE1vZG9uZ2BzIGp3dCBzZWNyZXQta2V5IA==
+    access:
+      expire-time: 86400
+    refresh:
+      expire-time: 604800
+
+allow-cors:
+  list: http://localhost
