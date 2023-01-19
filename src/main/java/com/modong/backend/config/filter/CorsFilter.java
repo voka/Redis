@@ -43,15 +43,6 @@ public class CorsFilter implements Filter {
     String originUri = req.getRequestURI();
     String originUrl = req.getHeader("Origin");
 
-    System.out.println("====================" +
-            "\nRequest Method: " + requestMethod +
-            "\nRemote User: " + remoteUser +
-            "\nUser Agent: " + userAgent +
-            "\nHost: " + host +
-            "\nOrigin URI: " + originUri +
-            "\nOrigin URL: " + originUrl +
-            "\n====================");
-
     if(originUrl == null) {
       res.setHeader("Access-Control-Allow-Origin", "*");
     }

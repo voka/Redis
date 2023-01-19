@@ -20,5 +20,14 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   # org.hibernate.type: trace
+
+jwt:
+  token:
+    secret-key: TXlTdWJQcm9qZWN0IE1vZG9uZ2BzIGp3dCBzZWNyZXQta2V5IA==
+    access:
+      expire-time: 86400
+    refresh:
+      expire-time: 604800
+
 allow-cors:
   list: http://localhost

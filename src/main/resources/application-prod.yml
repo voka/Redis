@@ -18,6 +18,15 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   # org.hibernate.type: trace
+
+jwt:
+  token:
+    secret-key: ${JWT_SECRET_KEY}
+    access:
+      expire-time: ${JWT_ACCESS_TOKEN_EXPIRE_TIME}
+    refresh:
+      expire-time: ${JWT_REFRESH_TOKEN_EXPIRE_TIME}
+
 allow-cors:
   list: ${CORS}
 
