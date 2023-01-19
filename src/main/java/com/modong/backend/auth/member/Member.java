@@ -1,17 +1,17 @@
 package com.modong.backend.auth.member;
 
+import com.modong.backend.Enum.ProviderName;
 import com.modong.backend.auth.memberRole.MemberRole;
 import com.modong.backend.base.BaseTimeEntity;
-import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import com.modong.backend.domain.judge.Judge;
 import java.util.ArrayList;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,13 +26,14 @@ public class Member extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String managerId;
-
+  private String memberId;
   private String password;
-
   private String name;
-
   private String nickName;
+  private String email;
+  private String phone;
+  @Enumerated(EnumType.STRING)
+  private ProviderName providerName;
 
   @OneToMany(mappedBy = "member")
   private List<ClubMember> clubs = new ArrayList<>();

@@ -1,5 +1,8 @@
-package com.modong.backend.domain.club;
+package com.modong.backend.unit.domain.club;
 
+import com.modong.backend.domain.club.Club;
+import com.modong.backend.domain.club.ClubRepository;
+import com.modong.backend.unit.base.RepositoryTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
-public class ClubRepositoryTest {
+public class ClubRepositoryTest extends RepositoryTest {
 
   @Autowired
   private ClubRepository clubRepository;
