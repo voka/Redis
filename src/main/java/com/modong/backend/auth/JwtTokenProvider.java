@@ -9,29 +9,28 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.net.CacheRequest;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import lombok.Getter;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider{
 
   private Key key;
-  private final String secretKey;
   private final long accessTokenValidityInMilliSeconds; // 엑세스 토큰 만료시간
   private final long refreshTokenValidityInMilliSeconds; // 리프레시 토큰 만료시간
 
   public JwtTokenProvider(@Value("${jwt.token.secret-key}") String secretKey,
-      @Value("${jwt.token.access.expire-time") long accessTokenValidityInSeconds,
-      @Value("${jwt.token.refresh.expire-time") long refreshTokenValidityInSeconds ) {
-    this.secretKey = secretKey;
-    this.accessTokenValidityInMilliSeconds = accessTokenValidityInSeconds;
-    this.refreshTokenValidityInMilliSeconds = refreshTokenValidityInSeconds;
-    byte[] keyBytes = Decoders.BASE64.decode(secretKey); // application.yml 파일에 있는 Secret 이 현재 Base64로 인코딩 되어 있음.
-    this.key = Keys.hmacShaKeyFor(keyBytes);
+      @Value("${jwt.token.access.expire-time}") long accessTokenValidityInSeconds,
+      @Value("${jwt.token.refresh.expire-time}") long refreshTokenValidityInSeconds ) {
+    this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    this.accessTokenValidityInMilliSeconds = accessTokenValidityInSeconds * 1000;
+    this.refreshTokenValidityInMilliSeconds = refreshTokenValidityInSeconds * 1000;
+
   }
 
   public String createAccessToken(Long id){
@@ -84,4 +83,5 @@ public class JwtTokenProvider {
     }
     return false;
   }
+
 }

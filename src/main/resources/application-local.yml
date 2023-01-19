@@ -23,7 +23,7 @@ logging.level:
 
 jwt:
   token:
-    secret-key: TXlTdWJQcm9qZWN0IE1vZG9uZ2BzIGp3dCBzZWNyZXQta2V5IA==
+    secret-key: MySubProject Modong`s jwt secret-key
     access:
       expire-time: 86400
     refresh:
