@@ -1,4 +1,4 @@
-name: Deploy to Amazon EC2 modong prod api server
+name: Build and Test before merge to develop branch
 
 on:
   push:
