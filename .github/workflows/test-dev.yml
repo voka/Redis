@@ -1,8 +1,6 @@
 name: Build and Test before merge to develop branch
 
 on:
-  push:
-    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
  
