@@ -21,7 +21,7 @@ public class QuestionResponse {
     this.content = question.getContent();
     this.questionType = question.getQuestionType().getCode();
     for(QuestionOption questionOption : question.getQuestionOptions()){
-      options.add(questionOption.getValue());
+      options.add(questionOption.getContent());
     }
 //    this.options = question.getQuestionOptions().stream().map(QuestionOptionResponse::new).collect(
 //        Collectors.toList()).toString();

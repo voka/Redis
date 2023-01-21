@@ -1,6 +1,6 @@
 package com.modong.backend.domain.form;
 
-import static com.modong.backend.Enum.MessageCode.ERROR_REQ_PARAM_ID;
+import static com.modong.backend.Enum.CustomCode.ERROR_REQ_PARAM_ID;
 
 import com.modong.backend.domain.application.Application;
 import com.modong.backend.domain.application.ApplicationService;

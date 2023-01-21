@@ -5,7 +5,7 @@ import com.modong.backend.domain.applicant.Dto.ApplicantRequest;
 import com.modong.backend.domain.applicant.Dto.ApplicantSimpleResponse;
 import com.modong.backend.domain.applicant.Dto.ChangeApplicantStatusRequest;
 import com.modong.backend.base.Dto.SavedId;
-import com.modong.backend.Enum.MessageCode;
+import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.base.Dto.BaseResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,27 +33,27 @@ public class ApplicantController {
   @Operation(summary = "지원자들 간편 조회", description = "지원서의 ID를 통해 모든 지원자들을 간편 조회 한다.")
   public ResponseEntity getApplicantsByApplicationId(@Validated @PathVariable(name="application_id") Long applicationId){
     List<ApplicantSimpleResponse> applicants = applicantService.findAllByApplicationId(applicationId);
-    return ResponseEntity.ok(new BaseResponse(applicants, HttpStatus.OK.value(), MessageCode.SUCCESS_GET_LIST));
+    return ResponseEntity.ok(new BaseResponse(applicants, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
   }
 
   @GetMapping("/applicant/{applicant_id}") // 각 지원자를 ID로 조회해 질문에 어떤 답을 했는지 알고 싶을때 사용하는 API
   @Operation(summary = "지원자 답변 조회", description = "지원자를 ID로 조회해 질문에 어떤 답을 했는지 조회 한다.")
   public ResponseEntity getApplicantById(@Validated @PathVariable(name="applicant_id") Long applicantId){
     ApplicantDetailResponse applicant = applicantService.findById(applicantId);
-    return ResponseEntity.ok(new BaseResponse(applicant, HttpStatus.OK.value(),MessageCode.SUCCESS_GET));
+    return ResponseEntity.ok(new BaseResponse(applicant, HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 
   @PatchMapping("/applicant/{applicant_id}")// 지원자의상태를 변경할때 사용하는 API
   @Operation(summary = "지원자 상태 변경", description = "지원자를 상태를 변경한다. FAIL(1),ACCEPT(2),APPLICATION(3),INTERVIEW(4),SUCCESS(5)")
   public ResponseEntity changeApplicantStatus(@Validated @PathVariable(name="applicant_id") Long applicantId, @RequestBody ChangeApplicantStatusRequest applicantStatus){
     SavedId savedId = new SavedId(applicantService.changeApplicantStatus(applicantId,applicantStatus));
-    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), MessageCode.SUCCESS_UPDATE));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
   }
 
   @PostMapping("/applicant")//지원자 생성과 동시에 답변들 저장하는 API
   @Operation(summary = "지원자 생성", description = "지원자를 생성하고 답변을 저장한다.")
   public ResponseEntity createApplicantAndSaveQuestions(@Validated @RequestBody ApplicantRequest applicantRequest){
     SavedId savedId = new SavedId(applicantService.createApplicant(applicantRequest));
-    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), MessageCode.SUCCESS_CREATE));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
   }
 }

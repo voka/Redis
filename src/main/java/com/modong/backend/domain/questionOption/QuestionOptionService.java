@@ -17,8 +17,8 @@ public class QuestionOptionService {
   private final QuestionOptionRepository questionOptionRepository;
 
   @Transactional
-  public QuestionOption create(String value, Question question) {
-    QuestionOption questionOption = new QuestionOption(value,question);
+  public QuestionOption create(String content, Question question) {
+    QuestionOption questionOption = new QuestionOption(content,question);
     questionOptionRepository.save(questionOption);
     return questionOption;
   }

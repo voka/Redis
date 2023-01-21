@@ -1,7 +1,7 @@
 package com.modong.backend.domain.essentialQuestion;
 
 import com.modong.backend.base.Dto.BaseResponse;
-import com.modong.backend.Enum.MessageCode;
+import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.domain.essentialQuestion.Dto.EssentialQuestionResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,7 @@ public class EssentialQuestionController {
   public ResponseEntity getAllEssentialQuestions(){
     List<EssentialQuestionResponse> essentialQuestions = essentialQuestionService.findAll();
 
-    return ResponseEntity.ok(new BaseResponse(essentialQuestions, HttpStatus.OK.value(), MessageCode.SUCCESS_GET_LIST));
+    return ResponseEntity.ok(new BaseResponse(essentialQuestions, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
   }
 
 }

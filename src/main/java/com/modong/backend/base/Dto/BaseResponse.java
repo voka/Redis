@@ -1,6 +1,6 @@
 package com.modong.backend.base.Dto;
 
-import com.modong.backend.Enum.MessageCode;
+import com.modong.backend.Enum.CustomCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -16,16 +16,16 @@ public class BaseResponse {
   @Schema(description = "반환 데이터")
   private Object data;
 
-  public BaseResponse(int status, MessageCode messageCode) {
+  public BaseResponse(int status, CustomCode customCode) {
     this.status = status;
-    this.message = messageCode.getMessage();
-    this.code = messageCode.getCode();
+    this.message = customCode.getMessage();
+    this.code = customCode.getCode();
   }
 
-  public BaseResponse(Object body, int status, MessageCode messageCode) {
+  public BaseResponse(Object body, int status, CustomCode customCode) {
     this.data = body;
     this.status = status;
-    this.message = messageCode.getMessage();
-    this.code = messageCode.getCode();
+    this.message = customCode.getMessage();
+    this.code = customCode.getCode();
   }
 }

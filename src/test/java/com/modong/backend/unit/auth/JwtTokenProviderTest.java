@@ -30,8 +30,6 @@ public class JwtTokenProviderTest {
     tokenProvider = new JwtTokenProvider(secretKey,1000,1000);
   }
 
-
-
   @DisplayName("사용자의 id를 이용해 만든 토큰의 값은 원래의 id 값과 같아야 한다.")
   @Test
   public void validationPayload(){

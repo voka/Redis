@@ -22,13 +22,13 @@ public class QuestionOption extends BaseTimeEntity {
   private Long id;
 
   @Lob
-  private String value;
+  private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Question question;
 
-  public QuestionOption(String value, Question question) {
-    this.value = value;
+  public QuestionOption(String content, Question question) {
+    this.content = content;
     this.question = question;
   }
 }
