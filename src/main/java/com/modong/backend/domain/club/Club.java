@@ -29,4 +29,10 @@ public class Club extends BaseTimeEntity {
     this.name = clubRequest.getName();
     this.profileImgUrl = clubRequest.getProfileImgUrl();
   }
+
+  public Club(Long id, ClubRequest clubRequest) {
+    this.id = id;
+    this.name = clubRequest.getName();
+    this.profileImgUrl = clubRequest.getProfileImgUrl();
+  }
 }
