@@ -5,7 +5,7 @@ import com.modong.backend.domain.application.Dto.ApplicationRequest;
 import com.modong.backend.domain.application.Dto.ApplicationSimpleResponse;
 import com.modong.backend.base.Dto.BaseResponse;
 import com.modong.backend.base.Dto.SavedId;
-import com.modong.backend.Enum.MessageCode;
+import com.modong.backend.Enum.CustomCode;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,7 +41,7 @@ public class ApplicationController {
   @Parameter(name = "id", description = "동아리 ID", required = true, example = "1")
   public ResponseEntity getApplicationsByClubId(@Valid @PathVariable(name="club_id") Long clubId){
     List<ApplicationSimpleResponse> applications = applicationService.findAllByClubId(clubId);
-    return ResponseEntity.ok(new BaseResponse(applications, HttpStatus.OK.value(), MessageCode.SUCCESS_GET_LIST));
+    return ResponseEntity.ok(new BaseResponse(applications, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
   }
   //지원서 조회
   @GetMapping("/application/{application_id}")
@@ -49,7 +49,7 @@ public class ApplicationController {
   @Parameter(name = "id", description = "지원서 ID", required = true, example = "1")
   public ResponseEntity getApplicationById(@Valid @PathVariable(name = "application_id") Long applicationId){
     ApplicationDetailResponse application = applicationService.findDetailById(applicationId);
-    return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(),MessageCode.SUCCESS_GET));
+    return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
   //지원서 조회(
   @GetMapping("/view/application/{url_id}")
@@ -57,7 +57,7 @@ public class ApplicationController {
   @Parameter(name = "urlId", description = "지원서 url ID ", required = true, example = "uH9wk72MTr")
   public ResponseEntity getApplicationByUrlId(@Valid @PathVariable(name = "url_id") String urlId){
     ApplicationDetailResponse application = applicationService.findDetailByUrlId(urlId);
-    return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(),MessageCode.SUCCESS_GET));
+    return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 
   //지원서 생성
@@ -65,7 +65,7 @@ public class ApplicationController {
   @Operation(summary = "지원서를 생성한다.", description = "지원서를 생성한다.")
   public ResponseEntity createApplication(@Valid @RequestBody ApplicationRequest applicationRequest){
     SavedId savedId = new SavedId(applicationService.createApplication(applicationRequest));
-    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), MessageCode.SUCCESS_CREATE));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
   }
 
   //지원서 수정(필수 질문 부분)
@@ -75,7 +75,7 @@ public class ApplicationController {
   public ResponseEntity updateEssentialQuestion(@Valid @PathVariable(name = "application_id") Long applicationId, @RequestBody ApplicationRequest applicationRequest){
     SavedId savedId = new SavedId(applicationService.updateEssentialQuestion(applicationId,
         applicationRequest));
-    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), MessageCode.SUCCESS_UPDATE));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
 
   }
 
@@ -85,6 +85,6 @@ public class ApplicationController {
   @Parameter(name = "id", description = "지원서 ID", required = true, example = "1")
   public ResponseEntity deleteApplicationById(@Valid @PathVariable(name = "application_id") Long applicationId) {
     applicationService.deleteApplication(applicationId);
-    return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(), MessageCode.SUCCESS_DELETE));
+    return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(), CustomCode.SUCCESS_DELETE));
   }
 }
