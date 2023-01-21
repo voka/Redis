@@ -7,12 +7,14 @@ import com.modong.backend.domain.application.Dto.ApplicationDetailResponse;
 import com.modong.backend.domain.application.Dto.ApplicationSimpleResponse;
 import com.modong.backend.domain.applicationEssential.ApplicationEssential;
 import com.modong.backend.domain.club.Club;
+import com.modong.backend.domain.club.ClubRepository;
 import com.modong.backend.domain.club.ClubService;
 import com.modong.backend.domain.essentialQuestion.Dto.EssentialQuestionResponse;
 import com.modong.backend.domain.essentialQuestion.EssentialQuestion;
 import com.modong.backend.domain.essentialQuestion.EssentialQuestionService;
 import com.modong.backend.domain.form.Form;
 import com.modong.backend.domain.form.dto.FormResponse;
+import com.modong.backend.global.exception.club.ClubNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApplicationService {
 
   private final ApplicationRepository applicationRepository;
-  private final ClubService clubService;
+  private final ClubRepository clubRepository;
   private final EssentialQuestionService essentialQuestionService;
 
   public ApplicationDetailResponse findDetailById(Long applicationId) {
@@ -49,7 +51,8 @@ public class ApplicationService {
   @Transactional
   public Long createApplication(ApplicationRequest applicationRequest) {
 
-    Club club = clubService.findById(applicationRequest.getClubId());
+    Club club = clubRepository.findById(applicationRequest.getClubId())
+        .orElseThrow(() -> new ClubNotFoundException(applicationRequest.getClubId()));
 
     Application application = new Application(applicationRequest,club);
 
