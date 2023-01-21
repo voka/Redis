@@ -3,6 +3,8 @@ name: Build and Test before merge to develop branch
 on:
   pull_request:
     branches: [ "develop" ]
+  push:
+    branches: [ "develop" ] #테스트 커버리지 표시하기 위해
  
 jobs:
   test:
