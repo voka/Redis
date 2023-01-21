@@ -6,10 +6,21 @@ buildscript {
 
 plugins {
 	id 'java'
+	//test coverage
+	id 'jacoco'
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.1.0'
 	//querydsl 추가
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+jacoco {
+	toolVersion = '0.8.8'
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
 }
 
 group = 'com.modong'
@@ -66,6 +77,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport' //이거 추가 안하면 testReport 안생김
 }
 // querydsl 추가 시작
 
