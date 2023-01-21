@@ -1,6 +1,7 @@
 package com.modong.backend.domain.club.clubMemeber;
 
 import com.modong.backend.auth.member.Member;
+import com.modong.backend.domain.club.Club;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,4 +22,12 @@ public class ClubMember {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Club club;
+
+  public ClubMember(Club club, Member member) {
+    this.member = member;
+    this.club = club;
+  }
 }
