@@ -11,6 +11,6 @@ public class QuestionOptionResponse {
 
   public QuestionOptionResponse(QuestionOption questionOption) {
     this.id = questionOption.getId();
-    this.value = questionOption.getValue();
+    this.value = questionOption.getContent();
   }
 }
