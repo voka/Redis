@@ -2,6 +2,7 @@ package com.modong.backend.unit.domain.club;
 
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.ClubRepository;
+import com.modong.backend.domain.club.Dto.ClubRequest;
 import com.modong.backend.unit.base.RepositoryTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class ClubRepositoryTest extends RepositoryTest {
   @DisplayName(value = "클럽 생성")
   public void createClub(){
     //given
-    Club club = new Club("모동","테스트용 모동 동아리 입니다!","fbHl9VTmh7");
+    Club club = new Club(new ClubRequest("모동","테스트용 모동  입니다!"));
     //then
     Club savedClub =  clubRepository.save(club);
     //result
