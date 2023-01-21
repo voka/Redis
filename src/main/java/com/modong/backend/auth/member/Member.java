@@ -1,8 +1,10 @@
 package com.modong.backend.auth.member;
 
 import com.modong.backend.Enum.ProviderName;
+import com.modong.backend.auth.Dto.MemberRegisterRequest;
 import com.modong.backend.auth.memberRole.MemberRole;
 import com.modong.backend.base.BaseTimeEntity;
+import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import com.modong.backend.domain.judge.Judge;
 import java.util.ArrayList;
@@ -29,9 +31,9 @@ public class Member extends BaseTimeEntity {
   private String memberId;
   private String password;
   private String name;
-  private String nickName;
   private String email;
   private String phone;
+
   @Enumerated(EnumType.STRING)
   private ProviderName providerName;
 
@@ -43,4 +45,20 @@ public class Member extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "member")
   private List<MemberRole> roles = new ArrayList<>();
+
+  public Member(MemberRegisterRequest memberRegisterRequest) {
+    this.memberId = memberRegisterRequest.getMemberId();
+    this.name = memberRegisterRequest.getName();
+    this.email = memberRegisterRequest.getEmail();
+    this.phone = memberRegisterRequest.getPhone();
+    this.providerName = ProviderName.MODONG;
+  }
+
+  public void addClub(ClubMember club){
+    this.clubs.add(club);
+  }
+
+  public void setEncodedPassword(String encodedPassword){
+    this.password = encodedPassword;
+  }
 }
