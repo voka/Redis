@@ -1,11 +1,11 @@
 package com.modong.backend.unit.base;
 
-import static com.modong.backend.Fixtures.CLUB_CODE;
-import static com.modong.backend.Fixtures.EMAIL;
-import static com.modong.backend.Fixtures.MEMBER_ID;
-import static com.modong.backend.Fixtures.NAME;
-import static com.modong.backend.Fixtures.PASSWORD;
-import static com.modong.backend.Fixtures.PHONE;
+import static com.modong.backend.Fixtures.Fixtures.CLUB_CODE;
+import static com.modong.backend.Fixtures.Fixtures.EMAIL;
+import static com.modong.backend.Fixtures.Fixtures.MEMBER_ID;
+import static com.modong.backend.Fixtures.Fixtures.NAME;
+import static com.modong.backend.Fixtures.Fixtures.PASSWORD;
+import static com.modong.backend.Fixtures.Fixtures.PHONE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modong.backend.auth.AuthService;
@@ -41,6 +41,5 @@ public class ControllerTest {
       .memberId(MEMBER_ID).email(EMAIL).password(PASSWORD)
       .phone(PHONE).name(NAME).clubCode(CLUB_CODE).build();
 
-  protected LoginRequest loginRequest = new LoginRequest(MEMBER_ID,PASSWORD);
 
 }

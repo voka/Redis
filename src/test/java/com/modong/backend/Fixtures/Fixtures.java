@@ -1,4 +1,4 @@
-package com.modong.backend;
+package com.modong.backend.Fixtures;
 
 public class Fixtures {
 
