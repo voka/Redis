@@ -3,6 +3,7 @@ package com.modong.backend.auth.member;
 import com.modong.backend.Enum.ProviderName;
 import com.modong.backend.auth.Dto.MemberRegisterRequest;
 import com.modong.backend.auth.memberRole.MemberRole;
+import com.modong.backend.auth.refreshToken.RefreshToken;
 import com.modong.backend.base.BaseTimeEntity;
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +39,6 @@ public class Member extends BaseTimeEntity {
 
   @Enumerated(EnumType.STRING)
   private ProviderName providerName;
-
   @OneToMany(mappedBy = "member")
   private List<ClubMember> clubs = new ArrayList<>();
 

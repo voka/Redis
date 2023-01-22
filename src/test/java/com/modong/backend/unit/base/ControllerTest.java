@@ -7,38 +7,39 @@ import static com.modong.backend.Fixtures.MemberFixture.NAME;
 import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
 import static com.modong.backend.Fixtures.MemberFixture.PHONE;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.modong.backend.auth.AuthService;
+import com.modong.backend.auth.Dto.LoginRequest;
 import com.modong.backend.auth.Dto.MemberRegisterRequest;
-import com.modong.backend.auth.JwtTokenProvider;
-import com.modong.backend.auth.member.MemberRepository;
-import com.modong.backend.auth.refreshToken.RefreshTokenRepository;
-import com.modong.backend.domain.club.ClubRepository;
-import org.mockito.MockedStatic;
+import com.modong.backend.auth.member.MemberService;
+import com.modong.backend.domain.club.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@Transactional
 @ActiveProfiles("test")
-public class ServiceTest {
-  @MockBean
-  protected MemberRepository memberRepository;
+public class ControllerTest {
 
   @MockBean
-  protected ClubRepository clubRepository;
+  protected MemberService memberService;
 
   @MockBean
-  protected RefreshTokenRepository refreshTokenRepository;
+  protected ClubService clubService;
+
+  @MockBean
+  protected AuthService authService;
 
   @Autowired
-  protected PasswordEncoder passwordEncoder;
+  protected MockMvc mockMvc;
 
-  @MockBean
-  protected JwtTokenProvider jwtTokenProvider;
+  @Autowired
+  protected ObjectMapper objectMapper;
+
+
   protected MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
       .memberId(MEMBER_ID).email(EMAIL).password(PASSWORD)
       .phone(PHONE).name(NAME).clubCode(CLUB_CODE).build();
+
+
 }
