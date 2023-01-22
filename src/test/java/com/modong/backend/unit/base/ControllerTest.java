@@ -1,11 +1,11 @@
 package com.modong.backend.unit.base;
 
-import static com.modong.backend.Fixtures.Fixtures.CLUB_CODE;
-import static com.modong.backend.Fixtures.Fixtures.EMAIL;
-import static com.modong.backend.Fixtures.Fixtures.MEMBER_ID;
-import static com.modong.backend.Fixtures.Fixtures.NAME;
-import static com.modong.backend.Fixtures.Fixtures.PASSWORD;
-import static com.modong.backend.Fixtures.Fixtures.PHONE;
+import static com.modong.backend.Fixtures.ClubFixture.CLUB_CODE;
+import static com.modong.backend.Fixtures.MemberFixture.EMAIL;
+import static com.modong.backend.Fixtures.MemberFixture.MEMBER_ID;
+import static com.modong.backend.Fixtures.MemberFixture.NAME;
+import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
+import static com.modong.backend.Fixtures.MemberFixture.PHONE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modong.backend.auth.AuthService;

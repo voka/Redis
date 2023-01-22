@@ -1,6 +1,7 @@
 package com.modong.backend.Fixtures;
 
 public class MemberFixture {
+  public static final Long ID = 1L;
   public static final String MEMBER_ID = "test123";
   public static final String PASSWORD = "myPassword1234!";
   public static final String EMAIL = "email@naver.com";

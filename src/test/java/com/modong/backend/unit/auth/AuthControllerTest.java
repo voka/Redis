@@ -1,8 +1,8 @@
 package com.modong.backend.unit.auth;
-import static com.modong.backend.Fixtures.Fixtures.ACCESS_TOKEN;
-import static com.modong.backend.Fixtures.Fixtures.MEMBER_ID;
-import static com.modong.backend.Fixtures.Fixtures.PASSWORD;
-import static com.modong.backend.Fixtures.Fixtures.REFRESH_TOKEN;
+import static com.modong.backend.Fixtures.AuthFixture.ACCESS_TOKEN;
+import static com.modong.backend.Fixtures.AuthFixture.REFRESH_TOKEN;
+import static com.modong.backend.Fixtures.MemberFixture.MEMBER_ID;
+import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
 import static com.modong.backend.Fixtures.MemberFixture.WRONG_MEMBER_ID;
 import static com.modong.backend.Fixtures.MemberFixture.WRONG_PASSWORD;
 import static org.mockito.ArgumentMatchers.any;
