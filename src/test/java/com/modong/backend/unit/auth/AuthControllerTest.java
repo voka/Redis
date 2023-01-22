@@ -1,5 +1,7 @@
 package com.modong.backend.unit.auth;
 import static com.modong.backend.Fixtures.AuthFixture.ACCESS_TOKEN;
+import static com.modong.backend.Fixtures.AuthFixture.NEW_ACCESS_TOKEN;
+import static com.modong.backend.Fixtures.AuthFixture.NEW_REFRESH_TOKEN;
 import static com.modong.backend.Fixtures.AuthFixture.REFRESH_TOKEN;
 import static com.modong.backend.Fixtures.MemberFixture.MEMBER_ID;
 import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
@@ -12,15 +14,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.modong.backend.Fixtures.MemberFixture;
 import com.modong.backend.auth.AuthController;
 import com.modong.backend.auth.Dto.LoginRequest;
+import com.modong.backend.auth.Dto.TokenRequest;
 import com.modong.backend.auth.Dto.TokenResponse;
 import com.modong.backend.global.exception.WrongFormatException;
 import com.modong.backend.global.exception.auth.PasswordMismatchException;
+import com.modong.backend.global.exception.auth.RefreshTokenNotValidException;
 import com.modong.backend.global.exception.member.MemberNotFoundException;
 import com.modong.backend.unit.base.ControllerTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -126,6 +129,74 @@ public class AuthControllerTest extends ControllerTest {
         .willThrow(expected);
     //when
     ResultActions perform = mockMvc.perform(post("/api/v1/login")
+        .contentType(MediaType.APPLICATION_JSON).with(csrf())
+        .content(requestBody));
+    //then
+    perform.andExpect(status().isBadRequest());
+  }
+
+  // 토큰 재발행
+  @DisplayName("토큰 재발행 성공")
+  @WithMockUser
+  @Test
+  public void returnTokenWithStatusOKIfTokenRequestValid() throws Exception{
+    //given
+    TokenRequest tokenRequest = new TokenRequest(MemberFixture.ID,REFRESH_TOKEN);
+
+    requestBody = objectMapper.writeValueAsString(tokenRequest);
+
+    given(authService.createAccessToken(any()))
+        .willReturn(new TokenResponse(NEW_ACCESS_TOKEN,NEW_REFRESH_TOKEN));
+
+    // when
+    ResultActions perform = mockMvc.perform(post("/api/v1/token")
+        .contentType(MediaType.APPLICATION_JSON).with(csrf())
+        .content(requestBody));
+
+    // then
+    perform
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("data.accessToken").value(NEW_ACCESS_TOKEN))
+        .andExpect(jsonPath("data.refreshToken").value(NEW_REFRESH_TOKEN));
+  }
+
+  @DisplayName("토큰 재발행 실패 - MemberId가 존재하지 않으면 상태값 404를 반환해야 한다.")
+  @WithMockUser
+  @Test
+  public void throwExceptionIfMemberIdNotFound() throws Exception{
+    //given
+    TokenRequest tokenRequest = new TokenRequest(MemberFixture.ID,REFRESH_TOKEN);
+
+    requestBody = objectMapper.writeValueAsString(tokenRequest);
+
+    MemberNotFoundException expected = new MemberNotFoundException(MemberFixture.ID);
+
+    given(authService.createAccessToken(any()))
+        .willThrow(expected);
+    //when
+    ResultActions perform = mockMvc.perform(post("/api/v1/token")
+        .contentType(MediaType.APPLICATION_JSON).with(csrf())
+        .content(requestBody));
+    //then
+    perform.andExpect(status().isNotFound());
+  }
+
+  @DisplayName("토큰 재발행 실패 - 리프레시 토큰이 DB에 저장된 것과 다르면 상태값 400를 반환해야 한다.")
+  @WithMockUser
+  @Test
+  public void throwExceptionIfRefreshTokenNotValid() throws Exception{
+    //given
+    TokenRequest tokenRequest = new TokenRequest(MemberFixture.ID,REFRESH_TOKEN);
+
+    requestBody = objectMapper.writeValueAsString(tokenRequest);
+
+    RefreshTokenNotValidException expected = new RefreshTokenNotValidException();
+
+    given(authService.createAccessToken(any()))
+        .willThrow(expected);
+    //when
+    ResultActions perform = mockMvc.perform(post("/api/v1/token")
         .contentType(MediaType.APPLICATION_JSON).with(csrf())
         .content(requestBody));
     //then

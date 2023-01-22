@@ -2,6 +2,7 @@ package com.modong.backend.auth;
 
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.auth.Dto.LoginRequest;
+import com.modong.backend.auth.Dto.TokenRequest;
 import com.modong.backend.auth.Dto.TokenResponse;
 import com.modong.backend.base.Dto.BaseResponse;
 import io.swagger.annotations.Api;
@@ -26,9 +27,14 @@ public class AuthController {
   @PostMapping("/login")
   @Operation(summary = "로그인", description = "아이디와 비밀번호를 사용해 로그인을 한다.")
   public ResponseEntity login(@Validated @RequestBody LoginRequest loginRequest){
-    TokenResponse tokens = authService.login(loginRequest);
-    return ResponseEntity.ok(new BaseResponse(tokens, HttpStatus.OK.value(), CustomCode.SUCCESS_LOGIN));
+    TokenResponse token = authService.login(loginRequest);
+    return ResponseEntity.ok(new BaseResponse(token, HttpStatus.OK.value(), CustomCode.SUCCESS_LOGIN));
   }
 
-
+  @PostMapping("/token")
+  @Operation(summary = "토큰 재발행", description = "리프레시 토큰을 이용해 액세스 토큰을 재발행 한다. 이때 리프레시 토큰도 바뀐다.")
+  public ResponseEntity getToken(@Validated @RequestBody TokenRequest tokenRequest) {
+    TokenResponse token = authService.createAccessToken(tokenRequest);
+    return ResponseEntity.ok(new BaseResponse(token, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_TOKEN));
+  }
 }
