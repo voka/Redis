@@ -1,12 +1,20 @@
 package com.modong.backend.unit.domain.member;
 
+import static com.modong.backend.Fixtures.ClubFixture.CLUB_CODE;
+import static com.modong.backend.Fixtures.ClubFixture.CLUB_NAME;
+import static com.modong.backend.Fixtures.ClubFixture.CLUB_PROFILE_IMG_URL;
+import static com.modong.backend.Fixtures.MemberFixture.EMAIL;
+import static com.modong.backend.Fixtures.MemberFixture.MEMBER_ID;
+import static com.modong.backend.Fixtures.MemberFixture.NAME;
+import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
+import static com.modong.backend.Fixtures.MemberFixture.PHONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.modong.backend.auth.Dto.MemberRegisterRequest;
+import com.modong.backend.auth.member.Dto.MemberRegisterRequest;
 import com.modong.backend.auth.member.Dto.MemberCheckRequest;
 import com.modong.backend.auth.member.Member;
 import com.modong.backend.auth.member.MemberService;
@@ -16,7 +24,6 @@ import com.modong.backend.global.exception.club.ClubNotFoundException;
 import com.modong.backend.global.exception.member.DuplicateMemberIdException;
 import com.modong.backend.global.exception.member.MemberNotFoundException;
 import com.modong.backend.unit.base.ServiceTest;
-import com.modong.backend.utils.UUIDGenerateUtils;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,20 +42,16 @@ public class MemberServiceTest extends ServiceTest {
 
   private ClubRequest clubRequest;
 
-  private final String memberId = "memberId";
-
-  private final String clubCode = "F1KAO132K";
-
   @BeforeEach
   public void init(){
 
-    memberRegisterRequest = MemberRegisterRequest.
-        builder().memberId(memberId).email("email@naver.com").password("password")
-        .phone("01032343243").name("testMember").clubCode(clubCode)
-        .clubCode(UUIDGenerateUtils.makeShortUUID()).build();
+    memberRegisterRequest = MemberRegisterRequest.builder()
+        .memberId(MEMBER_ID).email(EMAIL).password(PASSWORD)
+        .phone(PHONE).name(NAME).clubCode(CLUB_CODE).build();
 
-    clubRequest = ClubRequest.builder().name("모동")
-        .profileImgUrl("https://avatars.githubusercontent.com/u/38587274?v=4").build();
+
+    clubRequest = ClubRequest.builder().name(CLUB_NAME)
+        .profileImgUrl(CLUB_PROFILE_IMG_URL).build();
 
   }
 
@@ -56,9 +59,9 @@ public class MemberServiceTest extends ServiceTest {
   @Test
   public void throwExceptionIfMemberIdExist(){
     //given,when
-    MemberCheckRequest memberCheckRequest = MemberCheckRequest.builder().memberId(memberId).build();
+    MemberCheckRequest memberCheckRequest = MemberCheckRequest.builder().memberId(MEMBER_ID).build();
 
-    given(memberRepository.existsByMemberId(memberId))
+    given(memberRepository.existsByMemberId(MEMBER_ID))
         .willReturn(true);
 
     //then
@@ -70,8 +73,8 @@ public class MemberServiceTest extends ServiceTest {
   @Test
   public void passIfMemberIdNotExist(){
     //given,when
-    MemberCheckRequest memberCheckRequest = MemberCheckRequest.builder().memberId(memberId).build();
-    given(memberRepository.existsByMemberId(memberId))
+    MemberCheckRequest memberCheckRequest = MemberCheckRequest.builder().memberId(MEMBER_ID).build();
+    given(memberRepository.existsByMemberId(MEMBER_ID))
         .willReturn(false);
     //then
     assertThatCode(() -> memberService.checkMemberId(memberCheckRequest))
@@ -124,15 +127,15 @@ public class MemberServiceTest extends ServiceTest {
     given(clubRepository.findByClubCode(memberRegisterRequest.getClubCode()))
         .willReturn(Optional.empty());
 
-    //when
+    //then
     assertThatThrownBy(() -> memberService.register(memberRegisterRequest))
         .isInstanceOf(ClubNotFoundException.class);
 
   }
 
-  @DisplayName("회원 조회 - Id를 가진 동아리가 존재하지 않으면 ClubNotFoundException 가 발생한다..")
+  @DisplayName("회원 조회 - ClubId를 가진 동아리가 존재하지 않으면 ClubNotFoundException 가 발생한다..")
   @Test
-  public void ThrowExceptionIfClubIdNotExist(){
+  public void throwExceptionIfClubIdNotExist(){
     //given, when
 
     Long findId = 1L;

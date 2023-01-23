@@ -7,12 +7,11 @@ import static com.modong.backend.Fixtures.MemberFixture.NAME;
 import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
 import static com.modong.backend.Fixtures.MemberFixture.PHONE;
 
-import com.modong.backend.auth.Dto.MemberRegisterRequest;
+import com.modong.backend.auth.member.Dto.MemberRegisterRequest;
 import com.modong.backend.auth.JwtTokenProvider;
 import com.modong.backend.auth.member.MemberRepository;
 import com.modong.backend.auth.refreshToken.RefreshTokenRepository;
 import com.modong.backend.domain.club.ClubRepository;
-import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

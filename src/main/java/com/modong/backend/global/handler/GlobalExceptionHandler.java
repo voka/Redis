@@ -28,7 +28,6 @@ public class GlobalExceptionHandler {
     log.error(ERROR_LOGGING_MESSAGE, e);
     return new ErrorResponse(e.getErrorCode(), e.getClientMessage());
   }
-
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler
   public void handleRuntimeException(final RuntimeException e) {

@@ -17,4 +17,12 @@ public class Role {
   private Long id;
 
   private String name;
+
+  public Role(String name) {
+    this.name = name;
+  }
+
+  public static Role basic() {
+    return new Role(RoleName.ROLE_USER.toString());
+  }
 }
