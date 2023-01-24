@@ -1,10 +1,9 @@
 package com.modong.backend.auth.member;
 
-import com.modong.backend.auth.Dto.MemberRegisterRequest;
+import com.modong.backend.auth.member.Dto.MemberRegisterRequest;
 import com.modong.backend.auth.member.Dto.MemberCheckRequest;
 import com.modong.backend.auth.member.Dto.MemberResponse;
 import com.modong.backend.domain.club.Club;
-import com.modong.backend.domain.club.ClubCheckRequest;
 import com.modong.backend.domain.club.ClubRepository;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
@@ -27,6 +26,7 @@ public class MemberService {
   private final ClubRepository clubRepository;
 
   private final PasswordEncoder passwordEncoder;
+  @Transactional
   public Long register(MemberRegisterRequest memberRegisterRequest) {
 
     Club club = clubRepository.findByClubCode(memberRegisterRequest.getClubCode())
@@ -62,10 +62,11 @@ public class MemberService {
     Member member = memberRepository.findById(findMemberId).orElseThrow(() -> new MemberNotFoundException(findMemberId));
     return new MemberResponse(member);
   }
-  public void checkMemberId(MemberCheckRequest memberCheckRequest){
+  public boolean checkMemberId(MemberCheckRequest memberCheckRequest){
     if(isDuplicateMemberId(memberCheckRequest.getMemberId())){
       throw new DuplicateMemberIdException();
     }
+    return true;
   }
 
 
