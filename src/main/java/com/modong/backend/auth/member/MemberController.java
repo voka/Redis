@@ -38,7 +38,7 @@ public class MemberController {
 
   @GetMapping("/member/{memberId}")
   @Operation(summary = "회원 조회", description = "회원 id로 회원을 조회한다.")
-  public ResponseEntity findById(@Auth @PathVariable final Long memberId){
+  public ResponseEntity findById(@PathVariable final Long memberId){
     return ResponseEntity.ok(new BaseResponse(memberService.findById(memberId), HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 
