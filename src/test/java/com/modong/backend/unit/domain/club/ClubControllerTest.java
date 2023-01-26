@@ -1,24 +1,17 @@
 package com.modong.backend.unit.domain.club;
 
-import static com.modong.backend.Fixtures.AuthFixture.ACCESS_TOKEN;
-import static com.modong.backend.Fixtures.AuthFixture.REFRESH_TOKEN;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_ID;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_NAME;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_PROFILE_IMG_URL;
-import static com.modong.backend.Fixtures.MemberFixture.MEMBER_ID;
-import static com.modong.backend.Fixtures.MemberFixture.PASSWORD;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.modong.backend.auth.Dto.LoginRequest;
-import com.modong.backend.auth.Dto.TokenResponse;
 import com.modong.backend.domain.club.ClubController;
 import com.modong.backend.domain.club.Dto.ClubRequest;
 import com.modong.backend.unit.base.ControllerTest;
