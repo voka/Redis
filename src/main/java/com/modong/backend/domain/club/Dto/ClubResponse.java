@@ -1,6 +1,8 @@
 package com.modong.backend.domain.club.Dto;
 import com.modong.backend.domain.club.Club;
+import lombok.Getter;
 
+@Getter
 public class ClubResponse {
   private Long id;
   private String name;
