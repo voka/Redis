@@ -32,7 +32,7 @@ public class ClubServiceTest extends ServiceTest {
   public void init() {
   }
 
-  @DisplayName("ClubCode 유효성 체크 - 클럽코드로 등록된 동아리가 없으면 ClubNotFoundException 가 발생해야 한다.")
+  @DisplayName("ClubCode 유효성 체크 - 동아리코드로 등록된 동아리가 없으면 ClubNotFoundException 가 발생해야 한다.")
   @Test
   public void throwExceptionIfClubNotExist(){
     //given
@@ -45,7 +45,7 @@ public class ClubServiceTest extends ServiceTest {
         .isInstanceOf(ClubNotFoundException.class);
   }
 
-  @DisplayName("ClubCode 유효성 체크 - 클럽코드로 등록된 동아리가 있으면 예외가 발생하지 않아야 한다.")
+  @DisplayName("ClubCode 유효성 체크 - 동아리코드로 등록된 동아리가 있으면 예외가 발생하지 않아야 한다.")
   @Test
   public void passIfClubExist(){
     //given,when
@@ -84,7 +84,6 @@ public class ClubServiceTest extends ServiceTest {
 
     assertThat(savedId).isNotNull();
   }
-
   @DisplayName("동아리 조회 - Id를 가진 동아리가 존재하면 동아리를 조회한다.")
   @Test
   public void findClubIfClubIdExist(){

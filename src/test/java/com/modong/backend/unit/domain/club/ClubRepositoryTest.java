@@ -20,7 +20,7 @@ public class ClubRepositoryTest extends RepositoryTest {
   private ClubRepository clubRepository;
 
   @Test
-  @DisplayName(value = "클럽 생성")
+  @DisplayName(value = "동아리 생성")
   public void createClub(){
     //given
     Club club = new Club(new ClubRequest("모동","테스트용 모동  입니다!"));
