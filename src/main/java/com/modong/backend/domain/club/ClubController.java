@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy.Base;
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.base.Dto.BaseResponse;
 import com.modong.backend.base.Dto.SavedId;
+import com.modong.backend.domain.club.Dto.ClubCreateResponse;
 import com.modong.backend.domain.club.Dto.ClubRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import io.swagger.annotations.Api;
@@ -30,11 +31,12 @@ public class ClubController {
 
   private final ClubService clubService;
 
+  //동아리 생성에 관한 api
   @PostMapping("/club")
   @Operation(summary = "동아리 생성", description = "동아리를 생성한다.")
   public ResponseEntity saveClub(@RequestBody @Valid ClubRequest clubRequest){
-    SavedId savedId = new SavedId(clubService.save(clubRequest));
-    return ResponseEntity.created(URI.create("/api/v1/register")).body(new BaseResponse(savedId, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
+    ClubCreateResponse club = clubService.save(clubRequest);
+    return ResponseEntity.created(URI.create("/api/v1/register")).body(new BaseResponse(club, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
   }
 
   @GetMapping("/club/{clubId}")

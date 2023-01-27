@@ -19,6 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+
+// 추후에 이거 SpringBootTest 대신에 아래 사항 참고해서 Mock 객체로 테스트 할 수 있도록 변경하기 !
+// https://cornswrold.tistory.com/369
+// https://myborn.tistory.com/16
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")

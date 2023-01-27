@@ -1,5 +1,6 @@
 package com.modong.backend.unit.domain.club;
 
+import static com.modong.backend.Fixtures.ClubFixture.CLUB_CODE;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_ID;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_NAME;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_PROFILE_IMG_URL;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.ClubController;
+import com.modong.backend.domain.club.Dto.ClubCreateResponse;
 import com.modong.backend.domain.club.Dto.ClubRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ClubController.class)
@@ -36,13 +39,15 @@ public class ClubControllerTest extends ControllerTest {
   @Test
   public void returnSavedIdWithStatusCREATEDIfClubRequestValid() throws Exception {
     // given
-    Long response = CLUB_ID;
 
     clubRequest = new ClubRequest(CLUB_NAME,CLUB_PROFILE_IMG_URL);
+    final Club club = new Club(clubRequest);
+    ReflectionTestUtils.setField(club,"id",CLUB_ID);
+
     requestBody = objectMapper.writeValueAsString(clubRequest);
 
     given(clubService.save(any()))
-        .willReturn(response);
+        .willReturn(new ClubCreateResponse(club));
 
     // when
     ResultActions perform = mockMvc.perform(post("/api/v1/club")
@@ -54,7 +59,8 @@ public class ClubControllerTest extends ControllerTest {
         .andDo(print())
         .andExpect(status().isCreated())
         .andExpect(redirectedUrl("/api/v1/register"))
-        .andExpect(jsonPath("data.id").value(response));
+        .andExpect(jsonPath("data.id").value(CLUB_ID))
+        .andExpect(jsonPath("data.code").value(CLUB_CODE));
   }
 
   @DisplayName("동아리 조회 성공 - 유요한 Id로 동아리을 조회한다.")

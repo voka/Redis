@@ -9,6 +9,7 @@ import static org.mockito.BDDMockito.given;
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.ClubCheckRequest;
 import com.modong.backend.domain.club.ClubService;
+import com.modong.backend.domain.club.Dto.ClubCreateResponse;
 import com.modong.backend.domain.club.Dto.ClubRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
@@ -75,14 +76,14 @@ public class ClubServiceTest extends ServiceTest {
         .willReturn(club);
 
     //when
-    Long savedId = clubService.save(clubRequest);
+    ClubCreateResponse savedClub = clubService.save(clubRequest);
 
 
     //then
     assertThatCode(() -> clubService.save(clubRequest))
         .doesNotThrowAnyException();
 
-    assertThat(savedId).isNotNull();
+    assertThat(savedClub).isNotNull();
   }
   @DisplayName("동아리 조회 - Id를 가진 동아리가 존재하면 동아리를 조회한다.")
   @Test

@@ -1,11 +1,8 @@
 package com.modong.backend.domain.club;
 
-import static com.modong.backend.Enum.CustomCode.ERROR_REQ;
-import static com.modong.backend.Enum.CustomCode.ERROR_REQ_PARAM_ID;
-
 import com.modong.backend.domain.club.Dto.ClubRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
-import com.modong.backend.global.exception.NotFoundException;
+import com.modong.backend.domain.club.Dto.ClubCreateResponse;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,8 +34,8 @@ public class ClubService {
   }
 
   @Transactional
-  public Long save(ClubRequest clubRequest) {
+  public ClubCreateResponse save(ClubRequest clubRequest) {
     Club savedClub = clubRepository.save(new Club(clubRequest));
-    return savedClub.getId();
+    return new ClubCreateResponse(savedClub);
   }
 }
