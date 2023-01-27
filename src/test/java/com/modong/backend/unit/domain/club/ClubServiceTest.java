@@ -9,7 +9,8 @@ import static org.mockito.BDDMockito.given;
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.ClubCheckRequest;
 import com.modong.backend.domain.club.ClubService;
-import com.modong.backend.domain.club.Dto.ClubRequest;
+import com.modong.backend.domain.club.Dto.ClubCreateResponse;
+import com.modong.backend.domain.club.Dto.ClubCreateRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
 import com.modong.backend.unit.base.ServiceTest;
@@ -63,9 +64,9 @@ public class ClubServiceTest extends ServiceTest {
   @Test
   public void passSaveClub(){
     //given
-    ClubRequest clubRequest = ClubRequest.builder().name("모동")
+    ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder().name("모동")
         .profileImgUrl("https://avatars.githubusercontent.com/u/38587274?v=4").build();
-    Club club = new Club(clubRequest);
+    Club club = new Club(clubCreateRequest);
 
     Long fakeClubId = 1L;
     ReflectionTestUtils.setField(club,"id",fakeClubId);
@@ -75,23 +76,23 @@ public class ClubServiceTest extends ServiceTest {
         .willReturn(club);
 
     //when
-    Long savedId = clubService.save(clubRequest);
+    ClubCreateResponse savedClub = clubService.save(clubCreateRequest);
 
 
     //then
-    assertThatCode(() -> clubService.save(clubRequest))
+    assertThatCode(() -> clubService.save(clubCreateRequest))
         .doesNotThrowAnyException();
 
-    assertThat(savedId).isNotNull();
+    assertThat(savedClub).isNotNull();
   }
   @DisplayName("동아리 조회 - Id를 가진 동아리가 존재하면 동아리를 조회한다.")
   @Test
   public void findClubIfClubIdExist(){
     //given
 
-    ClubRequest clubRequest = ClubRequest.builder().name("모동")
+    ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder().name("모동")
         .profileImgUrl("https://avatars.githubusercontent.com/u/38587274?v=4").build();
-    Club club = new Club(clubRequest);
+    Club club = new Club(clubCreateRequest);
 
     Long findId = 1L;
     ReflectionTestUtils.setField(club,"id",findId);

@@ -19,7 +19,7 @@ import com.modong.backend.auth.member.Dto.MemberCheckRequest;
 import com.modong.backend.auth.member.Member;
 import com.modong.backend.auth.member.MemberService;
 import com.modong.backend.domain.club.Club;
-import com.modong.backend.domain.club.Dto.ClubRequest;
+import com.modong.backend.domain.club.Dto.ClubCreateRequest;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
 import com.modong.backend.global.exception.member.DuplicateMemberIdException;
 import com.modong.backend.global.exception.member.MemberNotFoundException;
@@ -40,7 +40,7 @@ public class MemberServiceTest extends ServiceTest {
 
   private MemberRegisterRequest memberRegisterRequest;
 
-  private ClubRequest clubRequest;
+  private ClubCreateRequest clubCreateRequest;
 
   @BeforeEach
   public void init(){
@@ -50,7 +50,7 @@ public class MemberServiceTest extends ServiceTest {
         .phone(PHONE).name(NAME).clubCode(CLUB_CODE).build();
 
 
-    clubRequest = ClubRequest.builder().name(CLUB_NAME)
+    clubCreateRequest = ClubCreateRequest.builder().name(CLUB_NAME)
         .profileImgUrl(CLUB_PROFILE_IMG_URL).build();
 
   }
@@ -85,7 +85,7 @@ public class MemberServiceTest extends ServiceTest {
   public void returnIdIfRegisterRequestIsValid(){
     //given
 
-    Club club = new Club(clubRequest);
+    Club club = new Club(clubCreateRequest);
 
     Member member = new Member(memberRegisterRequest);
     member.setEncodedPassword(passwordEncoder.encode(memberRegisterRequest.getPassword()));
