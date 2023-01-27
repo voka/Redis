@@ -1,18 +1,14 @@
 package com.modong.backend.domain.club;
 
-import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy;
-import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy.Base;
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.base.Dto.BaseResponse;
-import com.modong.backend.base.Dto.SavedId;
 import com.modong.backend.domain.club.Dto.ClubCreateResponse;
-import com.modong.backend.domain.club.Dto.ClubRequest;
+import com.modong.backend.domain.club.Dto.ClubCreateRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import java.net.URI;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +30,8 @@ public class ClubController {
   //동아리 생성에 관한 api
   @PostMapping("/club")
   @Operation(summary = "동아리 생성", description = "동아리를 생성한다.")
-  public ResponseEntity saveClub(@RequestBody @Valid ClubRequest clubRequest){
-    ClubCreateResponse club = clubService.save(clubRequest);
+  public ResponseEntity saveClub(@RequestBody @Valid ClubCreateRequest clubCreateRequest){
+    ClubCreateResponse club = clubService.save(clubCreateRequest);
     return ResponseEntity.created(URI.create("/api/v1/register")).body(new BaseResponse(club, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
   }
 

@@ -1,6 +1,6 @@
 package com.modong.backend.domain.club;
 
-import com.modong.backend.domain.club.Dto.ClubRequest;
+import com.modong.backend.domain.club.Dto.ClubCreateRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import com.modong.backend.domain.club.Dto.ClubCreateResponse;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
@@ -34,8 +34,8 @@ public class ClubService {
   }
 
   @Transactional
-  public ClubCreateResponse save(ClubRequest clubRequest) {
-    Club savedClub = clubRepository.save(new Club(clubRequest));
+  public ClubCreateResponse save(ClubCreateRequest clubCreateRequest) {
+    Club savedClub = clubRepository.save(new Club(clubCreateRequest));
     return new ClubCreateResponse(savedClub);
   }
 }

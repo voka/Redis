@@ -45,8 +45,6 @@ public class AuthServiceTest extends ServiceTest {
     ReflectionTestUtils.setField(member,"id",MemberFixture.ID);
   }
 
-  // 두 토큰 => ( access, refresh )
-
   // 로그인 테스트
   @DisplayName("로그인 실패 - MemberId를 가진 사용자가 없을경우 MemberNotFoundException 이 발생한다. ")
   @Test

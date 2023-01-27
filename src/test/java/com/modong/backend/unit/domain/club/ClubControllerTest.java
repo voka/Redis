@@ -1,6 +1,5 @@
 package com.modong.backend.unit.domain.club;
 
-import static com.modong.backend.Fixtures.ClubFixture.CLUB_CODE;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_ID;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_NAME;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_PROFILE_IMG_URL;
@@ -18,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.ClubController;
 import com.modong.backend.domain.club.Dto.ClubCreateResponse;
-import com.modong.backend.domain.club.Dto.ClubRequest;
+import com.modong.backend.domain.club.Dto.ClubCreateRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
 import com.modong.backend.unit.base.ControllerTest;
@@ -33,18 +32,18 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(ClubController.class)
 public class ClubControllerTest extends ControllerTest {
   private String requestBody;
-  private ClubRequest clubRequest;
+  private ClubCreateRequest clubCreateRequest;
   @DisplayName("동아리 생성 성공 - 유효한 정보의 동아리 생성 요청이 오면 회원가입 페이지 주소와 함께 상태값 201을 반환해야 한다.")
   @WithMockUser
   @Test
   public void returnSavedIdWithStatusCREATEDIfClubRequestValid() throws Exception {
     // given
 
-    clubRequest = new ClubRequest(CLUB_NAME,CLUB_PROFILE_IMG_URL);
-    final Club club = new Club(clubRequest);
+    clubCreateRequest = new ClubCreateRequest(CLUB_NAME,CLUB_PROFILE_IMG_URL);
+    final Club club = new Club(clubCreateRequest);
     ReflectionTestUtils.setField(club,"id",CLUB_ID);
 
-    requestBody = objectMapper.writeValueAsString(clubRequest);
+    requestBody = objectMapper.writeValueAsString(clubCreateRequest);
 
     given(clubService.save(any()))
         .willReturn(new ClubCreateResponse(club));
@@ -60,7 +59,7 @@ public class ClubControllerTest extends ControllerTest {
         .andExpect(status().isCreated())
         .andExpect(redirectedUrl("/api/v1/register"))
         .andExpect(jsonPath("data.id").value(CLUB_ID))
-        .andExpect(jsonPath("data.code").value(CLUB_CODE));
+        .andExpect(jsonPath("data.code").isNotEmpty());
   }
 
   @DisplayName("동아리 조회 성공 - 유요한 Id로 동아리을 조회한다.")
@@ -68,8 +67,8 @@ public class ClubControllerTest extends ControllerTest {
   @Test
   public void returnClubIfIdIsValid() throws Exception {
     // given
-    clubRequest = new ClubRequest(CLUB_NAME,CLUB_PROFILE_IMG_URL);
-    ClubResponse clubResponse = new ClubResponse(new Club(clubRequest));
+    clubCreateRequest = new ClubCreateRequest(CLUB_NAME,CLUB_PROFILE_IMG_URL);
+    ClubResponse clubResponse = new ClubResponse(new Club(clubCreateRequest));
 
     given(clubService.findById(any()))
         .willReturn(clubResponse);

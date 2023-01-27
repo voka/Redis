@@ -6,14 +6,14 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ClubRequest {
+public class ClubCreateRequest {
 
   @Schema(description = "동아리 이름", required = true, example = "testClub")
   private String name;
   @Schema(description = "동아리 프로필", required = true, example = "https://avatars.githubusercontent.com/u/38587274?v=4")
   private String profileImgUrl;
 
-  public ClubRequest(String name, String profileImgUrl) {
+  public ClubCreateRequest(String name, String profileImgUrl) {
     this.name = name;
     this.profileImgUrl = profileImgUrl;
   }
