@@ -27,6 +27,7 @@ public class AuthService {
   private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
 
+  @Transactional
   public TokenResponse login(LoginRequest loginRequest) {
     //멤버 존재하는지 확인
     Member findMember = memberRepository.findByMemberId(loginRequest.getMemberId()).orElseThrow(() ->
@@ -43,6 +44,7 @@ public class AuthService {
     return new TokenResponse(issueAccessToken(findMember),savedToken.getRefreshToken());
   }
 
+  @Transactional
   public TokenResponse createAccessToken(TokenRequest tokenRequest) {
 
     //멤버 존재하는지 확인
@@ -74,7 +76,7 @@ public class AuthService {
     return jwtTokenProvider.createAccessToken(findMember.getId());
   }
   private String issueRefreshToken(final Member findMember) {
-    return jwtTokenProvider.createAccessToken(findMember.getId());
+    return jwtTokenProvider.createRefreshToken(findMember.getId());
   }
 
 
