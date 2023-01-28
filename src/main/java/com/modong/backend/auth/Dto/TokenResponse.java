@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@Schema(description = "토큰 반환 형식")
+@Schema(name = "토큰 응답")
 public class TokenResponse {
   @Schema(description = "지원서 ID", example = "1")
   private Long memberId;

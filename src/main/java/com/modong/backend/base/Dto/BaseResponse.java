@@ -2,6 +2,7 @@ package com.modong.backend.base.Dto;
 
 import com.modong.backend.Enum.CustomCode;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Getter;
 
 @Getter
@@ -13,7 +14,7 @@ public class BaseResponse {
   private String message;
   @Schema(description = "반환 코드 값", example = "SC001")
   private String code;
-  @Schema(description = "반환 데이터")
+  @Schema(description = "반환 데이터", requiredMode = RequiredMode.AUTO)
   private Object data;
 
   public BaseResponse(int status, CustomCode customCode) {

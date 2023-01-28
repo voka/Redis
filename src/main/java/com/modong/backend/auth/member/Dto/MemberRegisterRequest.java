@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
+@Schema(name = "회원가입 요청")
 public class MemberRegisterRequest {
   @NotNull
   @Schema(description = "아이디",  example = "test123")
