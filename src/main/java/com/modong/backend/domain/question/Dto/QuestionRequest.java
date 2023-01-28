@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
+@Schema(name = "질문 생성 요청")
 public class QuestionRequest {
 
   @NotNull

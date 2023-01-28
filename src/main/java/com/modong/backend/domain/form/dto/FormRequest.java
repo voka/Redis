@@ -11,7 +11,8 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class   FormRequest {
+@Schema(name = "지원서 페이지 생성 요청")
+public class FormRequest {
 
   @NotNull
   @Schema(description = "지원서 ID",  example = "1")

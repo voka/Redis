@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
+@Schema(name = "지원서 생성 요청")
 public class ApplicationRequest {
 
   @NotNull

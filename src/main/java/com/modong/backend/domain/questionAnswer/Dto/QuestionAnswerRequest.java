@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
+@Schema(name = "질문 답변 생성 요청")
 public class QuestionAnswerRequest {
 
   @NotNull  // 질문 ID

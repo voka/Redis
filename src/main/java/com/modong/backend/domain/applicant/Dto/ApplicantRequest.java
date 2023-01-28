@@ -25,10 +25,10 @@ public class ApplicantRequest {
   private String name;
 
   @NotEmpty(message = "Input essential Answer list cannot be empty.")
-  @Schema(description = "필수 질문 답변들", nullable = true)
+  @Schema(description = "필수 질문 답변들")
   private List<EssentialAnswerRequest> essentialAnswers = new ArrayList<>();
 
-  @Schema(description = "질문 답변들", nullable = true)
+  @Schema(description = "질문 답변들")
   private List<QuestionAnswerRequest> questionAnswers = new ArrayList<>();
 
 }

@@ -1,11 +1,16 @@
 package com.modong.backend.domain.form;
 
+import com.modong.backend.auth.Dto.TokenResponse;
 import com.modong.backend.base.Dto.BaseResponse;
 import com.modong.backend.base.Dto.SavedId;
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.domain.form.dto.FormRequest;
 import com.modong.backend.domain.form.dto.FormResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +35,18 @@ public class FormController {
   private final FormService formService;
   //페이지 생성
   @PostMapping("/form")
-  @Operation(summary = "페이지 생성", description = "지원서에 새로운 페이지를 저장한다. 질문 유형 QUESTION(1), SINGLE_SELECT_QUESTION(2), MULTI_SELECT_QUESTION(3)")
+  @Operation(summary = "페이지 생성", description = "지원서에 새로운 페이지를 저장한다. 질문 유형 QUESTION(1), SINGLE_SELECT_QUESTION(2), MULTI_SELECT_QUESTION(3)", responses = {
+      @ApiResponse(responseCode = "200", description = "질문 페이지 생성 성공", content = @Content(schema = @Schema(implementation = SavedId.class)))
+  })
   public ResponseEntity createForm(@Valid @RequestBody FormRequest formRequest){
       SavedId savedId = new SavedId(formService.create(formRequest));
       return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
   }
   //페이지 수정
   @PutMapping("/form/{form_id}")
-  @Operation(summary = "페이지 수정", description = "페이지의 ID를 이용해 수정한다. 질문 유형 QUESTION(1), SINGLE_SELECT_QUESTION(2), MULTI_SELECT_QUESTION(3)")
+  @Operation(summary = "페이지 수정", description = "페이지의 ID를 이용해 수정한다. 질문 유형 QUESTION(1), SINGLE_SELECT_QUESTION(2), MULTI_SELECT_QUESTION(3)", responses = {
+      @ApiResponse(responseCode = "200", description = "페이지 수정 성공", content = @Content(schema = @Schema(implementation = SavedId.class)))
+  })
   public ResponseEntity updateForm(@Valid @PathVariable(name = "form_id") Long formId, @RequestBody FormRequest formRequest){
     SavedId savedId = new SavedId(formService.update(formId,formRequest));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
@@ -46,7 +55,9 @@ public class FormController {
 
   //id로 페이지 조회
   @GetMapping("/form/{form_id}")
-  @Operation(summary = "페이지 조회", description = "페이지의 ID를 이용해 조회한다.")
+  @Operation(summary = "페이지 조회", description = "페이지의 ID를 이용해 조회한다.", responses = {
+      @ApiResponse(responseCode = "200", description = "페이지 조회 성공", content = @Content(schema = @Schema(implementation = FormResponse.class)))
+  })
   public ResponseEntity getFormById(@Valid @PathVariable(name = "form_id") Long formId){
 
     FormResponse form = formService.findById(formId);
@@ -55,7 +66,9 @@ public class FormController {
 
   //지원서 id로 해당되는 모든 페이지 조회
   @GetMapping("/forms/{application_id}")
-  @Operation(summary = "지원서 ID 로 해당되는 모든 페이지 조회", description = "지원서 ID를 이용해 포함된 모든 페이지를 조회한다.")
+  @Operation(summary = "지원서 ID 로 해당되는 모든 페이지 조회", description = "지원서 ID를 이용해 포함된 모든 페이지를 조회한다.",responses = {
+      @ApiResponse(responseCode = "200", description = "페이지 리스트 조회 성공", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FormResponse.class))))
+  })
   public ResponseEntity getFormsByApplicationId(@Valid @PathVariable(name = "application_id") Long applicationId){
     List<FormResponse> forms = formService.findAllByApplicationId(applicationId);
     return ResponseEntity.ok(new BaseResponse(forms, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
@@ -63,7 +76,9 @@ public class FormController {
 
   //지원서의 페이지 삭제
   @DeleteMapping("/form/{form_id}")
-  @Operation(summary = "페이지 삭제", description = "페이지의 ID를 이용해 삭제한다.")
+  @Operation(summary = "페이지 삭제", description = "페이지의 ID를 이용해 삭제한다.", responses = {
+      @ApiResponse(responseCode = "200", description = "페이지 삭제 성공", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+  })
   public ResponseEntity deleteFormById(@Valid @PathVariable(name = "form_id") Long formId){
     formService.deleteForm(formId);
     return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(), CustomCode.SUCCESS_DELETE));

@@ -1,10 +1,12 @@
 package com.modong.backend.domain.essentialAnswer.Dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
+@Schema(name = "필수 질문 요청")
 public class EssentialAnswerRequest {
 
 
@@ -13,7 +15,7 @@ public class EssentialAnswerRequest {
   private Long essentialQuestionId;
 
   //필수 질문 답변
-  @NotNull
+  @NotBlank
   @Schema(description = "필수 질문 답변",  example = "필수 질문 답변입니다!")
   private String answer;
 
