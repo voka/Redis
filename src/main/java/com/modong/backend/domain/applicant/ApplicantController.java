@@ -7,8 +7,8 @@ import com.modong.backend.domain.applicant.Dto.ChangeApplicantStatusRequest;
 import com.modong.backend.base.Dto.SavedId;
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.base.Dto.BaseResponse;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-@Api(tags =  "지원자 API")
+@Tag(name =  "지원자 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")

@@ -8,6 +8,6 @@ import lombok.Getter;
 public class ChangeApplicantStatusRequest {
 
   @NotNull
-  @Schema(description = "변경하고 싶은 지원자 상태 코드", required = true, example = "2")
+  @Schema(description = "변경하고 싶은 지원자 상태 코드",  example = "2")
   private int applicantStatusCode;
 }

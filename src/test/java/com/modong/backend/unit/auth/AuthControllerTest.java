@@ -45,7 +45,7 @@ public class AuthControllerTest extends ControllerTest {
     requestBody = objectMapper.writeValueAsString(loginRequest);
 
     given(authService.login(any()))
-        .willReturn(new TokenResponse(ACCESS_TOKEN,REFRESH_TOKEN));
+        .willReturn(new TokenResponse(MemberFixture.ID,ACCESS_TOKEN,REFRESH_TOKEN));
 
     // when
     ResultActions perform = mockMvc.perform(post("/api/v1/login")
@@ -146,7 +146,7 @@ public class AuthControllerTest extends ControllerTest {
     requestBody = objectMapper.writeValueAsString(tokenRequest);
 
     given(authService.createAccessToken(any()))
-        .willReturn(new TokenResponse(NEW_ACCESS_TOKEN,NEW_REFRESH_TOKEN));
+        .willReturn(new TokenResponse(MemberFixture.ID,NEW_ACCESS_TOKEN,NEW_REFRESH_TOKEN));
 
     // when
     ResultActions perform = mockMvc.perform(post("/api/v1/token")

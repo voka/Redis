@@ -9,10 +9,10 @@ import lombok.Getter;
 @Getter
 public class LoginRequest {
   @NotNull
-  @Schema(description = "아이디", required = true, example = "test123")
+  @Schema(description = "아이디",  example = "test123")
   private String memberId;
   @NotNull
-  @Schema(description = "아이디", required = true, example = "myPassword1234!")
+  @Schema(description = "아이디",  example = "myPassword1234!")
   private String password;
   public LoginRequest(String memberId, String password) {
     this.memberId = memberId;

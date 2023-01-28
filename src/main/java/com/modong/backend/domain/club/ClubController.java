@@ -5,8 +5,8 @@ import com.modong.backend.base.Dto.BaseResponse;
 import com.modong.backend.domain.club.Dto.ClubCreateResponse;
 import com.modong.backend.domain.club.Dto.ClubCreateRequest;
 import com.modong.backend.domain.club.Dto.ClubResponse;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "동아리 API")
+@Tag(name = "동아리 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")

@@ -9,12 +9,12 @@ public class EssentialAnswerRequest {
 
 
   @NotNull // 필수 질문 ID
-  @Schema(description = "필수 질문 ID", required = true, example = "1")
+  @Schema(description = "필수 질문 ID",  example = "1")
   private Long essentialQuestionId;
 
   //필수 질문 답변
   @NotNull
-  @Schema(description = "필수 질문 답변", required = true, example = "필수 질문 답변입니다!")
+  @Schema(description = "필수 질문 답변",  example = "필수 질문 답변입니다!")
   private String answer;
 
 }

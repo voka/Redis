@@ -5,8 +5,8 @@ import com.modong.backend.base.Dto.SavedId;
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.domain.form.dto.FormRequest;
 import com.modong.backend.domain.form.dto.FormResponse;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-@Api(tags =  "지원서 페이지 API")
+@Tag(name =  "지원서 페이지 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")

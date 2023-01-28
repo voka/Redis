@@ -5,8 +5,8 @@ import com.modong.backend.auth.member.Dto.MemberCheckRequest;
 import com.modong.backend.auth.member.Dto.MemberRegisterRequest;
 import com.modong.backend.base.Dto.BaseResponse;
 import com.modong.backend.base.Dto.SavedId;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags =  "회원 API")
+@Tag(name =  "회원 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")

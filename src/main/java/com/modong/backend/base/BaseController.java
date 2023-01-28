@@ -1,11 +1,10 @@
 package com.modong.backend.base;
-
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "기본 API")
+@Tag(name = "기본 API")
 @RestController
 public class BaseController {
 
