@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
+@Schema(name = "동아리 생성 요청")
 public class ClubCreateRequest {
 
   @Schema(description = "동아리 이름", example = "testClub")

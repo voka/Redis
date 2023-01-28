@@ -33,7 +33,8 @@ public class SwaggerConfig {
   public GroupedOpenApi publicApi(){
     return GroupedOpenApi.builder()
         .group("modong-public")
-        .pathsToMatch("/api/**")
+        .pathsToMatch("/**")
+        .pathsToExclude("/actuator/**")
         .build();
   }
 
