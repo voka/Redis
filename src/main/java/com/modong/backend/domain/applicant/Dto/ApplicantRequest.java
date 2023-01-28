@@ -8,9 +8,12 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@Schema(name = "지원자 생성 요청")
 public class ApplicantRequest {
 
   @NotNull
