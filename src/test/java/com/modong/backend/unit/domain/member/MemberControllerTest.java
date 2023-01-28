@@ -64,7 +64,7 @@ public class MemberControllerTest extends ControllerTest {
     perform
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("data").value(result));
+        .andExpect(jsonPath("data.result").value(result));
   }
   @DisplayName("회원 ID 중복검사 실패 - DB에 있는 회원 ID를 요청으로 보낸 경우  를 반환한다.")
   @WithMockUser

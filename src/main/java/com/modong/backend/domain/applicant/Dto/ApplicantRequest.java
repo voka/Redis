@@ -8,24 +8,27 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@Schema(name = "지원자 생성 요청")
 public class ApplicantRequest {
 
   @NotNull
-  @Schema(description = "지원서 ID", required = true, example = "1")
+  @Schema(description = "지원서 ID",  example = "1")
   private Long applicationId;
 
   @NotBlank
-  @Schema(description = "지원자 이름", required = true, example = "홍길동")
+  @Schema(description = "지원자 이름",  example = "홍길동")
   private String name;
 
   @NotEmpty(message = "Input essential Answer list cannot be empty.")
-  @Schema(description = "필수 질문 답변들", required = false)
+  @Schema(description = "필수 질문 답변들")
   private List<EssentialAnswerRequest> essentialAnswers = new ArrayList<>();
 
-  @Schema(description = "질문 답변들", required = false)
+  @Schema(description = "질문 답변들")
   private List<QuestionAnswerRequest> questionAnswers = new ArrayList<>();
 
 }

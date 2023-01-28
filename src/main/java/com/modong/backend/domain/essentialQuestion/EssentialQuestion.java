@@ -2,7 +2,6 @@ package com.modong.backend.domain.essentialQuestion;
 
 import com.modong.backend.domain.applicationEssential.ApplicationEssential;
 import com.modong.backend.base.BaseTimeEntity;
-import com.modong.backend.domain.essentialQuestion.Dto.EssentialQuestionRequest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -30,8 +29,4 @@ public class EssentialQuestion extends BaseTimeEntity {
   @OneToMany(mappedBy = "essentialQuestion", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<ApplicationEssential> applications = new ArrayList<>();
 
-  public EssentialQuestion(EssentialQuestionRequest essentialQuestionRequest) {
-    this.content = essentialQuestionRequest.getContent();
-    this.isRequire = essentialQuestionRequest.isRequire();
-  }
 }

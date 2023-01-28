@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
+@Schema(name = "지원서 간단 조회")
 public class ApplicationSimpleResponse {
   @Schema(description = "지원서 id", example = "1")
   private Long id;

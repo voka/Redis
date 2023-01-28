@@ -1,15 +1,19 @@
 package com.modong.backend.domain.questionAnswer.Dto;
 
 import com.modong.backend.domain.questionAnswer.QuestionAnswer;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
+@Schema(name = "질문 답변")
 public class QuestionAnswerResponse {
-  private String essentialQuestion;
-  private String essentialAnswer;
+  @Schema(description = "질문")
+  private String Question;
+  @Schema(description = "질문 답변 ")
+  private String Answer;
 
   public QuestionAnswerResponse(QuestionAnswer questionAnswer) {
-    this.essentialQuestion = questionAnswer.getQuestion().getContent();
-    this.essentialAnswer = questionAnswer.getAnswer();
+    this.Question = questionAnswer.getQuestion().getContent();
+    this.Answer = questionAnswer.getAnswer();
   }
 }

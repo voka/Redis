@@ -41,7 +41,7 @@ public class AuthService {
 
     refreshTokenRepository.save(savedToken);
 
-    return new TokenResponse(issueAccessToken(findMember),savedToken.getRefreshToken());
+    return new TokenResponse(findMember.getId(), issueAccessToken(findMember),savedToken.getRefreshToken());
   }
 
   @Transactional
@@ -68,7 +68,7 @@ public class AuthService {
 
     refreshTokenRepository.save(newToken);
 
-    return new TokenResponse(issueAccessToken(findMember), newToken.getRefreshToken());
+    return new TokenResponse(findMember.getId(), issueAccessToken(findMember), newToken.getRefreshToken());
 
   }
 

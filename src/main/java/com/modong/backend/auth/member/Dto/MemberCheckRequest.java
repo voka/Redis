@@ -7,10 +7,11 @@ import lombok.Getter;
 
 @Builder
 @Getter
+@Schema(name = "회원 중복 ID 검사 요청")
 public class MemberCheckRequest {
 
   @NotNull
-  @Schema(description = "아이디", required = true, example = "test123")
+  @Schema(description = "아이디",  example = "test123")
   private String memberId;
 
   public MemberCheckRequest(String memberId) {
