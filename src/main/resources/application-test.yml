@@ -1,9 +1,12 @@
 spring:
   database-platform: org.hibernate.dialect.H2Dialect
-  mvc: # Swagger
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
+springdoc:
+  version: '1.16.4'
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
 jwt:
   token:
     secret-key: MySubProject Modong`s jwt secret-key
