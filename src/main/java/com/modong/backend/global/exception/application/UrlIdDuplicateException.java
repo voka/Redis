@@ -1,4 +1,4 @@
-package com.modong.backend.global.exception.Application;
+package com.modong.backend.global.exception.application;
 
 import com.modong.backend.global.exception.BadRequestException;
 

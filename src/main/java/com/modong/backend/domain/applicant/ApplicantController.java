@@ -1,5 +1,6 @@
 package com.modong.backend.domain.applicant;
 
+import com.modong.backend.base.Dto.PageRequest;
 import com.modong.backend.domain.applicant.Dto.ApplicantDetailResponse;
 import com.modong.backend.domain.applicant.Dto.ApplicantCreateRequest;
 import com.modong.backend.domain.applicant.Dto.ApplicantSimpleResponse;
@@ -42,9 +43,10 @@ public class ApplicantController {
   @Operation(summary = "지원자들 간편 조회", description = "지원서의 ID를 통해 모든 지원자들을 간편 조회 한다.", responses = {
       @ApiResponse(responseCode = "200", description = "지원자들 간편 조회(리스트 반환)", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ApplicantSimpleResponse.class))))
   })
+  //, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC), Pageable pageable)
   public ResponseEntity getApplicantsByApplicationId(@Validated @PathVariable(name="application_id") Long applicationId, @Validated
-      SearchApplicantRequest searchApplicantRequest, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC)
-      Pageable pageable){
+      SearchApplicantRequest searchApplicantRequest, @Validated PageRequest pageRequest){
+    Pageable pageable = pageRequest.of();
     PageApplicantsResponse applicants = applicantService.filterByCondition(applicationId, searchApplicantRequest, pageable);
     return ResponseEntity.ok(new BaseResponse(applicants, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
   }
@@ -58,12 +60,21 @@ public class ApplicantController {
     return ResponseEntity.ok(new BaseResponse(applicant, HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 
-  @PatchMapping("/applicant/{applicant_id}")// 지원자의상태를 변경할때 사용하는 API
+  @PatchMapping("/applicant/status/{applicant_id}")// 지원자의상태를 변경할때 사용하는 API
   @Operation(summary = "지원자 상태 변경", description = "지원자를 상태를 변경한다. ", responses = {
       @ApiResponse(responseCode = "200", description = "지원자 상태 변경 성공", content = @Content(schema = @Schema(implementation = SavedId.class)))
   })
   public ResponseEntity changeApplicantStatus(@Validated @PathVariable(name="applicant_id") Long applicantId, @RequestBody ChangeApplicantStatusRequest applicantStatus){
     SavedId savedId = new SavedId(applicantService.changeApplicantStatus(applicantId,applicantStatus));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
+  }
+
+  @PatchMapping("/applicant/fail/cancel/{applicant_id}")// 지원자의 탈락 상태를 취소할때 사용하는 API
+  @Operation(summary = "지원자의 탈락 상태 취소", description = "탈락인 지원자의 상태를 탈락취소로 변경한다. ", responses = {
+      @ApiResponse(responseCode = "200", description = "지원자의 탈락 상태 취소", content = @Content(schema = @Schema(implementation = SavedId.class)))
+  })
+  public ResponseEntity failApplicantCancel(@Validated @PathVariable(name="applicant_id") Long applicantId){
+    SavedId savedId = new SavedId(applicantService.cancelFailStatus(applicantId));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
   }
 

@@ -25,7 +25,7 @@ public class EssentialQuestionService {
   }
 
 //  @Transactional
-//  public Long create(EssentialQuestionRequest essentialQuestionRequest, Application application) {
+//  public Long create(EssentialQuestionRequest essentialQuestionRequest, application application) {
 //    EssentialQuestion essentialQuestion = new EssentialQuestion(essentialQuestionRequest);
 //
 //    essentialQuestionRepository.save(essentialQuestion);
