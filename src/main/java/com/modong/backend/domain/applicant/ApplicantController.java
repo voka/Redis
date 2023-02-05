@@ -1,13 +1,14 @@
 package com.modong.backend.domain.applicant;
 
-import com.modong.backend.auth.Dto.TokenResponse;
 import com.modong.backend.domain.applicant.Dto.ApplicantDetailResponse;
-import com.modong.backend.domain.applicant.Dto.ApplicantRequest;
+import com.modong.backend.domain.applicant.Dto.ApplicantCreateRequest;
 import com.modong.backend.domain.applicant.Dto.ApplicantSimpleResponse;
 import com.modong.backend.domain.applicant.Dto.ChangeApplicantStatusRequest;
 import com.modong.backend.base.Dto.SavedId;
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.base.Dto.BaseResponse;
+import com.modong.backend.domain.applicant.Dto.PageApplicantsResponse;
+import com.modong.backend.domain.applicant.Dto.SearchApplicantRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +16,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -38,8 +42,10 @@ public class ApplicantController {
   @Operation(summary = "지원자들 간편 조회", description = "지원서의 ID를 통해 모든 지원자들을 간편 조회 한다.", responses = {
       @ApiResponse(responseCode = "200", description = "지원자들 간편 조회(리스트 반환)", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ApplicantSimpleResponse.class))))
   })
-  public ResponseEntity getApplicantsByApplicationId(@Validated @PathVariable(name="application_id") Long applicationId){
-    List<ApplicantSimpleResponse> applicants = applicantService.findAllByApplicationId(applicationId);
+  public ResponseEntity getApplicantsByApplicationId(@Validated @PathVariable(name="application_id") Long applicationId, @Validated
+      SearchApplicantRequest searchApplicantRequest, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC)
+      Pageable pageable){
+    PageApplicantsResponse applicants = applicantService.filterByCondition(applicationId, searchApplicantRequest, pageable);
     return ResponseEntity.ok(new BaseResponse(applicants, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
   }
 
@@ -65,8 +71,8 @@ public class ApplicantController {
   @Operation(summary = "지원자 생성", description = "지원자를 생성하고 답변을 저장한다.", responses = {
       @ApiResponse(responseCode = "200", description = "지원자 생성 성공", content = @Content(schema = @Schema(implementation = SavedId.class)))
   })
-  public ResponseEntity createApplicantAndSaveQuestions(@Validated @RequestBody ApplicantRequest applicantRequest){
-    SavedId savedId = new SavedId(applicantService.createApplicant(applicantRequest));
+  public ResponseEntity createApplicantAndSaveQuestions(@Validated @RequestBody ApplicantCreateRequest applicantCreateRequest){
+    SavedId savedId = new SavedId(applicantService.createApplicant(applicantCreateRequest));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.CREATED.value(), CustomCode.SUCCESS_CREATE));
   }
 }
