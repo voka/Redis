@@ -1,7 +1,5 @@
 package com.modong.backend.domain.applicant;
 
-import static com.modong.backend.Enum.CustomCode.ERROR_REQ_PARAM_ID;
-
 import com.modong.backend.domain.applicant.Dto.ApplicantDetailResponse;
 import com.modong.backend.domain.applicant.Dto.ApplicantCreateRequest;
 import com.modong.backend.domain.applicant.Dto.ApplicantSimpleResponse;
@@ -17,6 +15,7 @@ import com.modong.backend.domain.essentialAnswer.Dto.EssentialAnswerRequest;
 import com.modong.backend.domain.essentialAnswer.EssentialAnswerService;
 import com.modong.backend.domain.questionAnswer.Dto.QuestionAnswerRequest;
 import com.modong.backend.domain.questionAnswer.QuestionAnswerService;
+import com.modong.backend.global.exception.IsClosed;
 import com.modong.backend.global.exception.ResourceNotFoundException;
 import com.modong.backend.global.exception.StatusBadRequestException;
 import com.modong.backend.global.exception.applicant.ApplicantNotFoundException;
@@ -77,6 +76,10 @@ public class ApplicantService {
 
 
     Application application = applicationService.findSimpleById(applicantCreateRequest.getApplicationId());
+
+    if(application.checkApplicationClosed()){
+      throw new IsClosed();
+    }
 
     Applicant applicant = new Applicant(applicantCreateRequest, application);
 
