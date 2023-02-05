@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,7 +76,7 @@ public class ApplicationController {
   //지원서 수정(필수 질문 부분)
   @PutMapping("/application/{application_id}")
   @Operation(summary = "지원서 수정", description = "지원서의 ID를 이용해 작성한 지원서를 수정한다.")
-  public ResponseEntity updateEssentialQuestion(@Valid @PathVariable(name = "application_id") Long applicationId, @RequestBody ApplicationUpdateRequest applicationUpdateRequest){
+  public ResponseEntity updateApplication(@Valid @PathVariable(name = "application_id") Long applicationId, @RequestBody ApplicationUpdateRequest applicationUpdateRequest){
     SavedId savedId = new SavedId(applicationService.updateApplication(applicationId, applicationUpdateRequest));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
 
@@ -87,5 +88,18 @@ public class ApplicationController {
   public ResponseEntity deleteApplicationById(@Valid @PathVariable(name = "application_id") Long applicationId) {
     applicationService.deleteApplication(applicationId);
     return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(), CustomCode.SUCCESS_DELETE));
+  }
+
+  @PatchMapping("/application/open/{application_id}")
+  @Operation(summary = "지원서 모집으로 상태 변경", description = "지원서의 ID를 이용해 작성한 지원서의 상태를 모집으로 수정한다.")
+  public ResponseEntity updateStatusToOpen(@Valid @PathVariable(name = "application_id") Long applicationId){
+    SavedId savedId = new SavedId(applicationService.open(applicationId));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
+  }
+  @PatchMapping("/application/close/{application_id}")
+  @Operation(summary = "지원서 마감으로 상태 변경", description = "지원서의 ID를 이용해 작성한 지원서의 상태를 마감으로 수정한다.")
+  public ResponseEntity updateStatusToClose(@Valid @PathVariable(name = "application_id") Long applicationId){
+    SavedId savedId = new SavedId(applicationService.close(applicationId));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
   }
 }

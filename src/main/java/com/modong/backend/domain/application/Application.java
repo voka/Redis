@@ -82,4 +82,8 @@ public class Application extends BaseTimeEntity {
   public boolean eqStatus(StatusCode statusCode){
     return this.statusCode == statusCode;
   }
+
+  public boolean checkApplicationClosed(){
+    return this.statusCode.equals(StatusCode.CLOSE);
+  }
 }
