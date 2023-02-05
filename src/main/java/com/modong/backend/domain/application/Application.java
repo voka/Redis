@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +38,7 @@ public class Application extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private Club club;
 
+  @Enumerated(EnumType.STRING)
   private StatusCode statusCode = StatusCode.OPEN;
 
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
