@@ -58,12 +58,21 @@ public class ApplicantController {
     return ResponseEntity.ok(new BaseResponse(applicant, HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 
-  @PatchMapping("/applicant/{applicant_id}")// 지원자의상태를 변경할때 사용하는 API
+  @PatchMapping("/applicant/status/{applicant_id}")// 지원자의상태를 변경할때 사용하는 API
   @Operation(summary = "지원자 상태 변경", description = "지원자를 상태를 변경한다. ", responses = {
       @ApiResponse(responseCode = "200", description = "지원자 상태 변경 성공", content = @Content(schema = @Schema(implementation = SavedId.class)))
   })
   public ResponseEntity changeApplicantStatus(@Validated @PathVariable(name="applicant_id") Long applicantId, @RequestBody ChangeApplicantStatusRequest applicantStatus){
     SavedId savedId = new SavedId(applicantService.changeApplicantStatus(applicantId,applicantStatus));
+    return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
+  }
+
+  @PatchMapping("/applicant/fail/cancel/{applicant_id}")// 지원자의 탈락 상태를 취소할때 사용하는 API
+  @Operation(summary = "지원자의 탈락 상태 취소", description = "탈락인 지원자의 상태를 탈락취소로 변경한다. ", responses = {
+      @ApiResponse(responseCode = "200", description = "지원자의 탈락 상태 취소", content = @Content(schema = @Schema(implementation = SavedId.class)))
+  })
+  public ResponseEntity failApplicantCancel(@Validated @PathVariable(name="applicant_id") Long applicantId){
+    SavedId savedId = new SavedId(applicantService.cancelFailStatus(applicantId));
     return ResponseEntity.ok(new BaseResponse(savedId, HttpStatus.OK.value(), CustomCode.SUCCESS_UPDATE));
   }
 

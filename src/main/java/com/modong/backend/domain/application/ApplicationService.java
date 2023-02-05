@@ -1,7 +1,5 @@
 package com.modong.backend.domain.application;
 
-import static com.modong.backend.Enum.CustomCode.ERROR_REQ_PARAM_ID;
-
 import com.modong.backend.Enum.StatusCode;
 import com.modong.backend.domain.application.Dto.ApplicationCreateRequest;
 import com.modong.backend.domain.application.Dto.ApplicationDetailResponse;
@@ -10,14 +8,13 @@ import com.modong.backend.domain.application.Dto.ApplicationUpdateRequest;
 import com.modong.backend.domain.applicationEssential.ApplicationEssential;
 import com.modong.backend.domain.club.Club;
 import com.modong.backend.domain.club.ClubRepository;
-import com.modong.backend.domain.club.ClubService;
 import com.modong.backend.domain.essentialQuestion.Dto.EssentialQuestionResponse;
 import com.modong.backend.domain.essentialQuestion.EssentialQuestion;
 import com.modong.backend.domain.essentialQuestion.EssentialQuestionService;
 import com.modong.backend.domain.form.Form;
 import com.modong.backend.domain.form.dto.FormResponse;
-import com.modong.backend.global.exception.Application.ApplicationNotFoundException;
-import com.modong.backend.global.exception.Application.UrlIdDuplicateException;
+import com.modong.backend.global.exception.application.ApplicationNotFoundException;
+import com.modong.backend.global.exception.application.UrlIdDuplicateException;
 import com.modong.backend.global.exception.StatusBadRequestException;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
 import java.util.List;

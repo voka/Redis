@@ -18,6 +18,8 @@ import com.modong.backend.domain.essentialAnswer.EssentialAnswerService;
 import com.modong.backend.domain.questionAnswer.Dto.QuestionAnswerRequest;
 import com.modong.backend.domain.questionAnswer.QuestionAnswerService;
 import com.modong.backend.global.exception.ResourceNotFoundException;
+import com.modong.backend.global.exception.StatusBadRequestException;
+import com.modong.backend.global.exception.applicant.ApplicantNotFoundException;
 import java.util.stream.Collectors;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -50,14 +52,14 @@ public class ApplicantService {
   // 지원자 상세조회
   public ApplicantDetailResponse findById(Long applicantId) {
     ApplicantDetailResponse applicant = new ApplicantDetailResponse(applicantRepository.findById(applicantId)
-        .orElseThrow(()-> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString())));
+        .orElseThrow(()-> new ApplicantNotFoundException(applicantId)));
 
     return applicant;
   }
   @Transactional // 지원자 상태 변경
   public Long changeApplicantStatus(Long applicantId, ChangeApplicantStatusRequest applicantStatus){
 
-    Applicant applicant = applicantRepository.findById(applicantId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
+    Applicant applicant = applicantRepository.findById(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
 
     //Fail 이라면 현재 지원자가 어떤 상태인지는 상관하지 않고 변수 하나 추가해서 2가지 상태를 저장하도록 로직 변경
     if(applicantStatus.getApplicantStatusCode() == ApplicantStatus.FAIL.getCode()){
@@ -101,5 +103,18 @@ public class ApplicantService {
       throw new ResourceNotFoundException("조건에 맞는 지원자들 조회 결과 없음");
     }
     return new PageApplicantsResponse(applicants);
+  }
+
+  @Transactional
+  public Long cancelFailStatus(Long applicantId) {
+    Applicant applicant = applicantRepository.findById(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
+    if(applicant.isFail() == false){//탈락한 상태가 아니라면 예외 처리
+      throw new StatusBadRequestException();
+    }
+    else{
+      applicant.cancelFail();
+    }
+    Applicant saved = applicantRepository.save(applicant);
+    return saved.getId();
   }
 }
