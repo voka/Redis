@@ -10,6 +10,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -32,8 +34,8 @@ public class ApplicantRepositoryCustomImpl implements ApplicantRepositoryCustom{
 
     final int status = request.getApplicantStatusCode();
     final String filter = request.getFilter();
-
-    List<Applicant> queryResults = queryFactory
+    //content를 가져오는 쿼리
+    List<Applicant> fetch = queryFactory
         .selectFrom(applicant)
         .where(
             filtering(filter),
@@ -44,10 +46,17 @@ public class ApplicantRepositoryCustomImpl implements ApplicantRepositoryCustom{
         .orderBy(makeSort(pageable.getSort()))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
-        .fetch().stream().distinct().collect(Collectors.toList());
-
-    Page<Applicant> pageResults = new PageImpl<>(queryResults,pageable, queryResults.size());
-    return pageResults;
+        .fetch();
+    //count 만 가져오는 쿼리
+    JPQLQuery<Applicant> count = queryFactory
+        .selectFrom(applicant)
+        .where(
+            filtering(filter),
+            eqId(applicationId),
+            eqStatus(status),
+            eqNotDeleted()
+        );
+    return PageableExecutionUtils.getPage(fetch,pageable,()-> count.fetchCount());
   }
 
   private BooleanExpression filtering(String filter) {
