@@ -182,7 +182,7 @@ public class AuthControllerTest extends ControllerTest {
     perform.andExpect(status().isNotFound());
   }
 
-  @DisplayName("토큰 재발행 실패 - 리프레시 토큰이 DB에 저장된 것과 다르면 상태값 400를 반환해야 한다.")
+  @DisplayName("토큰 재발행 실패 - 리프레시 토큰이 DB에 저장된 것과 다르면 상태값 404를 반환해야 한다.")
   @WithMockUser
   @Test
   public void throwExceptionIfRefreshTokenNotValid() throws Exception{
@@ -200,6 +200,6 @@ public class AuthControllerTest extends ControllerTest {
         .contentType(MediaType.APPLICATION_JSON).with(csrf())
         .content(requestBody));
     //then
-    perform.andExpect(status().isBadRequest());
+    perform.andExpect(status().isNotFound());
   }
 }
