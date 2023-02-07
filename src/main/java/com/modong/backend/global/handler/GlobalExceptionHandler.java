@@ -79,7 +79,6 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ExceptionHandler({
       UnAuthorizedException.class
-
   })
   public ResponseEntity<ErrorResponse> handleInvalidAuthorization(final UnAuthorizedException e) {
 
