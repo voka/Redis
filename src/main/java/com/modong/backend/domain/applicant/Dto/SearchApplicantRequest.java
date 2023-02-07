@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 public class SearchApplicantRequest{
 
   @NotNull
-  @Range(max = 5,min = 2)
+  @Range(max = 5,min = 2, message = "지원사 상태값은 2에서 5사이의 숫자여야 합니다!")
   @Schema(description = "지원자 상태", example = "2")
   private int applicantStatusCode = 2;
 
