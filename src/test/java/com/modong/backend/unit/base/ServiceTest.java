@@ -92,7 +92,7 @@ public class ServiceTest {
   @Autowired
   protected PasswordEncoder passwordEncoder;
 
-  @Autowired
+  @MockBean
   protected JwtTokenProvider jwtTokenProvider;
   protected MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
       .memberId(MEMBER_ID).email(EMAIL).password(PASSWORD)
@@ -129,7 +129,6 @@ public class ServiceTest {
   protected MemoDeleteRequest memoDeleteRequest = MemoDeleteRequest.builder()
       .memoId(MEMO_ID)
       .build();
-
 
   protected MemoFindRequest memoFindRequest = MemoFindRequest.builder()
       .applicantId(APPLICANT_ID)
