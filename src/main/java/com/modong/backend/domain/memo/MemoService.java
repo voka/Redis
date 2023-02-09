@@ -118,7 +118,7 @@ public class MemoService {
 
     if(havePermission){
       List<MemoResponse> result = new ArrayList<>();
-      memos = memoRepository.findAllByApplicantIdAndIsDeletedIsFalse(application.getId());
+      memos = memoRepository.findAllByApplicantIdAndIsDeletedIsFalse(applicant.getId());
       for(Memo memo : memos){
         Member writer = memo.getMember();
         result.add(new MemoResponse(memo,writer,application.getId(),applicant.getId()));
