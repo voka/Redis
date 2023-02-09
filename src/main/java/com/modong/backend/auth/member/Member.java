@@ -8,6 +8,7 @@ import com.modong.backend.base.BaseTimeEntity;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import com.modong.backend.domain.evaluation.Evaluation;
 import java.util.ArrayList;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -36,9 +37,9 @@ public class Member extends BaseTimeEntity {
 
   @Enumerated(EnumType.STRING)
   private ProviderName providerName;
-  @OneToMany(mappedBy = "member")
+  @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   private List<ClubMember> clubs = new ArrayList<>();
-  @OneToMany(mappedBy = "member")
+  @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   private List<MemberRole> roles = new ArrayList<>();
 
   public Member(MemberRegisterRequest memberRegisterRequest) {
