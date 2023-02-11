@@ -202,7 +202,6 @@ public class ServiceTest {
   protected EvaluationUpdateRequest evaluationUpdateRequest = EvaluationUpdateRequest.builder()
       .evaluationId(EVALUATION_ID)
       .newComment(UPDATE_COMMENT)
-      .preScore(SCORE)
       .newScore(SCORE + 1.0f)
       .build();
   protected EvaluationDeleteRequest evaluationDeleteRequest = EvaluationDeleteRequest.builder()

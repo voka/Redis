@@ -189,9 +189,9 @@ public class EvaluationServiceTest extends ServiceTest {
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
     //수정 권한 없게 설정
-    ReflectionTestUtils.setField(evaluation,"writerId", member.getId()+1L);
+    ReflectionTestUtils.setField(evaluation,"creatorId", member.getId()+1L);
     //then
-    assertThatThrownBy(() -> evaluationService.update(memoUpdateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.update(evaluationUpdateRequest,MemberFixture.ID))
         .isInstanceOf(NoPermissionUpdateException.class);
   }
   @DisplayName("평가 삭제 성공")
@@ -204,10 +204,10 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.save(any())).willReturn(evaluation);
 
     //when
-    evaluationService.delete(evaluationDeleteRequest,member);
+    evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID);
 
     //then
-    assertThatCode(() -> evaluationService.delete(evaluationDeleteRequest,member)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID)).doesNotThrowAnyException();
 
   }
   @DisplayName("평가 삭제 실패 - 회원 조회 실패")
@@ -219,7 +219,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
 
     //then
-    assertThatThrownBy(() -> evaluationService.delete(evaluationDeleteRequest,member))
+    assertThatThrownBy(() -> evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -232,9 +232,9 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
 
     //삭제 권한 없게 설정
-    ReflectionTestUtils.setField(evaluation,"writerId", member.getId()+1L);
+    ReflectionTestUtils.setField(evaluation,"creatorId", member.getId()+1L);
     //then
-    assertThatThrownBy(() -> evaluationService.delete(evaluationDeleteRequest,member))
+    assertThatThrownBy(() -> evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID))
         .isInstanceOf(NoPermissionDeleteException.class);
   }
   @DisplayName("지원자에 대한 모든 평가 조회 성공")
@@ -252,12 +252,12 @@ public class EvaluationServiceTest extends ServiceTest {
 
     List<EvaluationResponse> expected = Arrays.asList(new EvaluationResponse(evaluation,member, APPLICATION_ID, APPLICANT_ID));
     //when
-    List<EvaluationResponse> actual = evaluationService.findAllByApplication(evaluationFindRequest,member);
+    List<EvaluationResponse> actual = evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID);
 
     //then
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 
-    assertThatCode(() -> evaluationService.findAllByApplication(evaluationFindRequest,member)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID)).doesNotThrowAnyException();
   }
   @DisplayName("지원자에 대한 모든 평가 조회 실패 - 회원 조회 실패")
   @Test
@@ -269,7 +269,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //then
-    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,member))
+    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -283,7 +283,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //then
-    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,member))
+    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID))
         .isInstanceOf(ApplicationNotFoundException.class);
   }
   @DisplayName("지원자에 대한 모든 평가 조회 실패 - 권한 없음(회원의 동아리와 지원서를 수정할 수 있는 동아리가 다를 경우)")
@@ -298,7 +298,7 @@ public class EvaluationServiceTest extends ServiceTest {
     //조회 권한 없게 설정
     member.addClub(new ClubMember(another,member));
     //then
-    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,member))
+    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID))
         .isInstanceOf(NoPermissionReadException.class);
   }
 
