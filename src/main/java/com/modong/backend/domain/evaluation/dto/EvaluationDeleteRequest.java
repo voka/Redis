@@ -15,9 +15,15 @@ public class EvaluationDeleteRequest {
   @NotNull(message = "평가 id는 필수 항목입니다!")
   private Long evaluationId;
 
+  @Schema(description = "지원자 ID",  example = "2")
+  @NotNull(message = "지원자 id는 필수 항목입니다!")
+  private Long applicantId;
+
+
   @Builder
-  public EvaluationDeleteRequest(Long evaluationId) {
+  public EvaluationDeleteRequest(Long evaluationId,Long applicantId) {
     this.evaluationId = evaluationId;
+    this.applicantId = applicantId;
   }
 
 

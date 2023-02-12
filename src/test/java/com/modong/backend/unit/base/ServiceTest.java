@@ -56,6 +56,7 @@ import com.modong.backend.auth.member.MemberRepository;
 import com.modong.backend.auth.refreshToken.RefreshTokenRepository;
 import com.modong.backend.domain.applicant.Dto.ApplicantCreateRequest;
 import com.modong.backend.domain.applicant.repository.ApplicantRepository;
+import com.modong.backend.domain.applicant.repository.ApplicantRepositoryCustomImpl;
 import com.modong.backend.domain.application.ApplicationRepository;
 import com.modong.backend.domain.application.Dto.ApplicationCreateRequest;
 import com.modong.backend.domain.application.Dto.ApplicationUpdateRequest;
@@ -109,6 +110,9 @@ public class ServiceTest {
 
   @MockBean
   protected ApplicantRepository applicantRepository;
+
+  @MockBean
+  protected ApplicantRepositoryCustomImpl applicantRepositoryCustom;
 
   @MockBean
   protected MemoRepository memoRepository;

@@ -1,6 +1,7 @@
 package com.modong.backend.unit.domain.evaluation;
 
 import static com.modong.backend.Fixtures.ApplicantFixture.APPLICANT_ID;
+import static com.modong.backend.Fixtures.ApplicantFixture.APPLICANT_RATE;
 import static com.modong.backend.Fixtures.ApplicationFixture.APPLICATION_ID;
 import static com.modong.backend.Fixtures.ClubFixture.CLUB_ID;
 import static com.modong.backend.Fixtures.EvaluationFixture.EVALUATION_ID;
@@ -26,6 +27,7 @@ import com.modong.backend.global.exception.auth.NoPermissionCreateException;
 import com.modong.backend.global.exception.auth.NoPermissionDeleteException;
 import com.modong.backend.global.exception.auth.NoPermissionReadException;
 import com.modong.backend.global.exception.auth.NoPermissionUpdateException;
+import com.modong.backend.global.exception.evaluation.AlreadyExistsException;
 import com.modong.backend.global.exception.member.MemberNotFoundException;
 import com.modong.backend.unit.base.ServiceTest;
 import java.util.Arrays;
@@ -82,7 +84,9 @@ public class EvaluationServiceTest extends ServiceTest {
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
     given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
+    given(evaluationRepository.existsByApplicantIdAndMemberId(anyLong(),anyLong())).willReturn(false);
     given(evaluationRepository.save(any())).willReturn(evaluation);
+    given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
     //생성 권한 주기
     member.addClub(new ClubMember(club,member));
 
@@ -135,6 +139,21 @@ public class EvaluationServiceTest extends ServiceTest {
     assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
         .isInstanceOf(ApplicantNotFoundException.class);
   }
+  @DisplayName("평가 생성 실패 - 이미 이전에 한 평가가 존재함")
+  @Test
+  public void FailCreateEvaluation_AlreadyExists(){
+    //given, when
+    given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
+    given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
+    given(evaluationRepository.existsByApplicantIdAndMemberId(anyLong(),anyLong())).willReturn(true);
+
+    //then
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
+        .isInstanceOf(AlreadyExistsException.class);
+  }
+
+
   @DisplayName("평가 생성 실패 - 권한 없음(회원의 동아리와 지원서를 수정할 수 있는 동아리가 다를 경우)")
   @Test
   public void FailCreateEvaluation_UnAuthorized(){
@@ -159,6 +178,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
     given(evaluationRepository.save(any())).willReturn(evaluation);
+    given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
 
     //when
     Long savedId = evaluationService.update(evaluationUpdateRequest,MemberFixture.ID);
@@ -202,6 +222,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
     given(evaluationRepository.save(any())).willReturn(evaluation);
+    given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
 
     //when
     evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID);

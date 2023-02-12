@@ -8,4 +8,6 @@ public interface EvaluationRepository extends JpaRepository<Evaluation,Long> {
   Optional<Evaluation> findByIdAndIsDeletedIsFalse(Long evaluationId);
 
   List<Evaluation> findAllByApplicantIdAndIsDeletedIsFalse(Long evaluationId);
+
+  Boolean existsByApplicantIdAndMemberId(Long applicantId, Long memberId);
 }
