@@ -22,15 +22,18 @@ public class EvaluationResponse {
   private String writerMemberId;
   @Schema(description = "작성자 회원 이름", example = "tester")
   private String writerName;
-  @Schema(description = "평가 내용", example = "면접 질문 : 나이가 어떻게 되시나요?")
-  private String content;
+  @Schema(description = "평가 내용", example = "좋아요 !")
+  private String comment;
+  @Schema(description = "평가 점수", example = "9.6")
+  private float score;
   public EvaluationResponse(Evaluation evaluation, Member member, Long applicationId, Long applicantId) {
     this.id = evaluation.getId();
     this.writerId = evaluation.getCreatorId();
     this.writerMemberId = member.getMemberId();
     this.writerName = member.getName();
-    this.content = evaluation.getComment();
+    this.comment = evaluation.getComment();
     this.applicantId = applicantId;
     this.applicationId = applicationId;
+    this.score = evaluation.getScore();
   }
 }
