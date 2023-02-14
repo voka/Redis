@@ -1,4 +1,4 @@
-name: Deploy to Amazon EC2 modong prod api server
+name: Deploy to Amazon EC2 linko prod api server
 
 on:
   pull_request:
@@ -20,6 +20,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      # 추가
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       ## gradle build
       - name: Clean with Gradle
         run: ./gradlew clean
@@ -27,6 +38,15 @@ jobs:
       ## gradle build
       - name: Build with Gradle
         run: ./gradlew bootJar
+
+      #  gradle 캐쉬 제거
+      - name: Cleanup Gradle Cache
+        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+        if: ${{ always() }}
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
 
       ## 서버 이미지 빌드 및 도커허브에 push
       - name: server docker build and push
@@ -46,3 +66,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/linko-prod-server
             docker compose up -d
             docker image prune -f
+            
