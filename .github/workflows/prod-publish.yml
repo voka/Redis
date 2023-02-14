@@ -32,17 +32,17 @@ jobs:
       - name: server docker build and push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/modong-prod-server .
-          docker push ${{ secrets.DOCKER_USERNAME }}/modong-prod-server
-      ## docker compose up
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/linko-prod-server --platform linux/amd64.
+          docker push ${{ secrets.DOCKER_USERNAME }}/linko-prod-server
+      ## docker 이미지 다운로드 및 docker compose 명령어를 이용해 컨테아너 살행
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SERVER_KEY }}
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_SERVER_KEY }}
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/modong-prod-server
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/linko-prod-server
             docker compose up -d
             docker image prune -f

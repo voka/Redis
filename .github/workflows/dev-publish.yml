@@ -45,7 +45,31 @@ jobs:
         if: ${{ always() }}
         with:
           files: build/test-results/**/*.xml
- 
+
+      ## gradle build without test
+      - name: Build with Gradle without test
+        run: ./gradlew clean build -x test
+
+      ## 서버 이미지 빌드 및 도커허브에 push
+      - name: server docker build and push
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/linko-dev-server .
+          docker push ${{ secrets.DOCKER_USERNAME }}/linko-dev-server
+
+      ## docker 이미지 다운로드 및 docker compose 명령어를 이용해 컨테아너 살행
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          key: ${{ secrets.DEV_SERVER_KEY }}
+          script: |
+            sudo docker rm -f $(docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/linko-dev-server
+            docker compose up -d
+            docker image prune -f
+
       # 추가
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
