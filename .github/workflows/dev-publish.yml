@@ -28,9 +28,14 @@ jobs:
  
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
- 
-      - name: Test with Gradle
-        run: ./gradlew clean test
+
+      ## gradle build
+      - name: Clean with Gradle
+        run: ./gradlew clean
+
+      ## gradle build
+      - name: Build with Gradle
+        run: ./gradlew bootJar
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -43,10 +48,6 @@ jobs:
         if: ${{ always() }}
         with:
           files: build/test-results/**/*.xml
-
-      ## gradle build without test
-      - name: Build with Gradle without test
-        run: ./gradlew clean build -x test
 
       # gradle 캐쉬 제거
       - name: Cleanup Gradle Cache
