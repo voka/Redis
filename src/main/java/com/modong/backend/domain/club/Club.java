@@ -37,12 +37,16 @@ public class Club extends BaseTimeEntity {
   public Club(ClubCreateRequest clubCreateRequest) {
     this.name = clubCreateRequest.getName();
     this.profileImgUrl = clubCreateRequest.getProfileImgUrl();
+    this.startDate = clubCreateRequest.getStartDate();
+    this.endDate = clubCreateRequest.getEndDate();
   }
 
   public Club(Long id, ClubCreateRequest clubCreateRequest) {
     this.id = id;
     this.name = clubCreateRequest.getName();
     this.profileImgUrl = clubCreateRequest.getProfileImgUrl();
+    this.startDate = clubCreateRequest.getStartDate();
+    this.endDate = clubCreateRequest.getEndDate();
   }
   public void addMember(ClubMember clubMember){
     this.members.add(clubMember);
