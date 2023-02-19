@@ -38,7 +38,6 @@ public class MemoService {
 
   @Transactional
   public Long create(MemoCreateRequest memoCreateRequest, Long memberId) {
-    Long applicationId = memoCreateRequest.getApplicationId();
     Long applicantId = memoCreateRequest.getApplicantId();
 
     //회원 조회 실패시 에러 반환
@@ -46,7 +45,7 @@ public class MemoService {
     //지원자 조회 실패시 에러 반환
     Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
     //지원서 조회 실패시 에러 반환
-    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicant.getApplication();// applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
     //회원이 지원자에 대한 메모를 남길 권한이 있는지를 동아리가 같은지 비교
     for(ClubMember clubMember : member.getClubs()){
@@ -96,14 +95,13 @@ public class MemoService {
   }
 
   public List<MemoResponse> findAllByApplication(MemoFindRequest memoFindRequest, Long memberId) {
-    Long applicationId = memoFindRequest.getApplicationId();
     Long applicantId = memoFindRequest.getApplicantId();
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
     //지원자 조회 실패시 에러 반환
     Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
     //지원서 조회 실패시 에러 반환
-    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicant.getApplication();//applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
     boolean havePermission = false;
     List<Memo> memos = new ArrayList<>();
