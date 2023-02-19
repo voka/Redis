@@ -163,7 +163,6 @@ public class ServiceTest {
       .questionAnswers(Arrays.asList(questionAnswerRequest)).build();
 
   protected MemoCreateRequest memoCreateRequest = MemoCreateRequest.builder()
-      .applicationId(APPLICATION_ID)
       .applicantId(APPLICANT_ID)
       .content(MEMO_CONTENT)
       .build();
@@ -178,7 +177,6 @@ public class ServiceTest {
 
   protected MemoFindRequest memoFindRequest = MemoFindRequest.builder()
       .applicantId(APPLICANT_ID)
-      .applicationId(APPLICATION_ID)
       .build();
 
   protected EvaluationCreateRequest evaluationCreateRequest = EvaluationCreateRequest.builder()
@@ -192,18 +190,6 @@ public class ServiceTest {
       .applicationId(APPLICATION_ID)
       .comment(COMMENT_A)
       .score(SCORE_A)
-      .build();
-  protected EvaluationCreateRequest evaluationCreateRequest_userB = EvaluationCreateRequest.builder()
-      .applicantId(APPLICANT_ID)
-      .applicationId(APPLICATION_ID)
-      .comment(COMMENT_B)
-      .score(SCORE_B)
-      .build();
-  protected EvaluationCreateRequest evaluationCreateRequest_userC = EvaluationCreateRequest.builder()
-      .applicantId(APPLICANT_ID)
-      .applicationId(APPLICATION_ID)
-      .comment(COMMENT_C)
-      .score(SCORE_C)
       .build();
 
   protected EvaluationUpdateRequest evaluationUpdateRequest = EvaluationUpdateRequest.builder()
