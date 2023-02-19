@@ -20,12 +20,12 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 public class GlobalExceptionHandler {
 
-  private static final String ERROR_LOGGING_MESSAGE = "예외 발생, 요청 url: %s";
+  private static final String ERROR_LOGGING_MESSAGE = "예외 발생, 요청 url: ";
 
   @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
-    log.error(String.format(ERROR_LOGGING_MESSAGE, request.getRequestURI()) + String.format(", 요청 메소드: %s", request.getMethod()), e);
+    log.error(ERROR_LOGGING_MESSAGE+ request.getRequestURI() + ", 요청 메소드: ", request.getMethod(), e);
     final ErrorResponse response = ErrorResponse.builder()
         .status(HttpStatus.METHOD_NOT_ALLOWED.value())
         .message(e.getMessage()).build();
@@ -107,6 +107,6 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler
   public void handleRuntimeException(final RuntimeException e, HttpServletRequest request) {
-    log.error(String.format("예상하지 못한 에러가 발생하였습니다. 요청 url : %s", request.getRequestURI()) + String.format(", 요청 메소드: %s", request.getMethod()), e);
+    log.error("예상하지 못한 에러가 발생하였습니다. 요청 url : %s", request.getRequestURI() + ", 요청 메소드: %s" + request.getMethod(), e);
   }
 }
