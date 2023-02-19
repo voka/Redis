@@ -21,7 +21,6 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
     httpSecurity
         .csrf().disable()
-        .httpBasic().disable()
         .cors();
     return httpSecurity.build();
   }
