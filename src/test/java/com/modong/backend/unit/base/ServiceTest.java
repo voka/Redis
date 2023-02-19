@@ -185,12 +185,6 @@ public class ServiceTest {
       .comment(COMMENT)
       .score(SCORE)
       .build();
-  protected EvaluationCreateRequest evaluationCreateRequest_userA = EvaluationCreateRequest.builder()
-      .applicantId(APPLICANT_ID)
-      .applicationId(APPLICATION_ID)
-      .comment(COMMENT_A)
-      .score(SCORE_A)
-      .build();
 
   protected EvaluationUpdateRequest evaluationUpdateRequest = EvaluationUpdateRequest.builder()
       .evaluationId(EVALUATION_ID)

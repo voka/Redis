@@ -42,15 +42,15 @@ public class EvaluationService {
 
   @Transactional
   public Long create(EvaluationCreateRequest evaluationCreateRequest, Long memberId) {
-    Long applicationId = evaluationCreateRequest.getApplicationId();
     Long applicantId = evaluationCreateRequest.getApplicantId();
 
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
     //지원자 조회 실패시 에러 반환
     Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
+
     //지원서 조회 실패시 에러 반환
-    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicant.getApplication();//applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
     //이미 평가한 내용이 있다면 에러 반환
     if(evaluationRepository.existsByApplicantIdAndMemberId(applicantId,memberId)){
       throw new AlreadyExistsException("평가");
@@ -105,14 +105,13 @@ public class EvaluationService {
     else throw new NoPermissionDeleteException();
   }
   public List<EvaluationResponse> findAllByApplication(EvaluationFindRequest evaluationFindRequest, Long memberId) {
-    Long applicationId = evaluationFindRequest.getApplicationId();
     Long applicantId = evaluationFindRequest.getApplicantId();
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
     //지원자 조회 실패시 에러 반환
     Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
     //지원서 조회 실패시 에러 반환
-    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicant.getApplication();//applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
     boolean havePermission = false;
     List<Evaluation> evaluations = new ArrayList<>();
