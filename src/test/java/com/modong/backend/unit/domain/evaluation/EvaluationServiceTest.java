@@ -70,9 +70,10 @@ public class EvaluationServiceTest extends ServiceTest {
     ReflectionTestUtils.setField(application,"id", APPLICATION_ID);
     ReflectionTestUtils.setField(applicant,"id", APPLICANT_ID);
 
-    evaluation = new Evaluation(evaluationCreateRequest_userA,member,applicant);
+    evaluation = new Evaluation(evaluationCreateRequest,member,applicant);
 
     ReflectionTestUtils.setField(evaluation,"id", EVALUATION_ID);
+    ReflectionTestUtils.setField(applicant,"application", application);
 
   }
 
@@ -82,7 +83,6 @@ public class EvaluationServiceTest extends ServiceTest {
     //given
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
     given(evaluationRepository.existsByApplicantIdAndMemberId(anyLong(),anyLong())).willReturn(false);
     given(evaluationRepository.save(any())).willReturn(evaluation);
@@ -92,10 +92,10 @@ public class EvaluationServiceTest extends ServiceTest {
 
 
     //when
-    Long savedId = evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID);
+    Long savedId = evaluationService.create(evaluationCreateRequest,MemberFixture.ID);
 
     //then
-    assertThatCode(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID)).doesNotThrowAnyException();
 
     assertThat(savedId).isEqualTo(EVALUATION_ID);
   }
@@ -105,38 +105,23 @@ public class EvaluationServiceTest extends ServiceTest {
     //given, when
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.empty());
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
-  @DisplayName("평가 생성 실패 - 지원서 조회 실패")
-  @Test
-  public void FailCreateEvaluation_ApplicationNotFound(){
-    //given, when
-
-    given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.empty());
-    given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
-
-    //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
-        .isInstanceOf(ApplicationNotFoundException.class);
-  }
   @DisplayName("평가 생성 실패 - 지원자 조회 실패")
   @Test
   public void FailCreateEvaluation_ApplicantNotFound(){
     //given, when
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.empty());
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
         .isInstanceOf(ApplicantNotFoundException.class);
   }
   @DisplayName("평가 생성 실패 - 이미 이전에 한 평가가 존재함")
@@ -144,12 +129,11 @@ public class EvaluationServiceTest extends ServiceTest {
   public void FailCreateEvaluation_AlreadyExists(){
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
     given(evaluationRepository.existsByApplicantIdAndMemberId(anyLong(),anyLong())).willReturn(true);
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
         .isInstanceOf(AlreadyExistsException.class);
   }
 
@@ -159,14 +143,13 @@ public class EvaluationServiceTest extends ServiceTest {
   public void FailCreateEvaluation_UnAuthorized(){
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //생성 권한 없는 경우
     member.addClub(new ClubMember(another,member));
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest_userA,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
         .isInstanceOf(NoPermissionCreateException.class);
   }
 
@@ -264,7 +247,6 @@ public class EvaluationServiceTest extends ServiceTest {
     //given
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
     given(evaluationRepository.findAllByApplicantIdAndIsDeletedIsFalse(anyLong())).willReturn(Arrays.asList(evaluation));
 
@@ -286,7 +268,6 @@ public class EvaluationServiceTest extends ServiceTest {
     //given, when
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.empty());
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //then
@@ -294,26 +275,12 @@ public class EvaluationServiceTest extends ServiceTest {
         .isInstanceOf(MemberNotFoundException.class);
   }
 
-  @DisplayName("지원자에 대한 모든 평가 조회 실패 - 지원서 조회 실패")
-  @Test
-  public void FailFindEvaluations_ApplicationNotFound(){
-    //given, when
-
-    given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.empty());
-    given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
-
-    //then
-    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID))
-        .isInstanceOf(ApplicationNotFoundException.class);
-  }
   @DisplayName("지원자에 대한 모든 평가 조회 실패 - 권한 없음(회원의 동아리와 지원서를 수정할 수 있는 동아리가 다를 경우)")
   @Test
   public void FailFindEvaluations_UnAuthorized(){
     //given, when
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
-    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //조회 권한 없게 설정
