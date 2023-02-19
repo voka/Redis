@@ -37,12 +37,12 @@ jwt:
   token:
     secret-key: MySubProject Modong`s jwt secret-key
     access:
-      expire-time: 100
+      expire-time: 36000
     refresh:
       expire-time: 604800
 
 allow-cors:
-  list: http://localhost
+  list: http://localhost:3001,http://localhost:3000
 
 swagger:
   api-server-url: http://localhost:8080
