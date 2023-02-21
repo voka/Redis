@@ -2,13 +2,8 @@ package com.modong.backend.domain.evaluation;
 
 import com.modong.backend.Enum.CustomCode;
 import com.modong.backend.auth.support.Auth;
-import com.modong.backend.base.Dto.BaseResponse;
-import com.modong.backend.base.Dto.ErrorResponse;
-import com.modong.backend.base.Dto.SavedId;
-import com.modong.backend.domain.evaluation.dto.EvaluationCreateRequest;
-import com.modong.backend.domain.evaluation.dto.EvaluationFindRequest;
-import com.modong.backend.domain.evaluation.dto.EvaluationResponse;
-import com.modong.backend.domain.evaluation.dto.EvaluationUpdateRequest;
+import com.modong.backend.base.Dto.*;
+import com.modong.backend.domain.evaluation.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -77,4 +72,26 @@ public class EvaluationController {
     return ResponseEntity.ok(new BaseResponse(evaluations,HttpStatus.OK.value(),CustomCode.SUCCESS_GET_LIST));
   }
 
+  @GetMapping("/evaluation/{evaluation_id}")//평가 조회 API
+  @Operation(summary = "평가 조회", description = "id로 평가한 내용을 조회한다.", responses = {
+          @ApiResponse(responseCode = "200", description = "평가 조회 성공", content = @Content(schema = @Schema(implementation = EvaluationResponse.class))),
+          @ApiResponse(responseCode = "400", description = "평가 조회 실패 - 잘못된 인자, 유효하지 않은 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "401", description = "평가 조회 실패 - 권한 없음 ", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "404", description = "평가 조회 실패 - 요청으로 받은 리소스를 찾을 수 없음 ", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  public ResponseEntity getEvaluationById(@Validated @PathVariable(name = "evaluation_id") Long evaluationId, @Auth Long memberId){
+    EvaluationResponse evaluation = evaluationService.findById(evaluationId,memberId);
+    return ResponseEntity.ok(new BaseResponse(evaluation,HttpStatus.OK.value(),CustomCode.SUCCESS_GET));
+  }
+  @PostMapping("/evaluation/check")//평가 존재 검사 API
+  @Operation(summary = "평가 존재 검사 요청", description = "지원자 id를 통해 회원이 평가를 한 적이 있는지 검사한다.", responses = {
+          @ApiResponse(responseCode = "200", description = "평가 존재 검사 요청 성공", content = @Content(schema = @Schema(implementation = EvaluationResponse.class))),
+          @ApiResponse(responseCode = "400", description = "평가 존재 검사 요청 실패 - 잘못된 인자, 유효하지 않은 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "401", description = "평가 존재 검사 요청 실패 - 권한 없음 ", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "404", description = "평가 존재 검사 요청 실패 - 요청으로 받은 리소스를 찾을 수 없음 ", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  public ResponseEntity getEvaluationById(@Validated @RequestBody EvaluationCheckRequest evaluationCheckRequest, @Auth Long memberId){
+    ExistsResponse existsResponse = new ExistsResponse(evaluationService.check(evaluationCheckRequest, memberId));
+    return ResponseEntity.ok(new BaseResponse(existsResponse,HttpStatus.OK.value(),CustomCode.SUCCESS_EXISTS_CHECK));
+  }
 }

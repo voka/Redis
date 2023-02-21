@@ -70,11 +70,13 @@ public class EvaluationServiceTest extends ServiceTest {
     ReflectionTestUtils.setField(application,"id", APPLICATION_ID);
     ReflectionTestUtils.setField(applicant,"id", APPLICANT_ID);
 
-    evaluation = new Evaluation(evaluationCreateRequest,member,applicant);
+    evaluation = new Evaluation(evaluationCreateRequest,member,applicant,CLUB_ID);
 
     ReflectionTestUtils.setField(evaluation,"id", EVALUATION_ID);
     ReflectionTestUtils.setField(applicant,"application", application);
     ReflectionTestUtils.setField(evaluation,"applicant", applicant);
+    ReflectionTestUtils.setField(evaluation,"clubId", CLUB_ID);
+
 
   }
 
@@ -85,7 +87,7 @@ public class EvaluationServiceTest extends ServiceTest {
 
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
-    given(evaluationRepository.existsByApplicantIdAndMemberId(anyLong(),anyLong())).willReturn(false);
+    given(evaluationRepository.existsByApplicantIdAndMemberIdAndIsDeletedIsFalse(anyLong(),anyLong())).willReturn(false);
     given(evaluationRepository.save(any())).willReturn(evaluation);
     given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
     //생성 권한 주기
@@ -131,7 +133,7 @@ public class EvaluationServiceTest extends ServiceTest {
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(member));
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
-    given(evaluationRepository.existsByApplicantIdAndMemberId(anyLong(),anyLong())).willReturn(true);
+    given(evaluationRepository.existsByApplicantIdAndMemberIdAndIsDeletedIsFalse(anyLong(),anyLong())).willReturn(true);
 
     //then
     assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
