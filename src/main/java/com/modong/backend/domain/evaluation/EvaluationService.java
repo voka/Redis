@@ -3,20 +3,17 @@ package com.modong.backend.domain.evaluation;
 import com.modong.backend.auth.member.Member;
 import com.modong.backend.auth.member.MemberRepository;
 import com.modong.backend.domain.applicant.Applicant;
-import com.modong.backend.domain.applicant.ApplicantService;
 import com.modong.backend.domain.applicant.repository.ApplicantRepository;
 import com.modong.backend.domain.applicant.repository.ApplicantRepositoryCustomImpl;
 import com.modong.backend.domain.application.Application;
 import com.modong.backend.domain.application.ApplicationRepository;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import com.modong.backend.domain.evaluation.dto.EvaluationCreateRequest;
-import com.modong.backend.domain.evaluation.dto.EvaluationDeleteRequest;
 import com.modong.backend.domain.evaluation.dto.EvaluationFindRequest;
 import com.modong.backend.domain.evaluation.dto.EvaluationResponse;
 import com.modong.backend.domain.evaluation.dto.EvaluationUpdateRequest;
 import com.modong.backend.global.exception.ResourceNotFoundException;
 import com.modong.backend.global.exception.applicant.ApplicantNotFoundException;
-import com.modong.backend.global.exception.application.ApplicationNotFoundException;
 import com.modong.backend.global.exception.auth.NoPermissionCreateException;
 import com.modong.backend.global.exception.auth.NoPermissionDeleteException;
 import com.modong.backend.global.exception.auth.NoPermissionReadException;
@@ -69,8 +66,7 @@ public class EvaluationService {
   }
 
   @Transactional
-  public Long update(EvaluationUpdateRequest evaluationUpdateRequest, Long memberId) {
-    Long evaluationId = evaluationUpdateRequest.getEvaluationId();
+  public Long update(EvaluationUpdateRequest evaluationUpdateRequest, Long evaluationId, Long memberId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
@@ -81,26 +77,26 @@ public class EvaluationService {
     if(evaluation.isWriter(member)){
       evaluation.update(evaluationUpdateRequest);
       Evaluation saved = evaluationRepository.save(evaluation);
-      applicantRepositoryCustomImpl.updateRateByApplicantId(evaluationUpdateRequest.getApplicantId());
+      applicantRepositoryCustomImpl.updateRateByApplicantId(evaluation.getApplicant().getId());
       return saved.getId();
     }
     else throw new NoPermissionUpdateException();
   }
 
   @Transactional
-  public void delete(EvaluationDeleteRequest evaluationDeleteRequest, Long memberId) {
-    Long evaluationId = evaluationDeleteRequest.getEvaluationId();
+  public void delete(Long evaluationId, Long memberId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
     //평가 조회 실패시 에러 반환
     Evaluation evaluation = evaluationRepository.findByIdAndIsDeletedIsFalse(evaluationId).orElseThrow(() -> new ResourceNotFoundException("Evaluation",evaluationId));
 
+
     //작성자가 회원이 맞는지 검증
     if(evaluation.isWriter(member)){
       evaluation.delete();
       evaluationRepository.save(evaluation);
-      applicantRepositoryCustomImpl.updateRateByApplicantId(evaluationDeleteRequest.getApplicantId());
+      applicantRepositoryCustomImpl.updateRateByApplicantId(evaluation.getApplicant().getId());
     }
     else throw new NoPermissionDeleteException();
   }

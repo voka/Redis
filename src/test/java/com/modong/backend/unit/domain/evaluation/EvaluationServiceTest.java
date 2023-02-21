@@ -74,6 +74,7 @@ public class EvaluationServiceTest extends ServiceTest {
 
     ReflectionTestUtils.setField(evaluation,"id", EVALUATION_ID);
     ReflectionTestUtils.setField(applicant,"application", application);
+    ReflectionTestUtils.setField(evaluation,"applicant", applicant);
 
   }
 
@@ -164,10 +165,10 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
 
     //when
-    Long savedId = evaluationService.update(evaluationUpdateRequest,MemberFixture.ID);
+    Long savedId = evaluationService.update(evaluationUpdateRequest,EVALUATION_ID,MemberFixture.ID);
 
     //then
-    assertThatCode(() -> evaluationService.update(evaluationUpdateRequest,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.update(evaluationUpdateRequest,EVALUATION_ID,MemberFixture.ID)).doesNotThrowAnyException();
 
     assertThat(savedId).isEqualTo(EVALUATION_ID);
   }
@@ -180,7 +181,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
 
     //then
-    assertThatThrownBy(() -> evaluationService.update(evaluationUpdateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.update(evaluationUpdateRequest,EVALUATION_ID,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -194,7 +195,7 @@ public class EvaluationServiceTest extends ServiceTest {
     //수정 권한 없게 설정
     ReflectionTestUtils.setField(evaluation,"creatorId", member.getId()+1L);
     //then
-    assertThatThrownBy(() -> evaluationService.update(evaluationUpdateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.update(evaluationUpdateRequest,EVALUATION_ID,MemberFixture.ID))
         .isInstanceOf(NoPermissionUpdateException.class);
   }
   @DisplayName("평가 삭제 성공")
@@ -208,10 +209,10 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
 
     //when
-    evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID);
+    evaluationService.delete(EVALUATION_ID,MemberFixture.ID);
 
     //then
-    assertThatCode(() -> evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.delete(EVALUATION_ID,MemberFixture.ID)).doesNotThrowAnyException();
 
   }
   @DisplayName("평가 삭제 실패 - 회원 조회 실패")
@@ -223,7 +224,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(evaluation));
 
     //then
-    assertThatThrownBy(() -> evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.delete(EVALUATION_ID,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -238,7 +239,7 @@ public class EvaluationServiceTest extends ServiceTest {
     //삭제 권한 없게 설정
     ReflectionTestUtils.setField(evaluation,"creatorId", member.getId()+1L);
     //then
-    assertThatThrownBy(() -> evaluationService.delete(evaluationDeleteRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.delete(EVALUATION_ID,MemberFixture.ID))
         .isInstanceOf(NoPermissionDeleteException.class);
   }
   @DisplayName("지원자에 대한 모든 평가 조회 성공")
