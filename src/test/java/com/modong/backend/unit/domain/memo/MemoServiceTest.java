@@ -143,10 +143,10 @@ public class MemoServiceTest extends ServiceTest {
     given(memoRepository.save(any())).willReturn(memo);
 
     //when
-    Long savedId = memoService.update(memoUpdateRequest,MemberFixture.ID);
+    Long savedId = memoService.update(memoUpdateRequest,MEMO_ID,MemberFixture.ID);
 
     //then
-    assertThatCode(() -> memoService.update(memoUpdateRequest,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> memoService.update(memoUpdateRequest,MEMO_ID,MemberFixture.ID)).doesNotThrowAnyException();
 
     assertThat(savedId).isEqualTo(MEMO_ID);
   }
@@ -159,7 +159,7 @@ public class MemoServiceTest extends ServiceTest {
     given(memoRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(memo));
 
     //then
-    assertThatThrownBy(() -> memoService.update(memoUpdateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> memoService.update(memoUpdateRequest,MEMO_ID,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -173,7 +173,7 @@ public class MemoServiceTest extends ServiceTest {
     //수정 권한 없게 설정
     ReflectionTestUtils.setField(memo,"creatorId", member.getId()+1L);
     //then
-    assertThatThrownBy(() -> memoService.update(memoUpdateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> memoService.update(memoUpdateRequest,MEMO_ID,MemberFixture.ID))
         .isInstanceOf(NoPermissionUpdateException.class);
   }
   @DisplayName("메모 삭제 성공")
@@ -186,10 +186,10 @@ public class MemoServiceTest extends ServiceTest {
     given(memoRepository.save(any())).willReturn(memo);
 
     //when
-    memoService.delete(memoDeleteRequest,MemberFixture.ID);
+    memoService.delete(MEMO_ID,MemberFixture.ID);
 
     //then
-    assertThatCode(() -> memoService.delete(memoDeleteRequest,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> memoService.delete(MEMO_ID,MemberFixture.ID)).doesNotThrowAnyException();
 
   }
   @DisplayName("메모 삭제 실패 - 회원 조회 실패")
@@ -201,7 +201,7 @@ public class MemoServiceTest extends ServiceTest {
     given(memoRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(memo));
 
     //then
-    assertThatThrownBy(() -> memoService.delete(memoDeleteRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> memoService.delete(MEMO_ID,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -216,7 +216,7 @@ public class MemoServiceTest extends ServiceTest {
     //삭제 권한 없게 설정
     ReflectionTestUtils.setField(memo,"creatorId", member.getId()+1L);
     //then
-    assertThatThrownBy(() -> memoService.delete(memoDeleteRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> memoService.delete(MEMO_ID,MemberFixture.ID))
         .isInstanceOf(NoPermissionDeleteException.class);
   }
   @DisplayName("지원자에 대한 모든 메모 조회 성공")

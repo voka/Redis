@@ -8,13 +8,11 @@ import com.modong.backend.domain.application.Application;
 import com.modong.backend.domain.application.ApplicationRepository;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import com.modong.backend.domain.memo.dto.MemoCreateRequest;
-import com.modong.backend.domain.memo.dto.MemoDeleteRequest;
 import com.modong.backend.domain.memo.dto.MemoFindRequest;
 import com.modong.backend.domain.memo.dto.MemoResponse;
 import com.modong.backend.domain.memo.dto.MemoUpdateRequest;
 import com.modong.backend.global.exception.ResourceNotFoundException;
 import com.modong.backend.global.exception.applicant.ApplicantNotFoundException;
-import com.modong.backend.global.exception.application.ApplicationNotFoundException;
 import com.modong.backend.global.exception.auth.NoPermissionCreateException;
 import com.modong.backend.global.exception.auth.NoPermissionDeleteException;
 import com.modong.backend.global.exception.auth.NoPermissionReadException;
@@ -60,8 +58,7 @@ public class MemoService {
 
   //작성자만 수정 가능
   @Transactional
-  public Long update(MemoUpdateRequest memoUpdateRequest, Long memberId) {
-    Long memoId = memoUpdateRequest.getMemoId();
+  public Long update(MemoUpdateRequest memoUpdateRequest,Long memoId, Long memberId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
@@ -80,8 +77,7 @@ public class MemoService {
 
   //작성자만 삭제 가능
   @Transactional
-  public void delete(MemoDeleteRequest memoDeleteRequest, Long memberId) {
-    Long memoId = memoDeleteRequest.getMemoId();
+  public void delete(Long memoId, Long memberId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
     //메모 조회 실패시 에러 반환
