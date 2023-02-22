@@ -48,11 +48,13 @@ public class Applicant extends BaseTimeEntity {
   @OneToMany(mappedBy = "applicant")
   private List<QuestionAnswer> questionAnswers = new ArrayList<>();
 
+  private Long countOfEvaluator;
   public Applicant(ApplicantCreateRequest applicantCreateRequest, Application application) {
     this.name = applicantCreateRequest.getName();
     this.application = application;
     this.applicantStatus = ApplicantStatus.ACCEPT;
     this.rate = 0f;
+    this.countOfEvaluator = 0L;
   }
 
   public void changeStatus(ApplicantStatus applicantStatus) {
