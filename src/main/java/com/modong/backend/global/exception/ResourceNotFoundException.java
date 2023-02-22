@@ -16,4 +16,5 @@ public class ResourceNotFoundException extends NotFoundException {
   public ResourceNotFoundException(String reason) {
     super(SERVER_MESSAGE, reason, ERROR_CODE);
   }
+
 }

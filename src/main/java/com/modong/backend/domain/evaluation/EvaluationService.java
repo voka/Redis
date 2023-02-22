@@ -32,9 +32,7 @@ public class EvaluationService {
   private final ApplicantRepositoryCustomImpl applicantRepositoryCustomImpl;
 
   @Transactional
-  public Long create(EvaluationCreateRequest evaluationCreateRequest, Long memberId) {
-    Long applicantId = evaluationCreateRequest.getApplicantId();
-
+  public Long create(EvaluationCreateRequest evaluationCreateRequest, Long memberId, Long applicantId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
     //지원자 조회 실패시 에러 반환
@@ -96,8 +94,7 @@ public class EvaluationService {
     }
     else throw new NoPermissionDeleteException();
   }
-  public List<EvaluationResponse> findAllByApplication(EvaluationFindRequest evaluationFindRequest, Long memberId) {
-    Long applicantId = evaluationFindRequest.getApplicantId();
+  public List<EvaluationResponse> findAllByApplication(Long applicantId, Long memberId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
     //지원자 조회 실패시 에러 반환
@@ -139,28 +136,11 @@ public class EvaluationService {
       //평가 조회 실패시 에러 반환
       Evaluation evaluation = evaluationRepository.findByIdAndIsDeletedIsFalse(evaluationId).orElseThrow(() -> new ResourceNotFoundException("평가",evaluationId));
 
-      Long clubId = evaluation.getClubId();
-
-      boolean havePermission = false;
-
-      //회원이 지원자에 대한 평가를 조회할 권한이 있는지를 동아리가 같은지 비교
-      for(ClubMember clubMember : member.getClubs()){
-        if(clubId.equals(clubMember.getClub().getId())){
-          havePermission = true;
-          break;
-        }
-      }
-
-      if(havePermission){
-        return new EvaluationResponse(evaluation,member,evaluation.getApplicant().getApplication().getId(),evaluation.getApplicant().getId());
-      }
-      else{
-        throw new NoPermissionReadException();
-      }
+      return getEvaluationResponse(member, evaluation);
     }
 
-  public boolean check(EvaluationCheckRequest evaluationCheckRequest, Long memberId) {
-    Long applicantId = evaluationCheckRequest.getApplicantId();
+
+  public boolean check(Long applicantId, Long memberId) {
     //회원 조회 실패시 에러 반환
     Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
@@ -168,5 +148,36 @@ public class EvaluationService {
     Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
 
     return evaluationRepository.existsByApplicantIdAndMemberIdAndIsDeletedIsFalse(applicant.getId(),memberId);
+  }
+
+  public EvaluationResponse findByApplicantIdAndMemberId(Long applicantId, Long memberId) {
+    //회원 조회 실패시 에러 반환
+    Member member = memberRepository.findByIdAndIsDeletedIsFalse(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+
+    //평가 조회 실패시 에러 반환
+    Evaluation evaluation = evaluationRepository.findByApplicantIdAndMemberIdAndIsDeletedIsFalse(applicantId,memberId).orElseThrow(
+            () -> new ResourceNotFoundException(String.format("평가에 존재하지 않는 객체 조회 / 지원자 id:%d / 회원 id:%d ",applicantId,memberId)));
+
+    return getEvaluationResponse(member, evaluation);
+  }
+  private EvaluationResponse getEvaluationResponse(Member member, Evaluation evaluation) {
+    Long clubId = evaluation.getClubId();
+
+    boolean havePermission = false;
+
+    //회원이 지원자에 대한 평가를 조회할 권한이 있는지를 동아리가 같은지 비교
+    for(ClubMember clubMember : member.getClubs()){
+      if(clubId.equals(clubMember.getClub().getId())){
+        havePermission = true;
+        break;
+      }
+    }
+
+    if(havePermission){
+      return new EvaluationResponse(evaluation, member, evaluation.getApplicant().getApplication().getId(), evaluation.getApplicant().getId());
+    }
+    else{
+      throw new NoPermissionReadException();
+    }
   }
 }
