@@ -17,7 +17,6 @@ import static com.modong.backend.Fixtures.ClubFixture.CLUB_START_DATE;
 import static com.modong.backend.Fixtures.EssentialAnswerFixture.ESSENTIAL_ANSWER;
 import static com.modong.backend.Fixtures.EssentialQuestionFixture.ESSENTIAL_QUESTION_ID;
 import static com.modong.backend.Fixtures.EvaluationFixture.COMMENT;
-import static com.modong.backend.Fixtures.EvaluationFixture.EVALUATION_ID;
 import static com.modong.backend.Fixtures.EvaluationFixture.SCORE;
 import static com.modong.backend.Fixtures.EvaluationFixture.UPDATE_COMMENT;
 import static com.modong.backend.Fixtures.MemberFixture.EMAIL;
@@ -58,7 +57,6 @@ import com.modong.backend.domain.essentialAnswer.Dto.EssentialAnswerRequest;
 import com.modong.backend.domain.essentialQuestion.EssentialQuestionRepository;
 import com.modong.backend.domain.evaluation.EvaluationRepository;
 import com.modong.backend.domain.evaluation.dto.EvaluationCreateRequest;
-import com.modong.backend.domain.evaluation.dto.EvaluationFindRequest;
 import com.modong.backend.domain.evaluation.dto.EvaluationUpdateRequest;
 import com.modong.backend.domain.memo.MemoRepository;
 import com.modong.backend.domain.memo.dto.MemoCreateRequest;
@@ -162,8 +160,6 @@ public class ServiceTest {
       .build();
 
   protected EvaluationCreateRequest evaluationCreateRequest = EvaluationCreateRequest.builder()
-      .applicantId(APPLICANT_ID)
-      .applicationId(APPLICATION_ID)
       .comment(COMMENT)
       .score(SCORE)
       .build();
@@ -172,9 +168,4 @@ public class ServiceTest {
       .newComment(UPDATE_COMMENT)
       .newScore(SCORE + 1.0f)
       .build();
-  protected EvaluationFindRequest evaluationFindRequest = EvaluationFindRequest.builder()
-      .applicantId(APPLICANT_ID)
-      .applicationId(APPLICATION_ID)
-      .build();
-
 }

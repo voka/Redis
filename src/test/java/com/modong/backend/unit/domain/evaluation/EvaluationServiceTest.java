@@ -22,7 +22,6 @@ import com.modong.backend.domain.evaluation.Evaluation;
 import com.modong.backend.domain.evaluation.EvaluationService;
 import com.modong.backend.domain.evaluation.dto.EvaluationResponse;
 import com.modong.backend.global.exception.applicant.ApplicantNotFoundException;
-import com.modong.backend.global.exception.application.ApplicationNotFoundException;
 import com.modong.backend.global.exception.auth.NoPermissionCreateException;
 import com.modong.backend.global.exception.auth.NoPermissionDeleteException;
 import com.modong.backend.global.exception.auth.NoPermissionReadException;
@@ -95,10 +94,10 @@ public class EvaluationServiceTest extends ServiceTest {
 
 
     //when
-    Long savedId = evaluationService.create(evaluationCreateRequest,MemberFixture.ID);
+    Long savedId = evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID);
 
     //then
-    assertThatCode(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID)).doesNotThrowAnyException();
 
     assertThat(savedId).isEqualTo(EVALUATION_ID);
   }
@@ -111,7 +110,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -124,7 +123,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.empty());
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID))
         .isInstanceOf(ApplicantNotFoundException.class);
   }
   @DisplayName("평가 생성 실패 - 이미 이전에 한 평가가 존재함")
@@ -136,7 +135,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.existsByApplicantIdAndMemberIdAndIsDeletedIsFalse(anyLong(),anyLong())).willReturn(true);
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID))
         .isInstanceOf(AlreadyExistsException.class);
   }
 
@@ -152,7 +151,7 @@ public class EvaluationServiceTest extends ServiceTest {
     member.addClub(new ClubMember(another,member));
 
     //then
-    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID))
         .isInstanceOf(NoPermissionCreateException.class);
   }
 
@@ -258,12 +257,12 @@ public class EvaluationServiceTest extends ServiceTest {
 
     List<EvaluationResponse> expected = Arrays.asList(new EvaluationResponse(evaluation,member, APPLICATION_ID, APPLICANT_ID));
     //when
-    List<EvaluationResponse> actual = evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID);
+    List<EvaluationResponse> actual = evaluationService.findAllByApplication(APPLICANT_ID,MemberFixture.ID);
 
     //then
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 
-    assertThatCode(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> evaluationService.findAllByApplication(APPLICANT_ID,MemberFixture.ID)).doesNotThrowAnyException();
   }
   @DisplayName("지원자에 대한 모든 평가 조회 실패 - 회원 조회 실패")
   @Test
@@ -274,7 +273,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //then
-    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.findAllByApplication(APPLICANT_ID,MemberFixture.ID))
         .isInstanceOf(MemberNotFoundException.class);
   }
 
@@ -289,7 +288,7 @@ public class EvaluationServiceTest extends ServiceTest {
     //조회 권한 없게 설정
     member.addClub(new ClubMember(another,member));
     //then
-    assertThatThrownBy(() -> evaluationService.findAllByApplication(evaluationFindRequest,MemberFixture.ID))
+    assertThatThrownBy(() -> evaluationService.findAllByApplication(APPLICANT_ID,MemberFixture.ID))
         .isInstanceOf(NoPermissionReadException.class);
   }
 

@@ -10,10 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(name = "평가 생성 요청")
 public class EvaluationCreateRequest {
-  @Schema(description = "지원자 ID",  example = "2")
-  @NotNull(message = "지원자 id는 필수 항목입니다!")
-  private Long applicantId;
-
   @Schema(description = "평가 점수(소수점1자리까지)",  example = "9.6")
   @NotNull(message = "점수는 필수 항목입니다!")
   private float score;
@@ -21,8 +17,7 @@ public class EvaluationCreateRequest {
   private String comment;
 
   @Builder
-  public EvaluationCreateRequest(Long applicationId, Long applicantId, float score, String comment) {
-    this.applicantId = applicantId;
+  public EvaluationCreateRequest(float score, String comment) {
     this.score = score;
     this.comment = comment;
   }
