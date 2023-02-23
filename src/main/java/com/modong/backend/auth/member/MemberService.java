@@ -54,6 +54,11 @@ public class MemberService {
     member.addClub(clubMember);
 
     Member savedMember = memberRepository.save(member);
+
+    club.updateOneCountOfMember(club.getMembers().stream().count());
+
+    clubRepository.save(club);
+
     return savedMember.getId();
   }
 
