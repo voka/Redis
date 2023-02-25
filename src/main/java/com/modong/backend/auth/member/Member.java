@@ -6,8 +6,14 @@ import com.modong.backend.auth.role.RoleName;
 import com.modong.backend.base.BaseTimeEntity;
 import com.modong.backend.domain.club.clubMemeber.ClubMember;
 import java.util.ArrayList;
-import javax.persistence.*;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +36,12 @@ public class Member extends BaseTimeEntity {
   private ProviderName providerName;
 
   private Long clubId;
+  @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+  private List<ClubMember> clubs = new ArrayList<>();
   @Enumerated(EnumType.STRING)
   private RoleName role;
 
-  public Member(MemberRegisterRequest memberRegisterRequest, Long clubId) {
+  public Member(MemberRegisterRequest memberRegisterRequest) {
     this.memberId = memberRegisterRequest.getMemberId();
     this.name = memberRegisterRequest.getName();
     this.email = memberRegisterRequest.getEmail();
@@ -42,6 +50,9 @@ public class Member extends BaseTimeEntity {
     this.role = RoleName.ROLE_USER;
   }
 
+  public void addClub(ClubMember club){
+    this.clubs.add(club);
+  }
 
   public void setEncodedPassword(String encodedPassword){
     this.password = encodedPassword;
