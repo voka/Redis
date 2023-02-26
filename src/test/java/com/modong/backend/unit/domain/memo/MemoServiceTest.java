@@ -53,7 +53,7 @@ public class MemoServiceTest extends ServiceTest {
     club = new Club(clubCreateRequest);
     another = new Club(clubCreateRequest);
 
-    member = new Member(memberRegisterRequest);
+    member = new Member(memberRegisterRequest, CLUB_ID);
 
     application = new Application(applicationCreateRequest,club);
 

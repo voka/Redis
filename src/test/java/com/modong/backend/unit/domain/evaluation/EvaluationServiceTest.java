@@ -56,7 +56,7 @@ public class EvaluationServiceTest extends ServiceTest {
     club = new Club(clubCreateRequest);
     another = new Club(clubCreateRequest);
 
-    member = new Member(memberRegisterRequest);
+    member = new Member(memberRegisterRequest, CLUB_ID);
 
     ReflectionTestUtils.setField(member,"id", MemberFixture.ID);
 

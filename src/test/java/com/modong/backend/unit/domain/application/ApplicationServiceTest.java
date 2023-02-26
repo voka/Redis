@@ -43,6 +43,8 @@ public class ApplicationServiceTest extends ServiceTest {
 
     club = new Club(clubCreateRequest);
 
+    member = new Member(memberRegisterRequest,CLUB_ID);
+
     application = new Application(applicationCreateRequest,club);
 
     updatedApplication = new Application(applicationCreateRequest,club);

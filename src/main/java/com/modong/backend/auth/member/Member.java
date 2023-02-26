@@ -32,26 +32,21 @@ public class Member extends BaseTimeEntity {
   private String name;
   private String email;
   private String phone;
-  @Enumerated(EnumType.STRING)
-  private ProviderName providerName;
 
   private Long clubId;
-  @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-  private List<ClubMember> clubs = new ArrayList<>();
+  @Enumerated(EnumType.STRING)
+  private ProviderName providerName;
   @Enumerated(EnumType.STRING)
   private RoleName role;
 
-  public Member(MemberRegisterRequest memberRegisterRequest) {
+  public Member(MemberRegisterRequest memberRegisterRequest,Long clubId) {
     this.memberId = memberRegisterRequest.getMemberId();
     this.name = memberRegisterRequest.getName();
     this.email = memberRegisterRequest.getEmail();
     this.phone = memberRegisterRequest.getPhone();
     this.providerName = ProviderName.MODONG;
     this.role = RoleName.ROLE_USER;
-  }
-
-  public void addClub(ClubMember club){
-    this.clubs.add(club);
+    this.clubId = clubId;
   }
 
   public void setEncodedPassword(String encodedPassword){
