@@ -45,16 +45,14 @@ public class EvaluationService {
       throw new AlreadyExistsException("평가");
     }
     //동아리 Id 조회
-    Long memberClubId = application.getClub().getId();
+    Long clubId = application.getClub().getId();
 
     //회원이 지원자에 대해 평가할 권한이 있는지를 확인하기 위해 동아리가 같은지 비교
-    for(ClubMember clubMember : member.getClubs()){
-      if(memberClubId.equals(clubMember.getClub().getId())){
-        Evaluation evaluation = new Evaluation(evaluationCreateRequest,member,applicant,memberClubId);
-        Evaluation saved = evaluationRepository.save(evaluation);
-        applicantRepositoryCustomImpl.updateRateByApplicantId(applicantId);
-        return saved.getId();
-      }
+    if(clubId.equals(member.getClubId())){
+      Evaluation evaluation = new Evaluation(evaluationCreateRequest,member,applicant,clubId);
+      Evaluation saved = evaluationRepository.save(evaluation);
+      applicantRepositoryCustomImpl.updateRateByApplicantId(applicantId);
+      return saved.getId();
     }
     throw new NoPermissionCreateException();
   }
@@ -104,18 +102,10 @@ public class EvaluationService {
 
     Long clubId = application.getClub().getId();
 
-    boolean havePermission = false;
     List<Evaluation> evaluations = new ArrayList<>();
 
     //회원이 지원자에 대한 평가를 조회할 권한이 있는지를 동아리가 같은지 비교
-    for(ClubMember clubMember : member.getClubs()){
-      if(clubId.equals(clubMember.getClub().getId())){
-        havePermission = true;
-        break;
-      }
-    }
-
-    if(havePermission){
+    if(clubId.equals(member.getClubId())){
       List<EvaluationResponse> result = new ArrayList<>();
       evaluations = evaluationRepository.findAllByApplicantIdAndIsDeletedIsFalse(applicant.getId());
       for(Evaluation evaluation : evaluations){
@@ -163,17 +153,9 @@ public class EvaluationService {
   private EvaluationResponse getEvaluationResponse(Member member, Evaluation evaluation) {
     Long clubId = evaluation.getClubId();
 
-    boolean havePermission = false;
 
     //회원이 지원자에 대한 평가를 조회할 권한이 있는지를 동아리가 같은지 비교
-    for(ClubMember clubMember : member.getClubs()){
-      if(clubId.equals(clubMember.getClub().getId())){
-        havePermission = true;
-        break;
-      }
-    }
-
-    if(havePermission){
+    if(clubId.equals(member.getClubId())){
       return new EvaluationResponse(evaluation, member, evaluation.getApplicant().getApplication().getId(), evaluation.getApplicant().getId());
     }
     else{
