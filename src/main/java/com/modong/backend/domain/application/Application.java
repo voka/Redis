@@ -39,7 +39,7 @@ public class Application extends BaseTimeEntity {
   private Club club;
 
   @Enumerated(EnumType.STRING)
-  private StatusCode statusCode = StatusCode.OPEN;
+  private StatusCode statusCode = StatusCode.BEFORE_OPENING;
 
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ApplicationEssential> essentials = new ArrayList<>();

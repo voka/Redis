@@ -14,7 +14,7 @@ public class ApplicationSimpleResponse {
   @Schema(description = "지원서 링크 아이디", example = "9CJOj71S1o")
   private String urlId;
 
-  @Schema(description = "지원서 모집/마감 여부", example = "open/close")
+  @Schema(description = "지원서 작성중/모집/마감 여부", example = "before_opening/open/close")
   private String status;
 
   public ApplicationSimpleResponse(Application application) {

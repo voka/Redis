@@ -81,21 +81,27 @@ public class ApplicationService {
 
 
   @Transactional
-  //필수 질문 id로 업데이트
-  public Long updateApplication(Long applicationId, ApplicationUpdateRequest applicationUpdateRequest) {
+  //필수 질문 id로 업데이트, 권한 - 사용자의 동아리와 지원서 동아리 일치 및 지원서 모집 전
+  public Long updateApplication(Long applicationId, ApplicationUpdateRequest applicationUpdateRequest, Long memberId) {
+
+    Member member = findMemberById(memberId);
 
     Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
-    application.update(applicationUpdateRequest);
-    //기존 필수 질문들 삭제
-    application.getEssentials().removeAll(application.getEssentials());
-    //필수 질문 설정
-    setEssentialQuestion(applicationUpdateRequest.getEssentialQuestionIds(), application);
+    Long clubId = application.getClub().getId();
 
-    Application saved = applicationRepository.save(application);
+    if(clubId.equals(member.getClubId()) && application.eqStatus(StatusCode.BEFORE_OPENING)) {
+      application.update(applicationUpdateRequest);
+      //기존 필수 질문들 삭제
+      application.getEssentials().removeAll(application.getEssentials());
+      //필수 질문 설정
+      setEssentialQuestion(applicationUpdateRequest.getEssentialQuestionIds(), application);
 
+      Application saved = applicationRepository.save(application);
 
-    return saved.getId();
+      return saved.getId();
+    }
+    else throw new NoPermissionUpdateException();
   }
 
 
