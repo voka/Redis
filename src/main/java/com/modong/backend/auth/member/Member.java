@@ -32,9 +32,10 @@ public class Member extends BaseTimeEntity {
   private String name;
   private String email;
   private String phone;
-
   @Enumerated(EnumType.STRING)
   private ProviderName providerName;
+
+  private Long clubId;
   @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   private List<ClubMember> clubs = new ArrayList<>();
   @Enumerated(EnumType.STRING)
