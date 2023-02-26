@@ -58,39 +58,24 @@ public class FormService {
     else throw new NoPermissionCreateException();
   }
 
-  public FormResponse findById(Long formId, Long memberId) {
-    Member member = findMemberById(memberId);
+  public FormResponse findById(Long formId) {
 
     Form form = formRepository.findById(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
 
-    Long clubId = form.getApplication().getClub().getId();
-
-    if(clubId.equals(member.getClubId())){
-      return new FormResponse(form);
-    }
-    else throw new NoPermissionReadException();
+    return new FormResponse(form);
   }
 
-  public List<FormResponse> findAllByApplicationId(Long applicationId, Long memberId) {
+  public List<FormResponse> findAllByApplicationId(Long applicationId) {
 
-    Member member = findMemberById(memberId);
+    List<Form> forms = formRepository.findAllByApplicationId(applicationId);
 
-    Application application = applicationService.findSimpleById(applicationId);
+    List<FormResponse> results = new ArrayList<>();
 
-    Long clubId = application.getClub().getId();
-
-    if(clubId.equals(member.getClubId())){
-      List<Form> forms = formRepository.findAllByApplicationId(applicationId);
-
-      List<FormResponse> results = new ArrayList<>();
-
-      for(Form form : forms){
-        results.add(new FormResponse(form));
-      }
-
-      return results;
+    for(Form form : forms){
+      results.add(new FormResponse(form));
     }
-    else throw new NoPermissionReadException();
+
+    return results;
   }
 
   @Transactional

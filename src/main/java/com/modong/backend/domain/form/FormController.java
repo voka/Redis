@@ -59,9 +59,9 @@ public class FormController {
   @Operation(summary = "페이지 조회", description = "페이지의 ID를 이용해 조회한다.", responses = {
       @ApiResponse(responseCode = "200", description = "페이지 조회 성공", content = @Content(schema = @Schema(implementation = FormResponse.class)))
   })
-  public ResponseEntity getFormById(@Valid @PathVariable(name = "form_id") Long formId, @Auth Long memberId){
+  public ResponseEntity getFormById(@Valid @PathVariable(name = "form_id") Long formId){
 
-    FormResponse form = formService.findById(formId,memberId);
+    FormResponse form = formService.findById(formId);
     return ResponseEntity.ok(new BaseResponse(form,HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 
@@ -70,8 +70,8 @@ public class FormController {
   @Operation(summary = "지원서 ID 로 해당되는 모든 페이지 조회", description = "지원서 ID를 이용해 포함된 모든 페이지를 조회한다.",responses = {
       @ApiResponse(responseCode = "200", description = "페이지 리스트 조회 성공", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FormResponse.class))))
   })
-  public ResponseEntity getFormsByApplicationId(@Valid @PathVariable(name = "application_id") Long applicationId, @Auth Long memberId){
-    List<FormResponse> forms = formService.findAllByApplicationId(applicationId,memberId);
+  public ResponseEntity getFormsByApplicationId(@Valid @PathVariable(name = "application_id") Long applicationId){
+    List<FormResponse> forms = formService.findAllByApplicationId(applicationId);
     return ResponseEntity.ok(new BaseResponse(forms, HttpStatus.OK.value(), CustomCode.SUCCESS_GET_LIST));
   }
 
