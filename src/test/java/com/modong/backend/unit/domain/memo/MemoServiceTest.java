@@ -21,7 +21,6 @@ import com.modong.backend.domain.memo.Memo;
 import com.modong.backend.domain.memo.MemoService;
 import com.modong.backend.domain.memo.dto.MemoResponse;
 import com.modong.backend.global.exception.applicant.ApplicantNotFoundException;
-import com.modong.backend.global.exception.application.ApplicationNotFoundException;
 import com.modong.backend.global.exception.auth.NoPermissionCreateException;
 import com.modong.backend.global.exception.auth.NoPermissionDeleteException;
 import com.modong.backend.global.exception.auth.NoPermissionReadException;
@@ -53,7 +52,7 @@ public class MemoServiceTest extends ServiceTest {
     club = new Club(clubCreateRequest);
     another = new Club(clubCreateRequest);
 
-    member = new Member(memberRegisterRequest);
+    member = new Member(memberRegisterRequest, CLUB_ID);
 
     application = new Application(applicationCreateRequest,club);
 
@@ -82,7 +81,7 @@ public class MemoServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
     given(memoRepository.save(any())).willReturn(memo);
     //생성 권한 주기
-    member.addClub(new ClubMember(club,member));
+    ReflectionTestUtils.setField(member,"clubId",CLUB_ID);
 
 
     //when
@@ -126,7 +125,7 @@ public class MemoServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //생성 권한 없는 경우
-    member.addClub(new ClubMember(another,member));
+    ReflectionTestUtils.setField(member,"clubId",another.getId());
 
     //then
     assertThatThrownBy(() -> memoService.create(memoCreateRequest,MemberFixture.ID))
@@ -229,7 +228,7 @@ public class MemoServiceTest extends ServiceTest {
     given(memoRepository.findAllByApplicantIdAndIsDeletedIsFalse(anyLong())).willReturn(Arrays.asList(memo));
 
     //조회 권한 주기
-    member.addClub(new ClubMember(club,member));
+    ReflectionTestUtils.setField(member,"clubId",CLUB_ID);
 
     List<MemoResponse> expected = Arrays.asList(new MemoResponse(memo,member, APPLICATION_ID, APPLICANT_ID));
     //when
@@ -262,7 +261,7 @@ public class MemoServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //조회 권한 없게 설정
-    member.addClub(new ClubMember(another,member));
+    ReflectionTestUtils.setField(member,"clubId",another.getId());
     //then
     assertThatThrownBy(() -> memoService.findAllByApplication(memoFindRequest,MemberFixture.ID))
         .isInstanceOf(NoPermissionReadException.class);

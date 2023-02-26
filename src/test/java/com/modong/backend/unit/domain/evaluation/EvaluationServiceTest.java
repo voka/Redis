@@ -35,6 +35,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -56,7 +57,7 @@ public class EvaluationServiceTest extends ServiceTest {
     club = new Club(clubCreateRequest);
     another = new Club(clubCreateRequest);
 
-    member = new Member(memberRegisterRequest);
+    member = new Member(memberRegisterRequest, CLUB_ID);
 
     ReflectionTestUtils.setField(member,"id", MemberFixture.ID);
 
@@ -90,9 +91,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.save(any())).willReturn(evaluation);
     given(applicantRepositoryCustom.getRateByApplicantId(anyLong())).willReturn(APPLICANT_RATE);
     //생성 권한 주기
-    member.addClub(new ClubMember(club,member));
-
-
+    ReflectionTestUtils.setField(member,"clubId",CLUB_ID);
     //when
     Long savedId = evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID);
 
@@ -148,7 +147,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //생성 권한 없는 경우
-    member.addClub(new ClubMember(another,member));
+    ReflectionTestUtils.setField(member,"clubId",another.getId());
 
     //then
     assertThatThrownBy(() -> evaluationService.create(evaluationCreateRequest,MemberFixture.ID, APPLICANT_ID))
@@ -253,9 +252,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(evaluationRepository.findAllByApplicantIdAndIsDeletedIsFalse(anyLong())).willReturn(Arrays.asList(evaluation));
 
     //조회 권한 주기
-    member.addClub(new ClubMember(club,member));
-
-    List<EvaluationResponse> expected = Arrays.asList(new EvaluationResponse(evaluation,member, APPLICATION_ID, APPLICANT_ID));
+    ReflectionTestUtils.setField(member,"clubId",CLUB_ID);    List<EvaluationResponse> expected = Arrays.asList(new EvaluationResponse(evaluation,member, APPLICATION_ID, APPLICANT_ID));
     //when
     List<EvaluationResponse> actual = evaluationService.findAllByApplication(APPLICANT_ID,MemberFixture.ID);
 
@@ -286,7 +283,7 @@ public class EvaluationServiceTest extends ServiceTest {
     given(applicantRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(applicant));
 
     //조회 권한 없게 설정
-    member.addClub(new ClubMember(another,member));
+    ReflectionTestUtils.setField(member,"clubId",another.getId());
     //then
     assertThatThrownBy(() -> evaluationService.findAllByApplication(APPLICANT_ID,MemberFixture.ID))
         .isInstanceOf(NoPermissionReadException.class);
