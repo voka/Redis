@@ -51,7 +51,7 @@ public class MemberService {
 
     Member savedMember = memberRepository.save(member);
 
-    club.updateOneCountOfMember(club.getMembers().stream().count());
+    club.updateOneCountOfMember(memberRepository.countByClubIdAndIsDeletedIsFalse(club.getId()));
 
     clubRepository.save(club);
 
