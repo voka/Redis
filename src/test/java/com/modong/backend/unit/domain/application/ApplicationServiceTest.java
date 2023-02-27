@@ -125,7 +125,7 @@ public class ApplicationServiceTest extends ServiceTest {
     //then
     assertThatCode(() -> applicationService.findDetailById(APPLICATION_ID, MemberFixture.ID)).doesNotThrowAnyException();
 
-    assertThat(response).usingRecursiveComparison().isEqualTo(new ApplicationDetailResponse(application));
+    assertThat(response).usingRecursiveComparison().isEqualTo(new ApplicationDetailResponse(application,CLUB_ID));
   }
   @DisplayName("지원서 상세 조회 성공 (UrlId)")
   @Test
@@ -139,7 +139,7 @@ public class ApplicationServiceTest extends ServiceTest {
     //then
     assertThatCode(() -> applicationService.findDetailByUrlId(URL_ID)).doesNotThrowAnyException();
 
-    assertThat(response).usingRecursiveComparison().isEqualTo(new ApplicationDetailResponse(application));
+    assertThat(response).usingRecursiveComparison().isEqualTo(new ApplicationDetailResponse(application,CLUB_ID));
   }
   @DisplayName("지원서 상세 조회 실패 (Id)- 요청한 id를 가진 지원서가 없을 경우 ApplicationNotFoundException 가 발생해야 한다.")
   @Test
