@@ -68,4 +68,8 @@ public class Applicant extends BaseTimeEntity {
   public void cancelFail() {
     this.isFail = false;
   }
+  public void delete() {
+    this.isDeleted = true;
+  }
+
 }

@@ -46,7 +46,7 @@ public class ApplicantService {
   private final ApplicantRepositoryCustomImpl applicantRepositoryCustom;
 
   public List<ApplicantSimpleResponse> findAllByApplicationId(Long applicationId) {
-    List<ApplicantSimpleResponse> applicants = applicantRepository.findAllByApplicationId(applicationId).stream().map(
+    List<ApplicantSimpleResponse> applicants = applicantRepository.findAllByApplicationIdAndIsDeletedIsFalse(applicationId).stream().map(
         ApplicantSimpleResponse::new).collect(
         Collectors.toList());
     return applicants;
@@ -57,7 +57,7 @@ public class ApplicantService {
   public ApplicantDetailResponse findById(Long applicantId, Long memberId) {
     Member member = findMemberById(memberId);
 
-    Applicant applicant = applicantRepository.findById(applicantId)
+    Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId)
         .orElseThrow(()-> new ApplicantNotFoundException(applicantId));
 
     Long clubId = applicant.getApplication().getClub().getId();
@@ -72,7 +72,7 @@ public class ApplicantService {
 
     Member member = findMemberById(memberId);
 
-    Applicant applicant = applicantRepository.findById(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
+    Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
 
     Long clubId = applicant.getApplication().getClub().getId();
 
@@ -144,7 +144,7 @@ public class ApplicantService {
 
     Member member = findMemberById(memberId);
 
-    Applicant applicant = applicantRepository.findById(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
+    Applicant applicant = applicantRepository.findByIdAndIsDeletedIsFalse(applicantId).orElseThrow(() -> new ApplicantNotFoundException(applicantId));
 
     Long clubId = applicant.getApplication().getClub().getId();
 

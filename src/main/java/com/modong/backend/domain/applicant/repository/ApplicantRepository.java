@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ApplicantRepository extends JpaRepository<Applicant,Long> {
 
-  ArrayList<Applicant> findAllByApplicationId(Long applicationId);
+  ArrayList<Applicant> findAllByApplicationIdAndIsDeletedIsFalse(Long applicationId);
 
   Optional<Applicant> findByIdAndIsDeletedIsFalse(Long applicantId);
 }
