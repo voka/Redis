@@ -46,7 +46,7 @@ public class ApplicationService {
 
     Member member = findMemberById(memberId);
 
-    Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
     Long clubId = application.getClub().getId();
 
@@ -62,7 +62,7 @@ public class ApplicationService {
     Member member = findMemberById(memberId);
 
     if(clubId.equals(member.getClubId())){
-      List<ApplicationSimpleResponse> applications = applicationRepository.findAllByClubId(clubId).stream().map(ApplicationSimpleResponse::new).collect(
+      List<ApplicationSimpleResponse> applications = applicationRepository.findAllByClubIdAndIsDeletedIsFalse(clubId).stream().map(ApplicationSimpleResponse::new).collect(
               Collectors.toList());
       return applications;
     }
@@ -83,7 +83,7 @@ public class ApplicationService {
       Application application = new Application(applicationCreateRequest,club);
 
       //지원서 링크 중복 검사
-      if(applicationRepository.existsByUrlId(applicationCreateRequest.getUrlId())){
+      if(applicationRepository.existsByUrlIdAndIsDeletedIsFalse(applicationCreateRequest.getUrlId())){
         throw new UrlIdDuplicateException();
       }
 
@@ -113,7 +113,7 @@ public class ApplicationService {
 
     Member member = findMemberById(memberId);
 
-    Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
     Long clubId = application.getClub().getId();
 
@@ -138,19 +138,20 @@ public class ApplicationService {
 
     Member member = findMemberById(memberId);
 
-    Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
     Long clubId = application.getClub().getId();
 
     if(clubId.equals(member.getClubId())){
-      applicationRepository.delete(application);
+      application.delete();
+      applicationRepository.save(application);
     }
     else throw new NoPermissionDeleteException();
   }
 
   public ApplicationDetailResponse findDetailByUrlId(String urlId) {
 
-    Application application = applicationRepository.findByUrlId(urlId).orElseThrow(() -> new ApplicationNotFoundException(urlId));
+    Application application = applicationRepository.findByUrlIdAndIsDeletedIsFalse(urlId).orElseThrow(() -> new ApplicationNotFoundException(urlId));
 
     return getDetailResponse(application);
   }
@@ -212,7 +213,7 @@ public class ApplicationService {
   }
 
   public Application findSimpleById(Long applicationId){
-    Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
+    Application application = applicationRepository.findByIdAndIsDeletedIsFalse(applicationId).orElseThrow(() -> new ApplicationNotFoundException(applicationId));
     return application;
   }
   private Member findMemberById(Long memberId){
