@@ -99,8 +99,8 @@ public class ApplicationController {
   @Operation(summary = "지원서 조회", description = "지원서의 링크 아이디를 이용해 작성한 지원서를 조회한다.", responses = {
       @ApiResponse(responseCode = "200", description = "지원서 조회 성공", content = @Content(schema = @Schema(implementation = ApplicationDetailResponse.class)))
   })
-  public ResponseEntity getApplicationByUrlId(@Validated @PathVariable(name = "url_id") String urlId, @Auth Long memberId){
-    ApplicationDetailResponse application = applicationService.findDetailByUrlId(urlId, memberId);
+  public ResponseEntity getApplicationByUrlId(@Validated @PathVariable(name = "url_id") String urlId){
+    ApplicationDetailResponse application = applicationService.findDetailByUrlId(urlId);
     return ResponseEntity.ok(new BaseResponse(application,HttpStatus.OK.value(), CustomCode.SUCCESS_GET));
   }
 

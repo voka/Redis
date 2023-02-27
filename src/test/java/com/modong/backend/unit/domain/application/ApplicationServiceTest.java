@@ -131,15 +131,13 @@ public class ApplicationServiceTest extends ServiceTest {
   @Test
   public void SuccessReadApplication_UrlID(){
     //given
-    given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-
     given(applicationRepository.findByUrlId(anyString())).willReturn(Optional.of(application));
 
     //when
-    ApplicationDetailResponse response = applicationService.findDetailByUrlId(URL_ID, MemberFixture.ID);
+    ApplicationDetailResponse response = applicationService.findDetailByUrlId(URL_ID);
 
     //then
-    assertThatCode(() -> applicationService.findDetailByUrlId(URL_ID, MemberFixture.ID)).doesNotThrowAnyException();
+    assertThatCode(() -> applicationService.findDetailByUrlId(URL_ID)).doesNotThrowAnyException();
 
     assertThat(response).usingRecursiveComparison().isEqualTo(new ApplicationDetailResponse(application));
   }
@@ -159,12 +157,11 @@ public class ApplicationServiceTest extends ServiceTest {
   @Test
   public void throwExceptionIfUrlIdNotFound_Read(){
     //given, when
-    given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
     given(applicationRepository.findByUrlId(anyString()))
         .willReturn(Optional.empty());
 
     //then
-    assertThatThrownBy(() -> applicationService.findDetailByUrlId(URL_ID, MemberFixture.ID))
+    assertThatThrownBy(() -> applicationService.findDetailByUrlId(URL_ID))
         .isInstanceOf(ApplicationNotFoundException.class);
   }
 

@@ -148,18 +148,11 @@ public class ApplicationService {
     else throw new NoPermissionDeleteException();
   }
 
-  public ApplicationDetailResponse findDetailByUrlId(String urlId, Long memberId) {
-
-    Member member = findMemberById(memberId);
+  public ApplicationDetailResponse findDetailByUrlId(String urlId) {
 
     Application application = applicationRepository.findByUrlId(urlId).orElseThrow(() -> new ApplicationNotFoundException(urlId));
 
-    Long clubId = application.getClub().getId();
-
-    if(clubId.equals(member.getClubId())){
-      return getDetailResponse(application);
-    }
-    else throw new NoPermissionReadException();
+    return getDetailResponse(application);
   }
 
 
