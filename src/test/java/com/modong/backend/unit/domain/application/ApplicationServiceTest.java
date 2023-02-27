@@ -104,7 +104,7 @@ public class ApplicationServiceTest extends ServiceTest {
 
     given(clubRepository.findById(anyLong())).willReturn(Optional.of(club));
 
-    given(applicationRepository.existsByUrlId(anyString()))
+    given(applicationRepository.existsByUrlIdAndIsDeletedIsFalse(anyString()))
         .willReturn(true);
 
     //then
@@ -117,7 +117,7 @@ public class ApplicationServiceTest extends ServiceTest {
     //given
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
 
-    given(applicationRepository.findById(anyLong())).willReturn(Optional.of(application));
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
 
     //when
     ApplicationDetailResponse response = applicationService.findDetailById(APPLICATION_ID, MemberFixture.ID);
@@ -131,7 +131,7 @@ public class ApplicationServiceTest extends ServiceTest {
   @Test
   public void SuccessReadApplication_UrlID(){
     //given
-    given(applicationRepository.findByUrlId(anyString())).willReturn(Optional.of(application));
+    given(applicationRepository.findByUrlIdAndIsDeletedIsFalse(anyString())).willReturn(Optional.of(application));
 
     //when
     ApplicationDetailResponse response = applicationService.findDetailByUrlId(URL_ID);
@@ -146,7 +146,7 @@ public class ApplicationServiceTest extends ServiceTest {
   public void throwExceptionIfIdNotFound_Read(){
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.empty());
 
     //then
@@ -157,7 +157,7 @@ public class ApplicationServiceTest extends ServiceTest {
   @Test
   public void throwExceptionIfUrlIdNotFound_Read(){
     //given, when
-    given(applicationRepository.findByUrlId(anyString()))
+    given(applicationRepository.findByUrlIdAndIsDeletedIsFalse(anyString()))
         .willReturn(Optional.empty());
 
     //then
@@ -172,7 +172,7 @@ public class ApplicationServiceTest extends ServiceTest {
     ReflectionTestUtils.setField(updatedApplication,"id",APPLICATION_ID);
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
 
-    given(applicationRepository.findById(anyLong())).willReturn(Optional.of(application));
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.of(application));
     given(essentialQuestionRepository.findById(anyLong())).willReturn(Optional.of(essentialQuestion));
     given(applicationRepository.save(any())).willReturn(updatedApplication);
     //when
@@ -192,7 +192,7 @@ public class ApplicationServiceTest extends ServiceTest {
   public void throwExceptionIfIdNotFound_Update(){
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.empty());
 
     //then
@@ -206,7 +206,7 @@ public class ApplicationServiceTest extends ServiceTest {
   public void throwExceptionIfIdNotFound_Delete(){
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.empty());
 
     //then
@@ -224,7 +224,7 @@ public class ApplicationServiceTest extends ServiceTest {
     updatedApplication.close();
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
 
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.of(application));
     given(applicationRepository.save(any()))
         .willReturn(updatedApplication);
@@ -240,7 +240,7 @@ public class ApplicationServiceTest extends ServiceTest {
     //given, when
     application.open();
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.empty());
 
     //then
@@ -254,7 +254,7 @@ public class ApplicationServiceTest extends ServiceTest {
     //given, when
     application.close();
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.of(application));
 
     //then
@@ -272,7 +272,7 @@ public class ApplicationServiceTest extends ServiceTest {
     updatedApplication.open();
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
 
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.of(application));
 
     given(applicationRepository.save(any()))
@@ -288,7 +288,7 @@ public class ApplicationServiceTest extends ServiceTest {
   public void throwExceptionIfIdNotFound_Open(){
     //given, when
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.empty());
 
     //then
@@ -304,7 +304,7 @@ public class ApplicationServiceTest extends ServiceTest {
     application.open();
     given(memberRepository.findByIdAndIsDeletedIsFalse(anyLong())).willReturn(Optional.ofNullable(member));
 
-    given(applicationRepository.findById(anyLong()))
+    given(applicationRepository.findByIdAndIsDeletedIsFalse(anyLong()))
         .willReturn(Optional.of(application));
 
     //then

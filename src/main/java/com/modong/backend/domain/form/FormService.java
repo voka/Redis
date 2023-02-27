@@ -60,14 +60,14 @@ public class FormService {
 
   public FormResponse findById(Long formId) {
 
-    Form form = formRepository.findById(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
+    Form form = formRepository.findByIdAndIsDeletedIsFalse(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
 
     return new FormResponse(form);
   }
 
   public List<FormResponse> findAllByApplicationId(Long applicationId) {
 
-    List<Form> forms = formRepository.findAllByApplicationId(applicationId);
+    List<Form> forms = formRepository.findAllByApplicationIdAndIsDeletedIsFalse(applicationId);
 
     List<FormResponse> results = new ArrayList<>();
 
@@ -83,7 +83,7 @@ public class FormService {
 
     Member member = findMemberById(memberId);
 
-    Form form = formRepository.findById(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
+    Form form = formRepository.findByIdAndIsDeletedIsFalse(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
 
     Long clubId = form.getApplication().getClub().getId();
 
@@ -110,11 +110,12 @@ public class FormService {
 
     Member member = findMemberById(memberId);
 
-    Form form = formRepository.findById(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
+    Form form = formRepository.findByIdAndIsDeletedIsFalse(formId).orElseThrow(() -> new IllegalArgumentException(ERROR_REQ_PARAM_ID.toString()));
 
     Long clubId = form.getApplication().getClub().getId();
     if (clubId.equals(member.getClubId())) {
-      formRepository.delete(form);
+      form.delete();
+      formRepository.save(form);
     }
     else throw new NoPermissionDeleteException();
   }
