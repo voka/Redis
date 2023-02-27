@@ -46,6 +46,9 @@ public class ApplicantRepositoryCustomImpl implements ApplicantRepositoryCustom{
             eqEvaluationNotDeleted()
         )
         .fetchOne();
+    if (result == null) {
+      return 0f;
+    }
     return result.floatValue();
   }
 
@@ -57,6 +60,9 @@ public class ApplicantRepositoryCustomImpl implements ApplicantRepositoryCustom{
                     eqEvaluationApplicantId(applicantId),
                     eqEvaluationNotDeleted()
             );
+    if(count.isNull().equals(Boolean.TRUE)){
+      return 0L;
+    }
     return count.fetchCount();
   }
 
