@@ -23,6 +23,8 @@ import com.modong.backend.global.exception.auth.NoPermissionDeleteException;
 import com.modong.backend.global.exception.auth.NoPermissionReadException;
 import com.modong.backend.global.exception.auth.NoPermissionUpdateException;
 import com.modong.backend.global.exception.club.ClubNotFoundException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,7 @@ public class ApplicationService {
     Long clubId = application.getClub().getId();
 
     if(clubId.equals(member.getClubId())){
-      return getDetailResponse(application);
+      return getDetailResponse(application,clubId);
     }
     else{
       throw new NoPermissionReadException();
@@ -62,9 +64,12 @@ public class ApplicationService {
     Member member = findMemberById(memberId);
 
     if(clubId.equals(member.getClubId())){
-      List<ApplicationSimpleResponse> applications = applicationRepository.findAllByClubIdAndIsDeletedIsFalse(clubId).stream().map(ApplicationSimpleResponse::new).collect(
-              Collectors.toList());
-      return applications;
+      List<Application> applications = applicationRepository.findAllByClubIdAndIsDeletedIsFalse(clubId);
+      List<ApplicationSimpleResponse> result = new ArrayList<>();
+      for(Application application: applications){
+        result.add(new ApplicationSimpleResponse(application,clubId));
+      }
+      return result;
     }
     else{
       throw new NoPermissionReadException();
@@ -153,12 +158,12 @@ public class ApplicationService {
 
     Application application = applicationRepository.findByUrlIdAndIsDeletedIsFalse(urlId).orElseThrow(() -> new ApplicationNotFoundException(urlId));
 
-    return getDetailResponse(application);
+    return getDetailResponse(application,application.getClub().getId());
   }
 
 
-  private ApplicationDetailResponse getDetailResponse(Application application) {
-    ApplicationDetailResponse response = new ApplicationDetailResponse(application);
+  private ApplicationDetailResponse getDetailResponse(Application application, Long clubId) {
+    ApplicationDetailResponse response = new ApplicationDetailResponse(application,clubId);
 
     for(ApplicationEssential applicationEssential : application.getEssentials()){
       response.addEssentialQuestion(new EssentialQuestionResponse(applicationEssential.getEssentialQuestion()));
