@@ -3,7 +3,7 @@
 <configuration scan="true" scanPeriod="15 seconds">
     <!-- Server Log Config -->
     <springProfile name="dev, prod">
-        <property resource="application.properties"/>
+        <property resource="application.yml"/>
         <!-- log file path -->
         <property name="LOG_PATH" value="${log.config.path}"/>
         <!-- log file name -->
