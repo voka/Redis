@@ -10,7 +10,6 @@ spring:
     properties:
       hibernate:
         show_sql: false
-        format_sql: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 logging.level:
   org.hibernate.SQL: debug
@@ -63,3 +62,11 @@ management:
   metrics:
     tags:
       application: "modong-prod"
+
+
+log:
+  config:
+    path: ${LOG_PATH}
+    filename: ${LOG_FILENAME}
+    error:
+      filename: ${ERROR_LOG_FILENAME}
