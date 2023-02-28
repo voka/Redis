@@ -12,10 +12,15 @@ spring:
         show_sql: false
         format_sql: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-logging.level:
-  org.hibernate.SQL: debug
   # org.hibernate.type: trace
-
+logging:
+  pattern:
+    console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
+  level:
+    org.springframework: error
+    org.hibernate.SQL: debug
+  file:
+    path: ${LOG_PATH}
 server:
   error:
     include-stacktrace: never

@@ -1,6 +1,6 @@
 package com.modong.backend.global.exception;
 
-public class ResourceNotFoundException extends NotFoundException {
+public class ResourceNotFoundException extends BadRequestException {
 
   private static final String ERROR_CODE = "NOT_FOUND";
   private static final String SERVER_MESSAGE = "에 존재하지 않는 객체 조회";
