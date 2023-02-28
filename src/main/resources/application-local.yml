@@ -28,21 +28,21 @@ springdoc:
     operationsSorter: method
     disable-swagger-default-url: true
   show-actuator: true
-
 logging:
-  file:
-    path: logs
+#  file:
+#    path: logs
   pattern:
     console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
 
   level:
     org.springframework: INFO
-    org.hibernate.SQL: debug
+    org.hibernate.SQL: INFO
+    com.modong.backend: INFO
 #  # org.hibernate.type: trace
 #  logback:
 #    rollingpolicy:
 #      file-name-pattern:
-#        Log-%d{yyyy-MM-dd}.%i.log
+#        logs/%d{yyyy-MM-dd}/Log-%d{yyyy-MM-dd}.%i.log
 jwt:
   token:
     secret-key: MySubProject Modong`s jwt secret-key

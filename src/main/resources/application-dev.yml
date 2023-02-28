@@ -17,14 +17,15 @@ logging:
     path:
     console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
   level:
-    org.springframework: info
-    org.hibernate.SQL: debug
+    org.springframework: INFO
+    com.modong.backend: INFO
+    org.hibernate.SQL: DEBUG
   file:
-    path: logs
+    path: ${LOG_PATH}
   logback:
     rollingpolicy:
       file-name-pattern:
-        Log-%d{yyyy-MM-dd}.%i.log
+        ${LOG_PATH}/%d{yyyy-MM-dd}/Log-%d{yyyy-MM-dd}.%i.log
   # org.hibernate.type: trace
 
 server:
