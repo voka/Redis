@@ -10,11 +10,15 @@ spring:
     properties:
       hibernate:
         show_sql: false
+        format_sql: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-logging.level:
-  org.hibernate.SQL: debug
   # org.hibernate.type: trace
-
+logging:
+  pattern:
+    console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
+  level:
+    org.springframework: error
+    org.hibernate.SQL: debug
 server:
   error:
     include-stacktrace: never
@@ -61,9 +65,3 @@ management:
   metrics:
     tags:
       application: "modong-prod"
-log:
-  config:
-    path: ${LOG_PATH}
-    filename: ${LOG_FILENAME}
-    error:
-      filename: ${ERROR_LOG_FILENAME}

@@ -21,12 +21,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Slf4j
 public class GlobalExceptionHandler {
 
-  private static final String ERROR_LOGGING_MESSAGE = "예외 발생, 요청 url: ";
+  private static final String ERROR_LOGGING_MESSAGE = "예외 발생";
 
   @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
-    log.error(ERROR_LOGGING_MESSAGE+ request.getRequestURI() + ", 요청 메소드: ", request.getMethod(), e);
+  protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    log.error(ERROR_LOGGING_MESSAGE, e);
     final ErrorResponse response = ErrorResponse.builder()
         .status(HttpStatus.METHOD_NOT_ALLOWED.value())
         .message(e.getMessage()).build();
@@ -106,8 +106,8 @@ public class GlobalExceptionHandler {
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler
-  public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException e, HttpServletRequest request) {
-    log.error("예상하지 못한 에러가 발생하였습니다. 요청 url : ", request.getRequestURI(),e);
+  public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException e) {
+    log.error("예상하지 못한 에러가 발생하였습니다",e);
     ErrorResponse response = ErrorResponse.builder()
             .status(HttpStatus.FORBIDDEN.value())
             .message("예상하지 못한 에러가 발생하였습니다.")

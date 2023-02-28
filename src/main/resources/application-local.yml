@@ -29,8 +29,12 @@ springdoc:
     disable-swagger-default-url: true
   show-actuator: true
 
-logging.level:
-  org.hibernate.SQL: debug
+logging:
+  pattern:
+    console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: debug
   # org.hibernate.type: trace
 
 jwt:
