@@ -18,6 +18,8 @@ logging:
   level:
     org.springframework: info
     org.hibernate.SQL: debug
+  file:
+    path: ${LOG_PATH}
   # org.hibernate.type: trace
 
 server:

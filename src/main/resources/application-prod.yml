@@ -19,6 +19,8 @@ logging:
   level:
     org.springframework: error
     org.hibernate.SQL: debug
+  file:
+    path: ${LOG_PATH}
 server:
   error:
     include-stacktrace: never
