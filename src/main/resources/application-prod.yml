@@ -17,10 +17,15 @@ logging:
   pattern:
     console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
   level:
-    org.springframework: error
-    org.hibernate.SQL: debug
+    org.springframework: ERROR
+    org.hibernate.SQL: DEBUG
+    com.modong.backend: ERROR
   file:
     path: ${LOG_PATH}
+  logback:
+    rollingpolicy:
+      file-name-pattern:
+        ${LOG_PATH}/%d{yyyy-MM-dd}/Log-%d{yyyy-MM-dd}.%i.log
 server:
   error:
     include-stacktrace: never
