@@ -20,7 +20,11 @@ logging:
     org.springframework: error
     org.hibernate.SQL: debug
   file:
-    path: ${LOG_PATH}
+    path: logs
+  logback:
+    rollingpolicy:
+      file-name-pattern:
+        Log-%d{yyyy-MM-dd}.%i.log
 server:
   error:
     include-stacktrace: never

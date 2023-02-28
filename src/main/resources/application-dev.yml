@@ -14,12 +14,17 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 logging:
   pattern:
+    path:
     console: "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] %logger[%method:%line] - %msg%n"
   level:
     org.springframework: info
     org.hibernate.SQL: debug
   file:
-    path: ${LOG_PATH}
+    path: logs
+  logback:
+    rollingpolicy:
+      file-name-pattern:
+        Log-%d{yyyy-MM-dd}.%i.log
   # org.hibernate.type: trace
 
 server:
