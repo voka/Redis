@@ -32,6 +32,8 @@ public class Applicant extends BaseTimeEntity {
 
   private String name;
 
+  private String realName;
+
   private float rate;
 
   @Enumerated(EnumType.STRING)
@@ -50,6 +52,7 @@ public class Applicant extends BaseTimeEntity {
 
   private Long countOfEvaluator;
   public Applicant(ApplicantCreateRequest applicantCreateRequest, Application application) {
+    this.realName = applicantCreateRequest.getName();
     this.name = applicantCreateRequest.getName();
     this.application = application;
     this.applicantStatus = ApplicantStatus.ACCEPT;
@@ -72,4 +75,7 @@ public class Applicant extends BaseTimeEntity {
     this.isDeleted = true;
   }
 
+  public void updateName(Long count){
+    this.name = this.name + String.valueOf(count);
+  }
 }

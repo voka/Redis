@@ -94,15 +94,21 @@ public class ApplicantService {
   @Transactional // 지원자 생성 및 질문에 대한 답변들 저장
   public Long createApplicant(ApplicantCreateRequest applicantCreateRequest) {
 
-
-    Application application = applicationService.findSimpleById(applicantCreateRequest.getApplicationId());
+    Long applicationId = applicantCreateRequest.getApplicationId();
+    Application application = applicationService.findSimpleById(applicationId);
 
     if(application.checkApplicationClosed()){
       throw new IsClosed();
     }
 
+
     Applicant applicant = new Applicant(applicantCreateRequest, application);
 
+    String applicantName = applicantCreateRequest.getName();
+    Long count = applicantRepository.countAllByApplicationIdAndRealNameAndIsDeletedIsFalse(applicationId,applicantName);
+    if(count != 0L){
+      applicant.updateName(count);
+    }
     applicantRepository.save(applicant);
 
     //필수 질문 저장
