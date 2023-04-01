@@ -27,8 +27,7 @@ Test Coverage [![codecov](https://codecov.io/gh/Modong-Team/modong-backend-new/b
 ---
 
 ## ER 다이어그램
-
-사진
+![Linko](https://user-images.githubusercontent.com/38587274/229285158-2b4bcae4-051f-4a42-8b5c-41b03641fc93.png)
 ---
 
 ## API 명세서
@@ -38,22 +37,22 @@ Test Coverage [![codecov](https://codecov.io/gh/Modong-Team/modong-backend-new/b
 
 ---
 
-## 시스템 구성도
-
-사진
+## 인프라 구성도
+![인프라 구성도](https://user-images.githubusercontent.com/38587274/229285169-f17fbd74-5c15-4fc2-af5b-a94ce2c99564.png)
 
 ---
 
+
 ## CI/CD 플로우 다이어그램
 
-사진
+
+![CI:CD 구성도](https://user-images.githubusercontent.com/38587274/229285147-9a2ede45-11aa-4aa9-a31d-4beff065cc38.png)
 
 ---
 
 ## 개발 프로세스
+- 혼자 개발을 진행하기에 아래 그림에서 PRE-PRODUCTION 브랜치는 제외하고 진행했습니다.
 
-### Gitlab-flow
+<img width="300" alt="image" src="https://user-images.githubusercontent.com/38587274/229285324-e9b43f95-5719-4b46-9fc7-da6a8d5f2d4d.png">
 
-혼자 개발을 진행하기에 아래 그림에서 PRE-PRODUCTION 브랜치는 제외하고 진행했습니다.
-![다운로드](https://user-images.githubusercontent.com/55343124/196999605-a6eba4e9-9dc3-47d3-887e-5961b8c5ab6d.png)
 ---
