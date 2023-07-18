@@ -48,11 +48,3 @@ Test Coverage [![codecov](https://codecov.io/gh/Modong-Team/modong-backend-new/b
 
 ![CI:CD 구성도](https://user-images.githubusercontent.com/38587274/229285147-9a2ede45-11aa-4aa9-a31d-4beff065cc38.png)
 
----
-
-## 개발 프로세스
-- 혼자 개발을 진행하기에 아래 그림에서 PRE-PRODUCTION 브랜치는 제외하고 진행했습니다.
-
-<img width="300" alt="image" src="https://user-images.githubusercontent.com/38587274/229285324-e9b43f95-5719-4b46-9fc7-da6a8d5f2d4d.png">
-
----
